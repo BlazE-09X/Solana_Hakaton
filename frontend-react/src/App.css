@@ -1,0 +1,70 @@
+.app {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+h1 {
+  color: #00997a;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: gray;
+  margin-bottom: 25px;
+}
+
+.primary {
+  background: #00997a;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.primary:hover {
+  background: #5a4bd1;
+}
+
+.buy {
+  background: #00b894;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.buy:hover {
+  background: #00997a;
+}
+
+.info {
+  margin-top: 15px;
+}
+
+.address {
+  font-size: 12px;
+  word-break: break-all;
+  color: #555;
+}
+
+.status {
+  margin-top: 15px;
+  font-weight: bold;
+}
