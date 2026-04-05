@@ -1,0 +1,12 @@
+[programs.localnet]
+bbm = "Fg6PaFpoGXkYsidMpWxTWqkZp1wqJ7Yw5h9G8K1XKz6h"
+
+[provider]
+cluster = "devnet"
+wallet = "./id.json"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[toolchain]
+anchor_version = "0.30.1"

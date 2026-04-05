@@ -1,69 +1,58 @@
 import { useState } from "react";
-import { getBalance, getTokenBalance } from "./solana";
-import { buyToken } from "./api";
 import "./App.css";
 
 function App() {
   const [wallet, setWallet] = useState<any>(null);
-  const [balance, setBalance] = useState<number>(0);
-  const [tokenBalance, setTokenBalance] = useState<number>(0);
-  const [status, setStatus] = useState<string>("");
+  const [status, setStatus] = useState("");
+  const [verified, setVerified] = useState(false);
 
   const connectWallet = async () => {
     const { solana } = window as any;
 
     if (solana && solana.isPhantom) {
       const res = await solana.connect();
-      setWallet(res.publicKey);
-
-      const solBal = await getBalance(res.publicKey);
-      setBalance(solBal);
-
-      const tokenBal = await getTokenBalance(res.publicKey);
-      setTokenBalance(tokenBal);
+      setWallet(res.publicKey.toString());
     } else {
-      alert("Install Phantom Wallet");
+      alert("Install Phantom");
     }
   };
 
-  const handleBuy = async () => {
-    setStatus("⏳ Processing...");
-    try {
-      await buyToken();
-      setStatus("✅ Success!");
+  const verify = async () => {
+  setStatus("🔍 Verifying...");
 
-      const tokenBal = await getTokenBalance(wallet);
-      setTokenBalance(tokenBal);
-    } catch {
-      setStatus("❌ Error");
-    }
+  const res = await fetch("http://localhost:3000/verify");
+  const data = await res.json();
+
+  if (data.success) {
+    setVerified(true);
+    setStatus("✅ Verified ON-CHAIN");
+  }
+};
+
+  const buy = async () => {
+    setStatus("⏳ Buying...");
+    await fetch("http://localhost:3000/buy");
+    setStatus("✅ Tokens received");
   };
 
   return (
     <div className="app">
       <div className="card">
         <h1>🏠 ProofRent</h1>
-        <p className="subtitle">Fractional Property Ownership</p>
 
         {!wallet ? (
-          <button className="primary" onClick={connectWallet}>
-            Connect Wallet
-          </button>
+          <button onClick={connectWallet}>Connect Wallet</button>
         ) : (
           <>
-            <div className="info">
-              <p><strong>Wallet:</strong></p>
-              <p className="address">{wallet.toString()}</p>
+            <p>Wallet: {wallet}</p>
 
-              <p><strong>SOL Balance:</strong> {balance}</p>
-              <p><strong>Property Tokens:</strong> {tokenBalance}</p>
-            </div>
+            <button onClick={verify}>Verify Property</button>
+            <p>{verified ? "Verified ✅" : "Not Verified ❌"}</p>
 
-            <button className="buy" onClick={handleBuy}>
-              Buy Property Token
-            </button>
+            <button onClick={buy}>Buy Token</button>
+            
 
-            <p className="status">{status}</p>
+            <p>{status}</p>
           </>
         )}
       </div>
