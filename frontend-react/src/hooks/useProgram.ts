@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Program, AnchorProvider, web3, type Idl } from "@coral-xyz/anchor";
 // Добавляем 'type' перед AnchorWallet
 import { useConnection, useWallet, type AnchorWallet } from "@solana/wallet-adapter-react";
-import idl from "../idl/bbm.json";
+import idl from "../../../target/idl/bbm.json";
 
 // Если вы используете Anchor 0.30+, адрес программы берется из IDL автоматически.
 // Но если компилятор ругается, что переменная не используется, мы либо передаем её в Program, 

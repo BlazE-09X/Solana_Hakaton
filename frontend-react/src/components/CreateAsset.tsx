@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { useProgram } from "../hooks/useProgram";
-import { Keypair, PublicKey } from "@solana/web3.js";
-import { createMint, getOrCreateAssociatedTokenAccount, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { Keypair, SystemProgram, Transaction, PublicKey } from "@solana/web3.js";
+import {
+    MINT_SIZE,
+    TOKEN_PROGRAM_ID,
+    createInitializeMintInstruction,
+    getAssociatedTokenAddressSync,
+    createAssociatedTokenAccountInstruction
+} from "@solana/spl-token";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import * as anchor from "@coral-xyz/anchor";
 
@@ -13,63 +19,94 @@ export default function CreateAsset() {
     const [message, setMessage] = useState<string>("");
 
     const handleCreate = async () => {
-        if (!program || !wallet.publicKey) return;
+        if (!program || !wallet.publicKey || !wallet.sendTransaction) {
+            setMessage("❌ Wallet not connected or program not loaded");
+            return;
+        }
+
         setLoading(true);
+        setMessage("⏳ Creating asset...");
 
         try {
-            const asset = Keypair.generate();
+            // 1. Подготовка ключей
+            const assetKeypair = Keypair.generate();
+            const mintKeypair = Keypair.generate();
 
-            // 1. Создаем mint
-            const mint = await createMint(
-                connection,
-                wallet as any,
-                wallet.publicKey,
-                null,
-                0
-            );
-
-            // 2. Создаем токен-аккаунт
-            const userTokenAccount = await getOrCreateAssociatedTokenAccount(
-                connection,
-                wallet as any,
-                mint,
+            // Получаем адрес токен-аккаунта (ATA) заранее
+            const userTokenAccount = getAssociatedTokenAddressSync(
+                mintKeypair.publicKey,
                 wallet.publicKey
             );
 
-            // 3. Вызов метода контракта
+            // 2. Считаем аренду для Минта
+            const lamports = await connection.getMinimumBalanceForRentExemption(MINT_SIZE);
+
+            // 3. Создаем ОДНУ большую транзакцию (это дешевле и надежнее)
+            const transaction = new Transaction().add(
+                // Создаем аккаунт для Минта
+                SystemProgram.createAccount({
+                    fromPubkey: wallet.publicKey,
+                    newAccountPubkey: mintKeypair.publicKey,
+                    space: MINT_SIZE,
+                    lamports,
+                    programId: TOKEN_PROGRAM_ID,
+                }),
+                // Инициализируем Минт
+                createInitializeMintInstruction(
+                    mintKeypair.publicKey,
+                    0, // decimals
+                    wallet.publicKey, // mint authority
+                    wallet.publicKey  // freeze authority
+                ),
+                // Создаем ATA (Associated Token Account)
+                createAssociatedTokenAccountInstruction(
+                    wallet.publicKey,
+                    userTokenAccount,
+                    wallet.publicKey,
+                    mintKeypair.publicKey
+                )
+            );
+
+            // Отправляем транзакцию создания токена
+            await wallet.sendTransaction(transaction, connection, {
+                signers: [mintKeypair]
+            });
+
+            // 4. Теперь вызываем ваш контракт
             await program.methods
                 .initializeAsset("Test Asset", new anchor.BN(100))
                 .accounts({
-                    asset: asset.publicKey,
+                    asset: assetKeypair.publicKey,
                     user: wallet.publicKey,
-                    mint: mint,
-                    userTokenAccount: userTokenAccount.address,
+                    mint: mintKeypair.publicKey,
+                    userTokenAccount: userTokenAccount,
                     tokenProgram: TOKEN_PROGRAM_ID,
-                    systemProgram: anchor.web3.SystemProgram.programId,
-                    rent: anchor.web3.SYSVAR_RENT_PUBKEY
+                    systemProgram: SystemProgram.programId,
+                    rent: anchor.web3.SYSVAR_RENT_PUBKEY,
                 })
-                .signers([asset])
+                .signers([assetKeypair])
                 .rpc();
 
             setMessage("✅ Asset created successfully!");
-        } catch (err) {
-            console.error(err);
-            setMessage("❌ Error creating asset");
+        } catch (err: any) {
+            console.error("Full error:", err);
+            setMessage(`❌ Error: ${err.message || "Check console"}`);
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     return (
         <div className="p-4 bg-gray-800 text-white rounded-xl shadow-lg space-y-2">
+            <h2 className="text-xl font-bold">ProofRent Manager</h2>
             <button
-                className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg font-bold hover:scale-105 transition-transform disabled:opacity-50"
                 onClick={handleCreate}
                 disabled={loading}
             >
-                {loading ? "Creating..." : "Create Asset"}
+                {loading ? "Processing..." : "Create New Asset"}
             </button>
-            {message && <p>{message}</p>}
+            {message && <p className="text-sm mt-2">{message}</p>}
         </div>
     );
 }
