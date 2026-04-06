@@ -1,7 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 /// <reference types="mocha" />
-//import { Bbm } from "../target/idl/bbm.json";
 import {
     createMint,
     getOrCreateAssociatedTokenAccount,
@@ -10,28 +9,28 @@ import {
 import { Keypair, SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
 
 describe("bbm", () => {
-    // Конфигурируем провайдера
+    // Настраиваем провайдера
     const provider = anchor.AnchorProvider.env();
     anchor.setProvider(provider);
 
     const program = anchor.workspace.Bbm as Program;
 
-    // Хаки для получения доступа к payer, так как TS ругается на тип Wallet
+    // Для доступа к payer через TS
     const wallet = provider.wallet as anchor.Wallet;
 
-    it("Initialize Asset", async () => {
+    it("Initialize Asset and Mint Tokens", async () => {
         const asset = Keypair.generate();
 
-        // 1. Создаём mint (токен)
+        // 1️⃣ Создаем новый токен (mint)
         const mint = await createMint(
             provider.connection,
-            wallet.payer,           // Теперь TS видит payer
-            wallet.publicKey,
-            null,
-            0
+            wallet.payer,         // authority
+            wallet.publicKey,     // mint authority
+            null,                 // freeze authority
+            0                     // decimals
         );
 
-        // 2. Создаём ассоциированный токен-аккаунт (ATA)
+        // 2️⃣ Создаем ассоциированный токен-аккаунт (ATA) пользователя
         const userTokenAccount = await getOrCreateAssociatedTokenAccount(
             provider.connection,
             wallet.payer,
@@ -39,26 +38,26 @@ describe("bbm", () => {
             wallet.publicKey
         );
 
-        // 3. Вызываем инструкцию контракта
+        console.log("Mint:", mint.toBase58());
+        console.log("User token account:", userTokenAccount.address.toBase58());
+
+        // 3️⃣ Вызываем инструкцию контракта для инициализации Asset
         try {
             await program.methods
                 .initializeAsset("Test Asset", new anchor.BN(100))
                 .accounts({
                     asset: asset.publicKey,
                     user: wallet.publicKey,
-                    mint: mint,
-                    userTokenAccount: userTokenAccount.address,
-                    // ВАЖНО: Добавляем tokenProgram, она нужна для CPI в Rust
-                    tokenProgram: TOKEN_PROGRAM_ID,
-                    // Эти два поля можно попробовать удалить, если билд IDL прошел успешно,
-                    // так как Anchor часто подставляет их сам. Но оставим для надежности:
+                    mint: mint, // mint токен
+                    userTokenAccount: userTokenAccount.address, // ATA
+                    tokenProgram: TOKEN_PROGRAM_ID, // SPL Token program
                     systemProgram: SystemProgram.programId,
                     rent: SYSVAR_RENT_PUBKEY,
-                } as any) // Используем 'as any' если IDL еще капризничает по именам
+                } as any) // Используем any, чтобы TS не ругался на IDL
                 .signers([asset])
                 .rpc();
 
-            console.log("✅ Asset initialized!");
+            console.log("✅ Asset initialized and tokens ready!");
         } catch (err) {
             console.error("❌ Error initializing asset:", err);
             throw err;

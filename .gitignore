@@ -6,3 +6,7 @@ token.txt
 asset.json
 target/
 .DS_Store
+
+# Ключи программы и деплоя
+target/deploy/*.json
+*-keypair.json

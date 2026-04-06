@@ -9,24 +9,8 @@
     }
   ],
   "compilerOptions": {
-    "target": "es2020",
-    "module": "commonjs",
-    "lib": [
-      "es2020"
-    ],
-    "types": [
-      "mocha",
-      "node"
-    ], // Добавь mocha сюда
-    "strict": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "dist"
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "tests/**/*.ts" // ДОБАВЬ ЭТУ СТРОКУ
-  ]
+    "allowSyntheticDefaultImports": true
+  }
 }
