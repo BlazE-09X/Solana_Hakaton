@@ -1,12 +1,19 @@
-[programs.localnet]
-bbm = "Fg6PaFpoGXkYsidMpWxTWqkZp1wqJ7Yw5h9G8K1XKz6h"
+[toolchain]
+anchor_version = "1.0.0"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.devnet]
+bbm = "EGW1GweVgm4BgdKZvR7a9VAJGbwmf3kQPXU71n6MQ3v5"
+
+[registry]
+url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "devnet"
 wallet = "./id.json"
 
-[registry]
-url = "https://anchor.projectserum.com"
-
-[toolchain]
-anchor_version = "0.30.1"
+[scripts]
+test = "npx ts-mocha -p ./tsconfig.tests.json -t 1000000 tests/**/*.ts"
