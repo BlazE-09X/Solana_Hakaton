@@ -12,12 +12,10 @@
       "node"
     ],
     "skipLibCheck": true,
-    /* Режим для Vite */
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-    /* Листинг */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

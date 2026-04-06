@@ -15,18 +15,15 @@
       "vite/client"
     ],
     "skipLibCheck": true,
-    /* Режим для Vite */
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "noEmit": true,
-    /* Листинг */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    /* Настройки для JSON и импортов (добавлены запятые!) */
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },

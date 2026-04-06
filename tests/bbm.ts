@@ -21,7 +21,7 @@ describe("bbm", () => {
     it("Initialize Asset and Mint Tokens", async () => {
         const asset = Keypair.generate();
 
-        // 1️⃣ Создаем новый токен (mint)
+        // Создаем новый токен (mint)
         const mint = await createMint(
             provider.connection,
             wallet.payer,         // authority
@@ -30,7 +30,7 @@ describe("bbm", () => {
             0                     // decimals
         );
 
-        // 2️⃣ Создаем ассоциированный токен-аккаунт (ATA) пользователя
+        // Создаем ассоциированный токен-аккаунт (ATA) пользователя
         const userTokenAccount = await getOrCreateAssociatedTokenAccount(
             provider.connection,
             wallet.payer,
@@ -41,7 +41,7 @@ describe("bbm", () => {
         console.log("Mint:", mint.toBase58());
         console.log("User token account:", userTokenAccount.address.toBase58());
 
-        // 3️⃣ Вызываем инструкцию контракта для инициализации Asset
+        // Вызываем инструкцию контракта для инициализации Asset
         try {
             await program.methods
                 .initializeAsset("Test Asset", new anchor.BN(100))

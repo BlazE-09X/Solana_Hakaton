@@ -6,10 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-bbm = "EGW1GweVgm4BgdKZvR7a9VAJGbwmf3kQPXU71n6MQ3v5"
-
-[registry]
-url = "https://anchor.projectserum.com"
+bbm = "CJMFFyVCeEUqfouQnaVKpXRwBWFD5rUZH8q8VAuggynf"
 
 [provider]
 cluster = "devnet"
@@ -17,3 +14,5 @@ wallet = "./id.json"
 
 [scripts]
 test = "npx ts-mocha -p ./tsconfig.tests.json -t 1000000 tests/**/*.ts"
+
+[hooks]

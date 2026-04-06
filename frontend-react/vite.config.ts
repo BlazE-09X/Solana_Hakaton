@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     watch: {
-      usePolling: true, // Это критично для стабильности в WSL на диске C
+      usePolling: true,
     },
   },
 })
