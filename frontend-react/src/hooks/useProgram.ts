@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Program, AnchorProvider, web3, type Idl } from "@coral-xyz/anchor";
 
 import { useConnection, useWallet, type AnchorWallet } from "@solana/wallet-adapter-react";
-import idl from "../../../target/idl/bbm.json";
+import idl from "../bbm.json";
 
 
 //const PROGRAM_ID = new web3.PublicKey("EGW1GweVgm4BgdKZvR7a9VAJGbwmf3kQPXU71n6MQ3v5");
