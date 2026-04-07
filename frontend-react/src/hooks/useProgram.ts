@@ -4,7 +4,7 @@ import { useConnection, useWallet, type AnchorWallet } from "@solana/wallet-adap
 import idl from "../../../target/idl/bbm.json";
 
 
-const PROGRAM_ID = new web3.PublicKey("EGW1GweVgm4BgdKZvR7a9VAJGbwmf3kQPXU71n6MQ3v5");
+//const PROGRAM_ID = new web3.PublicKey("EGW1GweVgm4BgdKZvR7a9VAJGbwmf3kQPXU71n6MQ3v5");
 
 export function useProgram() {
     const { connection } = useConnection();
