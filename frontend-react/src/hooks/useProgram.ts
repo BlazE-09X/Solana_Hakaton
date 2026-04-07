@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-//import { Program, AnchorProvider, web3, type Idl } from "@coral-xyz/anchor";
+import { Program, AnchorProvider, web3, type Idl } from "@coral-xyz/anchor";
 import { useConnection, useWallet, type AnchorWallet } from "@solana/wallet-adapter-react";
 import idl from "../../../target/idl/bbm.json";
 
