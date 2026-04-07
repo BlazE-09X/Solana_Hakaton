@@ -397,6 +397,8 @@
 
   /* MAIN */
   .main { background: var(--bg); overflow-y: auto; display: flex; flex-direction: column; }
+  .page { display: none; }
+  .page.active { display: block; }
 
   /* PAGE HEADER */
   .page-header {
@@ -692,46 +694,46 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-section">Overview</div>
-    <div class="nav-item active" onclick="setActive(this)">
+    <div class="nav-item active" data-page="dashboard" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
       Dashboard
     </div>
-    <div class="nav-item" onclick="setActive(this)">
+    <div class="nav-item" data-page="marketplace" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><path d="M2 12L8 4L11 8L13 6L14 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       Marketplace
     </div>
 
     <div class="sidebar-section">Assets</div>
-    <div class="nav-item" onclick="setActive(this)">
+    <div class="nav-item" data-page="my-assets" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.3"/></svg>
       My Assets
     </div>
-    <div class="nav-item" onclick="setActive(this)">
+    <div class="nav-item" data-page="tokenize-asset" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       Tokenize Asset
     </div>
-    <div class="nav-item" onclick="setActive(this)">
+    <div class="nav-item" data-page="fractions" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       Fractions
     </div>
 
     <div class="sidebar-section">Finance</div>
-    <div class="nav-item" onclick="setActive(this)">
+    <div class="nav-item" data-page="income-pool" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M5 5V4a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.3"/></svg>
       Income Pool
       <span class="nav-badge">3</span>
     </div>
-    <div class="nav-item" onclick="setActive(this)">
+    <div class="nav-item" data-page="transactions" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M10 5l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Transactions
     </div>
-    <div class="nav-item" onclick="setActive(this)">
+    <div class="nav-item" data-page="oracles" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.3"/></svg>
       Oracles
     </div>
 
     <div class="sidebar-section">Settings</div>
-    <div class="nav-item" onclick="setActive(this)">
+    <div class="nav-item" data-page="settings" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M8 2v1M8 13v1M2 8h1M13 8h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       Settings
     </div>
@@ -740,54 +742,150 @@
   <!-- MAIN CONTENT -->
   <div class="main">
 
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-      <div>
-        <div class="page-title">Dashboard</div>
-        <div class="page-sub">proofrent.solana · 7 assets tracked</div>
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-sub">proofrent.solana · 7 assets tracked</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-sm">Export CSV</button>
+          <button class="btn-primary-sm">+ Tokenize Asset</button>
+        </div>
       </div>
-      <div class="page-actions">
-        <button class="btn-sm">Export CSV</button>
-        <button class="btn-primary-sm">+ Tokenize Asset</button>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Portfolio Value</div>
+          <div class="metric-value">$142,800</div>
+          <div class="metric-delta delta-up">↑ +8.4% this month</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Total Fractions</div>
+          <div class="metric-value">1,935</div>
+          <div class="metric-delta delta-neutral">across 5 assets</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Income (30d)</div>
+          <div class="metric-value">$5,340</div>
+          <div class="metric-delta delta-up">↑ +12.1% vs prev</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Pending Dist.</div>
+          <div class="metric-value" style="color:var(--yellow)">$1,200</div>
+          <div class="metric-delta delta-neutral">3 assets pending</div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="panel">
+          <div class="table-header">
+            <div class="table-title">Tokenized Assets</div>
+            <div class="table-filters">
+              <button class="filter-btn active">All</button>
+              <button class="filter-btn">Verified</button>
+              <button class="filter-btn">Pending</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Type</th>
+                <th>Fractions</th>
+                <th>Sold</th>
+                <th>Status</th>
+                <th>Income</th>
+              </tr>
+            </thead>
+            <tbody id="assets-table-body">
+              <!-- Assets will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="right-panel">
+          <div class="right-section" style="flex:1">
+            <div class="right-title">Recent Activity</div>
+            <div id="activity-list"></div>
+          </div>
+          <div class="right-section">
+            <div class="right-title">Income Pool</div>
+            <div style="margin-bottom:10px">
+              <div class="chart-bars">
+                <div class="bar" style="height:30%"></div>
+                <div class="bar" style="height:55%"></div>
+                <div class="bar" style="height:40%"></div>
+                <div class="bar" style="height:80%"></div>
+                <div class="bar active" style="height:65%"></div>
+                <div class="bar" style="height:50%"></div>
+                <div class="bar" style="height:70%"></div>
+              </div>
+              <div style="font-size:10px;color:var(--text3);text-align:right;font-family:var(--font-mono)">last 7 days</div>
+            </div>
+            <div class="income-row">
+              <span class="income-label">Total collected</span>
+              <span class="income-val green">$5,340</span>
+            </div>
+            <div class="income-row">
+              <span class="income-label">Distributed</span>
+              <span class="income-val">$4,140</span>
+            </div>
+            <div class="income-row">
+              <span class="income-label">Pending</span>
+              <span class="income-val yellow">$1,200</span>
+            </div>
+            <button class="distribute-btn" onclick="distributeIncome()">Distribute Pending</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- METRICS -->
-    <div class="metrics">
-      <div class="metric">
-        <div class="metric-label">Portfolio Value</div>
-        <div class="metric-value">$142,800</div>
-        <div class="metric-delta delta-up">↑ +8.4% this month</div>
+    <div class="page" id="marketplace" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Marketplace</div>
+          <div class="page-sub">Discover available tokenized assets</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-sm">Refresh</button>
+          <button class="btn-primary-sm">Browse all</button>
+        </div>
       </div>
-      <div class="metric">
-        <div class="metric-label">Total Fractions</div>
-        <div class="metric-value">1,935</div>
-        <div class="metric-delta delta-neutral">across 5 assets</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Income (30d)</div>
-        <div class="metric-value">$5,340</div>
-        <div class="metric-delta delta-up">↑ +12.1% vs prev</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Pending Dist.</div>
-        <div class="metric-value" style="color:var(--yellow)">$1,200</div>
-        <div class="metric-delta delta-neutral">3 assets pending</div>
-      </div>
-    </div>
-
-    <!-- CONTENT GRID -->
-    <div class="content-grid">
-
-      <!-- ASSET TABLE -->
       <div class="panel">
         <div class="table-header">
-          <div class="table-title">Tokenized Assets</div>
-          <div class="table-filters">
-            <button class="filter-btn active">All</button>
-            <button class="filter-btn">Verified</button>
-            <button class="filter-btn">Pending</button>
-          </div>
+          <div class="table-title">Marketplace Listings</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Value</th>
+              <th>Sold</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="marketplace-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page" id="my-assets" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">My Assets</div>
+          <div class="page-sub">Your owned fractionalized assets</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-sm">Manage</button>
+          <button class="btn-primary-sm">Add Asset</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-header">
+          <div class="table-title">Owned Assets</div>
         </div>
         <table>
           <thead>
@@ -795,63 +893,158 @@
               <th>Asset</th>
               <th>Type</th>
               <th>Fractions</th>
-              <th>Sold</th>
+              <th>Progress</th>
               <th>Status</th>
-              <th>Income</th>
             </tr>
           </thead>
-          <tbody id="assets-table-body">
-            <!-- Assets will be loaded here -->
-          </tbody>
+          <tbody id="my-assets-table"></tbody>
         </table>
       </div>
+    </div>
 
-      <!-- RIGHT PANEL -->
-      <div class="right-panel">
-
-        <!-- Activity -->
-        <div class="right-section" style="flex:1">
-          <div class="right-title">Recent Activity</div>
-          <div id="activity-list">
-            <!-- Activity items will be loaded here -->
-          </div>
+    <div class="page" id="tokenize-asset" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Tokenize Asset</div>
+          <div class="page-sub">Create an asset tokenization request</div>
         </div>
-
-        <!-- Income Pool -->
-        <div class="right-section">
-          <div class="right-title">Income Pool</div>
-          <div style="margin-bottom:10px">
-            <div class="chart-bars">
-              <div class="bar" style="height:30%"></div>
-              <div class="bar" style="height:55%"></div>
-              <div class="bar" style="height:40%"></div>
-              <div class="bar" style="height:80%"></div>
-              <div class="bar active" style="height:65%"></div>
-              <div class="bar" style="height:50%"></div>
-              <div class="bar" style="height:70%"></div>
-            </div>
-            <div style="font-size:10px;color:var(--text3);text-align:right;font-family:var(--font-mono)">last 7 days</div>
-          </div>
-          <div class="income-row">
-            <span class="income-label">Total collected</span>
-            <span class="income-val green">$5,340</span>
-          </div>
-          <div class="income-row">
-            <span class="income-label">Distributed</span>
-            <span class="income-val">$4,140</span>
-          </div>
-          <div class="income-row">
-            <span class="income-label">Pending</span>
-            <span class="income-val yellow">$1,200</span>
-          </div>
-          <button class="distribute-btn" onclick="distributeIncome()">Distribute Pending</button>
-        </div>
-
       </div>
-    </div><!-- end content-grid -->
+      <div class="panel" style="padding:22px;">
+        <div class="right-title" style="margin-bottom:14px">New tokenization</div>
+        <div style="display:grid;gap:14px;">
+          <label>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Asset Name</div>
+            <input id="tokenize-name" type="text" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;" placeholder="Manhattan Apartment 4B" />
+          </label>
+          <label>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Asset Type</div>
+            <input id="tokenize-type" type="text" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;" placeholder="Real Estate" />
+          </label>
+          <label>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Estimated Value</div>
+            <input id="tokenize-value" type="text" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;" placeholder="$240,000" />
+          </label>
+          <label>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Proof Document</div>
+            <input id="tokenize-doc" type="text" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;" placeholder="IPFS hash or URL" />
+          </label>
+          <button class="distribute-btn" onclick="submitTokenizeForm()">Submit Tokenization</button>
+        </div>
+      </div>
+    </div>
 
-  </div><!-- end main -->
-</div><!-- end app-screen -->
+    <div class="page" id="fractions" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Fractions</div>
+          <div class="page-sub">Browse fractional ownership positions</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-header">
+          <div class="table-title">Fraction Positions</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Fraction</th>
+              <th>Owned</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="fractions-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page" id="income-pool" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Income Pool</div>
+          <div class="page-sub">Manage distributed earnings</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="right-section">
+          <div class="right-title">Summary</div>
+          <div class="income-row"><span class="income-label">Available for distribution</span><span class="income-val green">$1,200</span></div>
+          <div class="income-row"><span class="income-label">Monthly yield</span><span class="income-val green">+4.8%</span></div>
+          <div class="income-row"><span class="income-label">Pending payments</span><span class="income-val yellow">$420</span></div>
+          <div style="margin-top:16px;"><button class="distribute-btn" onclick="distributeIncome()">Distribute Now</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="transactions" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Transactions</div>
+          <div class="page-sub">Recent on-chain activity</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-header"><div class="table-title">Recent Transactions</div></div>
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Asset</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="transactions-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page" id="oracles" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Oracles</div>
+          <div class="page-sub">Check live data feeds</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="right-section">
+          <div class="right-title">Oracle status</div>
+          <div class="income-row"><span class="income-label">Price feed</span><span class="income-val green">Online</span></div>
+          <div class="income-row"><span class="income-label">Verification feed</span><span class="income-val green">Online</span></div>
+          <div class="income-row"><span class="income-label">Availability</span><span class="income-val green">100%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="settings" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Settings</div>
+          <div class="page-sub">Manage your account and preferences</div>
+        </div>
+      </div>
+      <div class="panel" style="padding:22px;">
+        <div class="right-title" style="margin-bottom:14px">Preferences</div>
+        <div style="display:grid;gap:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:var(--text2)">Wallet status</span>
+            <span style="font-family:var(--font-mono);color:var(--green)">Connected</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:var(--text2)">Notifications</span>
+            <span style="font-family:var(--font-mono);color:var(--text)">Enabled</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:var(--text2)">Theme</span>
+            <span style="font-family:var(--font-mono);color:var(--text)">Dark</span>
+          </div>
+          <button class="btn-primary-sm" onclick="disconnect()">Disconnect Wallet</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script>
   // Global variables
@@ -956,6 +1149,50 @@
   function setActive(el) {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     el.classList.add('active');
+
+    const pageId = el.getAttribute('data-page');
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active');
+      page.style.display = 'none';
+    });
+
+    const page = document.getElementById(pageId);
+    if (page) {
+      page.classList.add('active');
+      page.style.display = 'block';
+    }
+
+    switch (pageId) {
+      case 'dashboard':
+        loadDashboardData();
+        break;
+      case 'marketplace':
+        renderMarketplace();
+        break;
+      case 'my-assets':
+        renderMyAssets();
+        break;
+      case 'tokenize-asset':
+        renderTokenizeAsset();
+        break;
+      case 'fractions':
+        renderFractions();
+        break;
+      case 'income-pool':
+        renderIncomePool();
+        break;
+      case 'transactions':
+        renderTransactions();
+        break;
+      case 'oracles':
+        renderOracles();
+        break;
+      case 'settings':
+        renderSettings();
+        break;
+      default:
+        break;
+    }
   }
 
   // Load dashboard data from backend
@@ -1108,9 +1345,116 @@
     });
   });
 
+  document.querySelector('.btn-primary-sm').addEventListener('click', () => {
+    setActive(document.querySelector('.nav-item[data-page="tokenize-asset"]'));
+  });
+
+  function renderMarketplace() {
+    const tbody = document.getElementById('marketplace-table-body');
+    tbody.innerHTML = '';
+    MOCK_ASSETS.forEach(asset => {
+      const sold = asset.soldFractions || asset.sold || 0;
+      const total = asset.totalFractions || asset.fractions || 0;
+      const status = asset.isVerified !== undefined ? (asset.isVerified ? 'Verified' : 'Pending') : (asset.status || 'Pending');
+      tbody.innerHTML += `
+        <tr>
+          <td class="name">${asset.name}</td>
+          <td>${asset.type}</td>
+          <td>${asset.price ? '$' + asset.price.toLocaleString() : '$' + (asset.value || '—')}</td>
+          <td>${sold}/${total}</td>
+          <td><span class="pill pill-${status.toLowerCase()}">${status}</span></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderMyAssets() {
+    const tbody = document.getElementById('my-assets-table');
+    tbody.innerHTML = '';
+    MOCK_ASSETS.slice(0, 3).forEach(asset => {
+      const sold = asset.soldFractions || asset.sold || 0;
+      const total = asset.totalFractions || asset.fractions || 0;
+      const status = asset.isVerified !== undefined ? (asset.isVerified ? 'Verified' : 'Pending') : (asset.status || 'Pending');
+      tbody.innerHTML += `
+        <tr>
+          <td class="name">${asset.name}</td>
+          <td>${asset.type}</td>
+          <td>${total}</td>
+          <td>${sold}/${total}</td>
+          <td><span class="pill pill-${status.toLowerCase()}">${status}</span></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderTokenizeAsset() {
+    // no extra rendering needed for this static form page
+  }
+
+  function submitTokenizeForm() {
+    const name = document.getElementById('tokenize-name').value;
+    const type = document.getElementById('tokenize-type').value;
+    const value = document.getElementById('tokenize-value').value;
+    const doc = document.getElementById('tokenize-doc').value;
+    if (!name || !type || !value || !doc) {
+      alert('Please fill all tokenization fields before submitting.');
+      return;
+    }
+    alert(`Tokenization request submitted for ${name}. This is a demo flow.`);
+  }
+
+  function renderFractions() {
+    const tbody = document.getElementById('fractions-table');
+    tbody.innerHTML = '';
+    MOCK_ASSETS.forEach(asset => {
+      const own = Math.round((asset.soldFractions || asset.sold || 0) * 0.25);
+      const status = asset.isVerified ? 'Active' : 'Review';
+      tbody.innerHTML += `
+        <tr>
+          <td class="name">${asset.name}</td>
+          <td>${Math.round((asset.totalFractions || 1000) / 10)}%</td>
+          <td>${own} shares</td>
+          <td><span class="pill pill-${status === 'Active' ? 'green' : 'yellow'}">${status}</span></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderIncomePool() {
+    // Income pool page uses static summary content already present
+  }
+
+  function renderTransactions() {
+    const tbody = document.getElementById('transactions-table');
+    tbody.innerHTML = '';
+    const items = [
+      { type: 'Purchase', asset: 'Manhattan Apt 4B', amount: '0.82 SOL', status: 'Confirmed' },
+      { type: 'Verify', asset: 'Solar Farm Block 7', amount: '—', status: 'Confirmed' },
+      { type: 'Distribution', asset: 'Income Pool', amount: '0.12 SOL', status: 'Pending' }
+    ];
+    items.forEach(item => {
+      tbody.innerHTML += `
+        <tr>
+          <td class="name">${item.type}</td>
+          <td>${item.asset}</td>
+          <td>${item.amount}</td>
+          <td><span class="pill pill-${item.status === 'Confirmed' ? 'green' : 'yellow'}">${item.status}</span></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderOracles() {
+    // Oracles page uses static content already present
+  }
+
+  function renderSettings() {
+    // Settings page uses static content already present
+  }
+
   // Add tokenize asset button handler
   document.querySelector('.btn-primary-sm').addEventListener('click', () => {
-    alert('Tokenize Asset feature: In a full implementation, this would open a modal to upload documents to IPFS and create asset on-chain. Requires SOL for transaction fees.');
+    setActive(document.querySelector('.nav-item[data-page="tokenize-asset"]'));
   });
 
   // Load Solana Web3.js
