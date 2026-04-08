@@ -1642,7 +1642,7 @@
             <div class="oracle-header">
               <div>
                 <div class="oracle-name">Backend API Status</div>
-                <div class="oracle-meta" id="api-url-display">http://localhost:3006</div>
+                <div class="oracle-meta" id="api-url-display">http://localhost:3000</div>
               </div>
               <span class="pill" id="api-status-pill">Checking...</span>
             </div>
@@ -1689,7 +1689,7 @@
               <span class="settings-val">
                 <input id="api-url-input"
                   style="background:var(--bg3);border:1px solid var(--border);padding:4px 8px;border-radius:6px;color:var(--text);font-family:var(--font-mono);font-size:11px;width:200px;"
-                  value="http://localhost:3006" onchange="updateApiUrl(this.value)" />
+                  value="http://localhost:3000" onchange="updateApiUrl(this.value)" />
               </span>
             </div>
             <div class="settings-row"><span class="settings-key">Status</span><span class="settings-val"
@@ -1732,7 +1732,7 @@
     // ═══════════════════════════════════════════════════════════════
     //  STATE
     // ═══════════════════════════════════════════════════════════════
-    let API_BASE = 'http://localhost:3006';
+    let API_BASE = 'http://localhost:3000';
     let currentWallet = null;
     let publicKey = null;
     let solConnection = null;
