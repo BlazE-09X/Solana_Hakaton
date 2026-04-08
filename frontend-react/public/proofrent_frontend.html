@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГОСТ Р 34.11-2012 — Пошаговый разбор</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Unbounded:wght@300;600;800&display=swap');
+  :root{
+    --bg:#0a0c10;--surface:#111418;--surface2:#181c22;--border:#1e2530;
+    --accent:#00e5ff;--accent2:#ff3d71;--accent3:#a8ff78;--accent4:#ffd600;
+    --text:#c8d6e5;--muted:#5a6a7e;--glow:0 0 20px rgba(0,229,255,0.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh;}
+  .hero{padding:28px 32px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#0d1117 0%,var(--bg) 100%);}
+  .hero-label{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:300;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
+  .hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(16px,2.5vw,26px);font-weight:800;color:#fff;}
+  .hero h1 span{color:var(--accent);}
+  .toc{position:sticky;top:0;z-index:100;background:rgba(10,12,16,0.96);border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;display:flex;backdrop-filter:blur(8px);}
+  .toc a{display:inline-block;padding:10px 14px;color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:1px;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.2s;}
+  .toc a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+  .section{margin:24px auto;max-width:1100px;padding:0 20px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  .section-num{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;color:var(--accent);background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);padding:4px 10px;border-radius:3px;letter-spacing:1px;}
+  .section-title{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:600;color:#fff;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 20px;margin-bottom:12px;}
+  .card-title{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .hex-block{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent3);word-break:break-all;line-height:1.8;margin:5px 0;}
+  .hex-block.orange{color:var(--accent4);}
+  .hex-block.red{color:var(--accent2);}
+  .hex-block.cyan{color:var(--accent);}
+  .hex-block.white{color:#fff;}
+  .hex-label{font-size:11px;color:var(--muted);margin-bottom:3px;margin-top:8px;}
+  .formula{background:rgba(0,229,255,0.04);border-left:3px solid var(--accent);padding:9px 14px;margin:8px 0;font-size:13px;color:var(--text);border-radius:0 4px 4px 0;}
+  .iteration{border:1px solid var(--border);border-radius:6px;margin-bottom:10px;overflow:hidden;}
+  .iteration-header{background:var(--surface2);padding:10px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border);transition:background 0.2s;}
+  .iteration-header:hover{background:#1a1f2a;}
+  .iteration-num{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:600;color:var(--accent2);background:rgba(255,61,113,0.1);border:1px solid rgba(255,61,113,0.2);padding:3px 8px;border-radius:3px;}
+  .iteration-title{font-size:12px;color:var(--text);flex:1;}
+  .toggle-icon{color:var(--muted);font-size:16px;transition:transform 0.2s;}
+  .iteration-body{padding:14px 18px;display:none;}
+  .iteration-body.open{display:block;}
+  .toggle-icon.open{transform:rotate(90deg);}
+  /* 64-byte XOR table */
+  .byte-matrix{width:100%;border-collapse:collapse;font-size:10px;margin:8px 0;font-family:'JetBrains Mono',monospace;}
+  .byte-matrix th{background:var(--surface2);color:var(--muted);border:1px solid var(--border);padding:3px 5px;text-align:center;font-size:9px;letter-spacing:1px;}
+  .byte-matrix td{border:1px solid var(--border);padding:3px 5px;text-align:center;min-width:28px;}
+  .byte-matrix .idx{color:var(--muted);background:var(--surface2);font-size:9px;}
+  .byte-matrix .row-m td.val{color:var(--accent3);}
+  .byte-matrix .row-k td.val{color:var(--accent2);}
+  .byte-matrix .row-xr td.val{color:var(--accent4);background:rgba(255,214,0,0.05);}
+  .byte-matrix .row-s td.val{color:var(--accent);}
+  .byte-matrix .row-p td.val{color:#c084fc;}
+  .byte-matrix .row-l td.val{color:var(--accent3);}
+  /* S-sub demo table for iter 1 */
+  .sub-table{width:100%;border-collapse:collapse;font-size:10px;margin:8px 0;}
+  .sub-table th{background:var(--surface2);color:var(--muted);border:1px solid var(--border);padding:3px 6px;text-align:center;font-size:9px;}
+  .sub-table td{border:1px solid var(--border);padding:3px 6px;text-align:center;font-family:'JetBrains Mono',monospace;}
+  .sub-table .in{color:var(--accent2);}
+  .sub-table .arrow{color:var(--muted);}
+  .sub-table .out{color:var(--accent);}
+  /* Perm table */
+  .perm-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;margin:8px 0;}
+  .perm-cell{background:var(--surface2);border:1px solid var(--border);padding:3px;text-align:center;font-size:10px;border-radius:2px;}
+  .perm-from{color:var(--muted);font-size:9px;}
+  .perm-to{color:var(--accent4);}
+  .param-section{margin-bottom:12px;}
+  .param-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;user-select:none;}
+  .param-toggle:hover{border-color:var(--accent);}
+  .param-label{font-size:12px;color:var(--text);flex:1;}
+  .param-content{display:none;padding:12px;border:1px solid var(--border);border-top:none;border-radius:0 0 4px 4px;}
+  .param-content.open{display:block;}
+  .result-box{border:2px solid var(--accent);border-radius:6px;padding:20px 24px;background:rgba(0,229,255,0.03);box-shadow:var(--glow);margin-top:14px;}
+  .result-box .label{font-family:'Unbounded',sans-serif;font-size:11px;color:var(--accent);letter-spacing:2px;margin-bottom:10px;}
+  .result-hex{font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff;word-break:break-all;line-height:2;}
+  .pipeline{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:8px 0;padding:10px;background:var(--surface2);border-radius:4px;}
+  .pipe-step{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:5px 10px;font-size:11px;color:var(--text);}
+  .pipe-step.active{border-color:var(--accent);color:var(--accent);}
+  .pipe-arrow{color:var(--accent);font-size:14px;}
+  .divider{height:1px;background:var(--border);margin:12px 0;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:700px){.two-col{grid-template-columns:1fr;}.hero{padding:18px;}}
+  ::-webkit-scrollbar{width:6px;height:6px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  .matrix-scroll{overflow-x:auto;}
+  .row-label{background:var(--surface2)!important;}
+  .xor-table{width:100%;border-collapse:collapse;font-size:11px;margin:8px 0;}
+  .xor-table td,.xor-table th{border:1px solid var(--border);padding:4px 7px;font-family:'JetBrains Mono',monospace;text-align:center;}
+  .xor-table th{background:var(--surface2);color:var(--muted);font-size:10px;}
+  .r-a td{color:var(--accent3);}
+  .r-b td{color:var(--accent2);}
+  .r-x td{color:var(--accent4);background:rgba(255,214,0,0.04)!important;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Криптография · Разбор алгоритма</div>
+  <h1>ГОСТ Р 34.11-2012 <span>· Стрибог · Пример 1 · 512 бит</span></h1>
+</div>
+
+<nav class="toc">
+  <a href="#sec-params">§5 Параметры</a>
+  <a href="#sec-step1">Этап 1</a>
+  <a href="#sec-padding">Padding</a>
+  <a href="#sec-lps">K = LPS(h⊕N)</a>
+  <a href="#sec-iters">Итерации E(K,m)</a>
+  <a href="#sec-compress">g(h,m)</a>
+  <a href="#sec-final">Финал</a>
+  <a href="#sec-result">Результат</a>
+</nav>
+
+<!-- §5 -->
+<div class="section" id="sec-params">
+  <div class="section-header">
+    <span class="section-num">§5</span>
+    <span class="section-title">Статические параметры</span>
+  </div>
+  <div class="card">
+    <div class="card-title">§5.1 — IV (512 бит)</div>
+    <div class="hex-block">00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00</div>
+  </div>
+  <div class="param-section">
+    <div class="param-toggle" onclick="toggleParam(this)">
+      <span class="param-label">§5.2 — Таблица подстановки π' (S-box) · 256 значений</span><span>▶</span>
+    </div>
+    <div class="param-content">
+      <div class="matrix-scroll" id="sbox-container"></div>
+    </div>
+  </div>
+  <div class="param-section">
+    <div class="param-toggle" onclick="toggleParam(this)">
+      <span class="param-label">§5.3 — Перестановка τ (P-box) · 64 позиции</span><span>▶</span>
+    </div>
+    <div class="param-content">
+      <div class="formula">τ = (0,8,16,24,32,40,48,56, 1,9,17,25,33,41,49,57, 2,10,18,26,34,42,50,58, 3,11,19,27,35,43,51,59, 4,12,20,28,36,44,52,60, 5,13,21,29,37,45,53,61, 6,14,22,30,38,46,54,62, 7,15,23,31,39,47,55,63)</div>
+      <div class="perm-grid" id="perm-grid"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">§5.4 — Преобразования S, P, L (§6, формулы 4–6)</div>
+    <div class="formula">S(a) = S(a₆₃‖…‖a₀) = π(a₆₃)‖…‖π(a₀)   (§6, формула 4)</div>
+    <div class="formula">P(a) = P(a₆₃‖…‖a₀) = a_{τ(63)}‖…‖a_{τ(0)}   (§6, формула 5)</div>
+    <div class="formula">L(a) = l(a₆₃‖…‖a₅₆) ‖ … ‖ l(a₇‖…‖a₀)   (§6, формула 6)   l: V₆₄→V₆₄ умножение на матрицу A над GF(2)</div>
+  </div>
+  <div class="param-section">
+    <div class="param-toggle" onclick="toggleParam(this)">
+      <span class="param-label">§5.5 — Итерационные константы C₁–C₁₂</span><span>▶</span>
+    </div>
+    <div class="param-content" id="constants-container"></div>
+  </div>
+</div>
+
+<!-- ЭТАП 1 -->
+<div class="section" id="sec-step1">
+  <div class="section-header">
+    <span class="section-num">ЭТАП 1</span>
+    <span class="section-title">Инициализация §8.1</span>
+  </div>
+  <div class="card">
+    <div class="formula">1.1.  h := IV = 0⁵¹²   (§8.1)</div>
+    <div class="formula">1.2.  N := 0⁵¹²   (§8.1)</div>
+    <div class="formula">1.3.  Σ := 0⁵¹²   (§8.1)</div>
+    <div class="hex-label">Сообщение M₁ (63 байта = 504 бит):</div>
+    <div class="hex-block white">32 31 30 39 38 37 36 35  34 33 32 31 30 39 38 37  36 35 34 33 32 31 30 39  38 37 36 35 34 33 32 31
+30 39 38 37 36 35 34 33  32 31 30 39 38 37 36 35  34 33 32 31 30 39 38 37  36 35 34 33 32 31 30</div>
+  </div>
+</div>
+
+<!-- PADDING -->
+<div class="section" id="sec-padding">
+  <div class="section-header">
+    <span class="section-num">ЭТАП 3.1</span>
+    <span class="section-title">Заполнение блока §8.3</span>
+  </div>
+  <div class="card">
+    <div class="formula">3.1.  m := 0^(512−1−|M|) ‖ 1 ‖ M   (§8.3, шаг 3.1)</div>
+    <div class="formula">|M| = 504 бит   →   0^(512−1−504) ‖ 1 = 0⁷ ‖ 1 = байт 0x01 перед M</div>
+    <div class="hex-label">m (64 байта = 512 бит):</div>
+    <div class="hex-block white">01 32 31 30 39 38 37 36  35 34 33 32 31 30 39 38  37 36 35 34 33 32 31 30  39 38 37 36 35 34 33 32
+31 30 39 38 37 36 35 34  33 32 31 30 39 38 37 36  35 34 33 32 31 30 39 38  37 36 35 34 33 32 31 30</div>
+  </div>
+</div>
+
+<!-- K = LPS(h XOR N) -->
+<div class="section" id="sec-lps">
+  <div class="section-header">
+    <span class="section-num">K = LPS(h ⊕ N)</span>
+    <span class="section-title">Вычисление первого раундового ключа K₁ := LPS(h ⊕ N)</span>
+  </div>
+  <div class="card">
+    <div class="formula">K₁ := K = LPS(h ⊕ N)   (§7, формула 9)</div>
+    <div class="formula">h ⊕ N = 0⁵¹² ⊕ 0⁵¹² = 0⁵¹²</div>
+  </div>
+  <div class="card">
+    <div class="card-title">S(h ⊕ N) — применяем π к каждому байту</div>
+    <div class="formula">S(a) = π(a₆₃)‖…‖π(a₀)   →   π(0x00) = 0xFC   →   все 64 байта: 0x00 → 0xFC</div>
+    <div class="matrix-scroll" id="s-step-table"></div>
+    <div class="hex-label">S(h ⊕ N) = S(0⁵¹²):</div>
+    <div class="hex-block cyan">FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC
+FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC</div>
+  </div>
+  <div class="card">
+    <div class="card-title">P(S(h ⊕ N)) — перестановка τ</div>
+    <div class="formula">P(S(h ⊕ N)) = (FC)⁶⁴   — все байты = 0xFC, перестановка τ не меняет результат</div>
+    <div class="hex-block cyan">FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC
+FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC  FC FC FC FC FC FC FC FC</div>
+  </div>
+  <div class="card">
+    <div class="card-title">K = L(P(S(h ⊕ N))) — линейное преобразование</div>
+    <div class="formula">Вход l: (FC FC FC FC FC FC FC FC) повторяется 8 раз → паттерн B383FC2ECED4A574 повторяется 8 раз</div>
+    <div class="hex-label">K = K₁:</div>
+    <div class="hex-block orange">B3 83 FC 2E CE D4 A5 74  B3 83 FC 2E CE D4 A5 74  B3 83 FC 2E CE D4 A5 74  B3 83 FC 2E CE D4 A5 74
+B3 83 FC 2E CE D4 A5 74  B3 83 FC 2E CE D4 A5 74  B3 83 FC 2E CE D4 A5 74  B3 83 FC 2E CE D4 A5 74</div>
+  </div>
+</div>
+
+<!-- ИТЕРАЦИИ -->
+<div class="section" id="sec-iters">
+  <div class="section-header">
+    <span class="section-num">E(K,m)</span>
+    <span class="section-title">13 раундов шифрующего преобразования</span>
+  </div>
+  <div class="card">
+    <div class="formula">E(K, m) = X[K₁₃] · LPSX[K₁₂] · … · LPSX[K₁](m)   (§7)</div>
+    <div class="pipeline">
+      <div class="pipe-step">m</div><div class="pipe-arrow">→</div>
+      <div class="pipe-step active">⊕K₁</div><div class="pipe-arrow">→</div>
+      <div class="pipe-step active">S</div><div class="pipe-arrow">→</div>
+      <div class="pipe-step active">P</div><div class="pipe-arrow">→</div>
+      <div class="pipe-step active">L</div><div class="pipe-arrow">→ … →</div>
+      <div class="pipe-step active">⊕K₁₃</div><div class="pipe-arrow">→</div>
+      <div class="pipe-step">E(K,m)</div>
+    </div>
+    <div class="formula">K₁ := K = LPS(h ⊕ N)   (§7, формула 9)</div>
+    <div class="formula">Kᵢ := LPS(Kᵢ₋₁ ⊕ Cᵢ₋₁),   i = 2, …, 13   (§7, формула 10)</div>
+  </div>
+  <div id="iterations-container"></div>
+</div>
+
+<!-- СЖАТИЕ -->
+<div class="section" id="sec-compress">
+  <div class="section-header">
+    <span class="section-num">§7</span>
+    <span class="section-title">Функция сжатия gₙ(h, m)</span>
+  </div>
+  <div class="card">
+    <div class="formula">gₙ(h, m) = E(LPS(h ⊕ N), m) ⊕ h ⊕ m   (§7, формулы 7–8)</div>
+    <div class="matrix-scroll" id="compress-table"></div>
+    <div class="hex-label">h = gₙ(h, m)   (§8.3, шаг 3.2):</div>
+    <div class="hex-block orange">FD 10 2C F8 81 2C CB 11  91 EA 34 AF 21 39 4F 38  17 A8 66 41 44 5A A9 A6  26 48 8A DB 33 73 8E BD
+27 54 F6 90 8C BB BA C5  D3 ED 0F 52 2C 50 81 5C  95 41 35 79 3F B1 F5 D9  05 FE E4 73 6B 3B DA E2</div>
+  </div>
+</div>
+
+<!-- ФИНАЛ -->
+<div class="section" id="sec-final">
+  <div class="section-header">
+    <span class="section-num">ЭТАП 3.3–3.6</span>
+    <span class="section-title">N, Σ, gₙ(h,N), gₙ(h,Σ)</span>
+  </div>
+  <div class="card">
+    <div class="card-title">Шаг 3.3 — N</div>
+    <div class="formula">N := Vec₅₁₂(Int₅₁₂(N) ⊞ |m|)   (§8.3, шаг 3.3)   =   Vec₅₁₂(0 + 504) = 0x1F8</div>
+    <div class="hex-block">00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 01 F8</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Шаг 3.4 — Σ</div>
+    <div class="formula">Σ := Vec₅₁₂(Int₅₁₂(Σ) ⊞ Int₅₁₂(m))   (§8.3, шаг 3.4)   =   0 ⊞ m = m</div>
+    <div class="hex-block">01 32 31 30 39 38 37 36  35 34 33 32 31 30 39 38  37 36 35 34 33 32 31 30  39 38 37 36 35 34 33 32
+31 30 39 38 37 36 35 34  33 32 31 30 39 38 37 36  35 34 33 32 31 30 39 38  37 36 35 34 33 32 31 30</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Шаг 3.5 — h := gₙ(h, N)</div>
+    <div class="formula">h := gₙ(h, N)   (§8.3, шаг 3.5)</div>
+    <div class="hex-block orange">5C 88 1F D9 24 69 5C F1  96 C2 E4 FE C2 0D 14 B6  42 02 6F 2A 0B 17 16 EB  AA BB 70 67 D4 D5 97 52
+3D 2D B6 9D 6D 37 94 62  21 47 A1 4F 19 A6 6E 7F  90 37 E1 D6 62 D3 45 01  A8 90 1A 5D E7 77 1D 7C</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Шаг 3.6 — h := gₙ(h, Σ)</div>
+    <div class="formula">h := gₙ(h, Σ)   (§8.3, шаг 3.6)</div>
+    <div class="hex-block cyan">48 6F 64 C1 91 78 79 41  7F EF 08 2B 33 81 A4 E2  11 C3 24 F0 74 65 4C 38  82 3A 7B 76 F8 30 AD 00
+FA 1F BA E4 2B 12 85 C0  35 2F 22 75 24 BC 9A B1  62 54 28 8D D6 86 3D CC  D5 B9 F5 4A 1A D0 54 1B</div>
+  </div>
+</div>
+
+<!-- РЕЗУЛЬТАТ -->
+<div class="section" id="sec-result">
+  <div class="section-header">
+    <span class="section-num">РЕЗУЛЬТАТ</span>
+    <span class="section-title">H(M₁)</span>
+  </div>
+  <div class="result-box">
+    <div class="label">H(M₁) — 512 БИТ</div>
+    <div class="result-hex">486f64c1917879417fef082b3381a4e211c324f074654c38823a7b76f830ad00<br>fa1fbae42b1285c0352f227524bc9ab16254288dd6863dccd5b9f54a1ad0541b</div>
+  </div>
+</div>
+
+<div style="height:60px"></div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const PI = [
+  252,238,221,17,207,110,49,22,251,196,250,218,35,197,4,77,
+  233,119,240,219,147,46,153,186,23,54,241,187,20,205,95,193,
+  249,24,101,90,226,92,239,33,129,28,60,66,139,1,142,79,
+  5,132,2,174,227,106,143,160,6,11,237,152,127,212,211,31,
+  235,52,44,81,234,200,72,171,242,42,104,162,253,58,206,204,
+  181,112,14,86,8,12,118,18,191,114,19,71,156,183,93,135,
+  21,161,150,41,16,123,154,199,243,145,120,111,157,158,178,177,
+  50,117,25,61,255,53,138,126,109,84,198,128,195,189,13,87,
+  223,245,36,169,62,168,67,201,215,121,214,246,124,34,185,3,
+  224,15,236,222,122,148,176,188,220,232,40,80,78,51,10,74,
+  167,151,96,115,30,0,98,68,26,184,56,130,100,159,38,65,
+  173,69,70,146,39,94,85,47,140,163,165,125,105,213,149,59,
+  7,88,179,64,134,172,29,247,48,55,107,228,136,217,231,137,
+  225,27,131,73,76,63,248,254,141,83,170,144,202,216,133,97,
+  32,113,103,164,45,43,9,91,203,155,37,208,190,229,108,82,
+  89,166,116,210,230,244,180,192,209,102,175,194,57,75,99,182
+];
+
+const TAU = [0,8,16,24,32,40,48,56,1,9,17,25,33,41,49,57,2,10,18,26,34,42,50,58,
+             3,11,19,27,35,43,51,59,4,12,20,28,36,44,52,60,5,13,21,29,37,45,53,61,
+             6,14,22,30,38,46,54,62,7,15,23,31,39,47,55,63];
+
+function fromHex(h){return Array.from({length:h.length/2},(_,i)=>parseInt(h.slice(i*2,i*2+2),16));}
+function toHex2(b){return b.toString(16).padStart(2,'0').toUpperCase();}
+function xorArr(a,b){return a.map((v,i)=>v^b[i]);}
+function applyS(a){return a.map(b=>PI[b]);}
+function applyP(a){const r=new Array(64);TAU.forEach((t,i)=>r[t]=a[i]);return r;}
+
+const m = fromHex("0132313039383736353433323130393837363534333231303938373635343332"+"3130393837363534333231303938373635343332313039383736353433323130");
+
+const KEYS_HEX = [
+  "b383fc2eced4a574b383fc2eced4a574b383fc2eced4a574b383fc2eced4a574b383fc2eced4a574b383fc2eced4a574b383fc2eced4a574b383fc2eced4a574",
+  "d0b00807642fd78f13f2c3ebc774e80de0e902d23aef2ee9a73d010807dae9c188be14f0b2da27973569cd2ba051301036f728bd1d7eec33f4d18af70c46cf1e",
+  "9d4475c7899f2d0bb0e8b7dac6ef6e6b44ecf66716d3a0f16681105e2d13712a1a9387ecc257930e2d61014a1b5c9fc9e24e7d636eb1607e816dbaf927b8fca9",
+  "5c283daba5ec1f233b8c833c48e1c670dae2e40cc4c3219c73e58856bd96a72fdf9f8055ffe3c004c8cde3b8bf78f95f3370d0a3d6194ac5782487defd83ca0f",
+  "109f33262731f9bd569cbc9317baa551d4d2964fa18d42c41fab4e37225292ec2fd97d7493784779046388469ae195c436fa7cba93f8239ceb5ffc818826470c",
+  "b32c9b02667911cf8f8a0877be9a170757e25026ccf41e67c6b5da70b1b874743e1135cfbefe244237555c676c153d99459bc382573aee2d85d30d99f286c5e7",
+  "8a13c1b195fd0886ac49989e7d84b08bc7b00e4f3f62765ece6050fcbabdc2346c8207594714e8e9c9c7aad694edc922d6b01e17285eb7e61502e634559e32f1",
+  "52cec3b11448bb8617d0ddfbc926f2e88730cb9179d6decea5acbffd323ec3764c47f7a9e13bb1db56c342034773023d617ff01cc546728e71dff8de5d128cac",
+  "f38c5b7947e7736d502007a05ea64a4eb9c243cb82154aa138b963bbb7f28e74d4d710445389671291d70103f48fd4d4c01fc415e3fb7dc61c6088afa1a1e735",
+  "0740b3faa03ed39b257dd6e3db7c1bf56b6e18e40cdaabd30617cecbaddd618ea5e61bb4654599581dd30c24c1ab877ad0687948286cfefaa7eef99f6068b315",
+  "185811cf3c2633aec8cfdfcae9dbb29347011bf92b95910a3ad71e5fca678e45e374f088f2e5c29496e9695ce8957837107bb3aa56441af11a82164893313116",
+  "9d46bf66234a7ed06c3b2120d2a3f15e0fedd87189b75b3cd2f206906b5ee00dc9a1eab800fb8cc5760b251f4db5cdef427052fa345613fd076451901279ee4c",
+  "0f79104026b900d8d768b6e223484c9761e3c585b3a405a6d2d8565ada926c3f7782ef127cd6b98290bf612558b4b60aa3cbc28fd94f95460d76b621cb45be70"
+];
+
+const LPSX_RESULTS_HEX = [
+  "e60059d4d8e0758024c73f6f3183653f56579189602ae4c21e7953ebc0e212a0ce78a8df475c2fd4fc43fc4b71c01e35be465fb20dad2cf690cdf65028121bb9",
+  "18e77571e703d19548075c574ce5e50e0480c9c5b9f21d45611ab86cf32e352ad91854ea7df8f863d46333673f62ff2d3efae1cd966f8e2a74ce49902799aad4",
+  "03dc0a9c64d42543ccdb62960d58c17e0b5b805d08a07406ece679d5f82b70fea22a7ea56e21814619e8749b308214575489d4d465539852cd4b0cd3829bef39",
+  "dbee312ea7301b0d6d13e43855e85db81608c780c43675bc93cfd82c1b4933b3898a35b13e1878abe119e4dffb9de4889738ca74d064cd9eb732078c1fb25e04",
+  "7fb3f15718d90e889f9fb7c38f527bec861c298afb9186934a93c9d96ade20df109379bb9c1a1ffd0ad81fce7b45ccd54501e7d127e32874b5d7927b032de7a1",
+  "95efa4e104f235824bae5030fe2d0f170a38de3c9b8fc6d8fa1a9adc2945c413389a121501fa71a65067916b0c06f6b87ce18de1a2a98e0a64670985f47d73f1",
+  "7ea4385f7e5e40103bfb25c67e404c7524eec43e33b1d06557469c604985430432b43d941b77ffd476103338e9bd5145d9c1e18b1f262b58a81dcefff6fc6535",
+  "b2426da0e58d5cfe898c36e797993f902531579d8ecc59f8dd8a60802241a4561f290cf992eb398894424bf681636968c167e870967b1dd9047293331956daba",
+  "5e0c9978670b25912dd1ede5bdd1cf18ed094d14c6d973b731d50570d0a9bca215415a15031fd20ddefb5bc61b96671d6902f49df4d2fd346ceebda9431cb075",
+  "c1ddd840fe491393a5d460440e03bf451794e792c0c629e49ab0c1001782dd37691cb6896f3e00b87f71d37a584c35b9cd8789fad55a46887e5b60e124b51a61",
+  "3f75beaf2911c35d575088e30542b689c85b6b1607f8b800405941f5ab7042847b9b08b58b4fbdd6154ed7b366fd3ee778ce647726ddb3c7d48c8ce8866a8435",
+  "f35b0d889eadfcff73b6b17f33413a97417d96f0c4cc9d30cda8ebb7dcd5d1b061e620bac75b367370605f474ddc006003bec4c4d7ce59a73fbe6766934c55a2",
+  "fc221dc8b814fc27a4de079d10097600209e5375776898961f70bded0647bd8f1664cfa8bb8d8ff1e0df3e621568b66aa075064b0e81cce132c8d1475809ebd2"
+];
+
+const CONSTANTS_HEX = [
+  "b1085bda1ecadae9ebcb2f81c0657c1f2f6a76432e45d016714eb88d7585c4fc4b7ce09192676901a2422a08a460d31505767436cc744d23dd806559f2a64507",
+  "6fa3b58aa99d2f1a4fe39d460f70b5d7f3feea720a232b9861d55e0f16b501319ab5176b12d699585cb561c2db0aa7ca55dda21bd7cbcd56e679047021b19bb7",
+  "f574dcac2bce2fc70a39fc286a3d843506f15e5f529c1f8bf2ea7514b1297b7bd3e20fe490359eb1c1c93a376062db09c2b6f443867adb31991e96f50aba0ab2",
+  "ef1fdfb3e81566d2f948e1a05d71e4dd488e857e335c3c7d9d721cad685e353fa9d72c82ed03d675d8b71333935203be3453eaa193e837f1220cbebc84e3d12e",
+  "4bea6bacad4747999a3f410c6ca923637f151c1f1686104a359e35d7800fffbdbfcd1747253af5a3dfff00b723271a167a56a27ea9ea63f5601758fd7c6cfe57",
+  "ae4faeae1d3ad3d96fa4c33b7a3039c02d66c4f95142a46c187f9ab49af08ec6cffaa6b71c9ab7b40af21f66c2bec6b6bf71c57236904f35fa68407a46647d6e",
+  "f4c70e16eeaac5ec51ac86febf240954399ec6c7e6bf87c9d3473e33197a93c90992abc52d822c3706476983284a05043517454ca23c4af38886564d3a14d493",
+  "9b1f5b424d93c9a703e7aa020c6e41414eb7f8719c36de1e89b4443b4ddbc49af4892bcb929b069069d18d2bd1a5c42f36acc2355951a8d9a47f0dd4bf02e71e",
+  "378f5a541631229b944c9ad8ec165fde3a7d3a1b258942243cd955b7e00d0984800a440bdbb2ceb17b2b8a9aa6079c540e38dc92cb1f2a607261445183235adb",
+  "abbedea680056f52382ae548b2e4f3f38941e71cff8a78db1fffe18a1b3361039fe76702af69334b7a1e6c303b7652f43698fad1153bb6c374b4c7fb98459ced",
+  "7bcd9ed0efc889fb3002c6cd635afe94d8fa6bbbebab076120018021148466798a1d71efea48b9caefbacd1d7d476e98dea2594ac06fd85d6bcaa4cd81f32d1b",
+  "378ee767f11631bad21380b00449b17acda43c32bcdf1d77f82012d430219f9b5d80ef9d1891cc86e71da4aa88e12852faf417d5d9b21b9948bc924af11bd720"
+];
+
+// ============================================================
+// HELPERS
+// ============================================================
+function h2(b){return toHex2(b);}
+
+function makeByteTable64(rows) {
+  // rows = [{label, bytes, cls}]
+  let html = '<div class="matrix-scroll"><table class="byte-matrix">';
+  // header: index row
+  html += '<tr><th class="idx">row</th>';
+  for(let i=0;i<8;i++) html += `<th>[${i*8}–${i*8+7}]</th>`;
+  // actually do per-byte header
+  html = '<div class="matrix-scroll"><table class="byte-matrix">';
+  html += '<tr><th class="idx" style="min-width:80px">строка</th>';
+  for(let i=0;i<64;i++) html+=`<th>${i}</th>`;
+  html+='</tr>';
+  for(const row of rows){
+    html+=`<tr class="${row.cls}"><td class="idx">${row.label}</td>`;
+    for(const b of row.bytes) html+=`<td class="val">${h2(b)}</td>`;
+    html+='</tr>';
+  }
+  html+='</table></div>';
+  return html;
+}
+
+// ============================================================
+// BUILD S-BOX TABLE
+// ============================================================
+(function buildSBox(){
+  let html='<table class="byte-matrix" style="font-size:9px"><tr><th class="idx">x\\y</th>';
+  for(let j=0;j<16;j++) html+=`<th>+${j.toString(16).toUpperCase()}</th>`;
+  html+='</tr>';
+  for(let i=0;i<16;i++){
+    html+=`<tr><td class="idx">${i.toString(16).toUpperCase()}x</td>`;
+    for(let j=0;j<16;j++) html+=`<td class="val" style="color:var(--accent3)">${h2(PI[i*16+j])}</td>`;
+    html+='</tr>';
+  }
+  html+='</table>';
+  document.getElementById('sbox-container').innerHTML=html;
+})();
+
+// ============================================================
+// BUILD PERM GRID
+// ============================================================
+(function buildPerm(){
+  const pg=document.getElementById('perm-grid');
+  let html='';
+  for(let i=0;i<64;i++){
+    html+=`<div class="perm-cell"><div class="perm-from">[${i}]→</div><div class="perm-to">[${TAU[i]}]</div></div>`;
+  }
+  pg.innerHTML=html;
+})();
+
+// ============================================================
+// BUILD CONSTANTS TABLE
+// ============================================================
+(function buildConstants(){
+  let html='';
+  CONSTANTS_HEX.forEach((c,i)=>{
+    html+=`<div class="hex-label">C${i+1}:</div><div class="hex-block" style="color:var(--muted);font-size:11px">${formatHex64(fromHex(c))}</div>`;
+  });
+  document.getElementById('constants-container').innerHTML=html;
+})();
+
+function formatHex64(arr){
+  let parts=[];
+  for(let i=0;i<64;i++) parts.push(h2(arr[i]));
+  // group by 8
+  let rows=[];
+  for(let r=0;r<4;r++) rows.push(parts.slice(r*16,r*16+16).join(' '));
+  return rows.join('\n');
+}
+
+// ============================================================
+// S-STEP TABLE for LPS section (64 bytes: 0x00 -> 0xFC)
+// ============================================================
+(function buildSStep(){
+  const inp = new Array(64).fill(0);
+  const out = new Array(64).fill(0xFC);
+  document.getElementById('s-step-table').innerHTML = makeByteTable64([
+    {label:'Вход (h⊕N)', bytes:inp, cls:'row-m'},
+    {label:'S(·) = π(·)', bytes:out, cls:'row-s'}
+  ]);
+})();
+
+// ============================================================
+// BUILD COMPRESS TABLE (full 64 bytes)
+// ============================================================
+(function buildCompressTable(){
+  const E_km = fromHex(LPSX_RESULTS_HEX[12]); // iter 13 result = E(K,m)
+  const h_iv = new Array(64).fill(0);
+  const xor1 = xorArr(E_km, h_iv);
+  const result = xorArr(xor1, m);
+  document.getElementById('compress-table').innerHTML = makeByteTable64([
+    {label:'E(K,m)', bytes:E_km, cls:'row-m'},
+    {label:'h = IV', bytes:h_iv, cls:'row-b'},
+    {label:'m', bytes:m, cls:'row-k'},
+    {label:'⊕ результат', bytes:result, cls:'row-x'}
+  ]);
+})();
+
+// ============================================================
+// BUILD ALL 13 ITERATIONS
+// ============================================================
+function buildIteration(i){
+  const K = fromHex(KEYS_HEX[i]);
+  const isLast = (i===12);
+  
+  // Compute steps for XOR
+  const state_before = i===0 ? m : fromHex(LPSX_RESULTS_HEX[i-1]);
+  const xored = xorArr(state_before, K);
+  const s_out = applyS(xored);
+  const p_out = applyP(s_out);
+  // L result: from standard (LPSX_RESULTS_HEX[i])
+  const lpsx_out = fromHex(LPSX_RESULTS_HEX[i]);
+
+  let title, formula;
+  if(i===0){
+    title=`Итерация 1 · X[K₁](m) → S → P → L`;
+    formula=`LPSX[K₁](m) = L(P(S(m ⊕ K₁)))`;
+  } else if(isLast){
+    title=`Итерация 13 · X[K₁₃] — только XOR, без LPS`;
+    formula=`E(K, m) = X[K₁₃](…) = LPSX[K₁₂]…LPSX[K₁](m) ⊕ K₁₃`;
+  } else {
+    title=`Итерация ${i+1} · Kᵢ = LPS(Kᵢ₋₁ ⊕ Cᵢ₋₁)`;
+    formula=`LPSX[K${i+1}]…LPSX[K₁](m)`;
+  }
+
+  // XOR table: full 64 bytes
+  const xorRows = isLast ? [
+    {label:`состояние (вход)`, bytes:state_before, cls:'row-m'},
+    {label:`K${i+1}`, bytes:K, cls:'row-k'},
+    {label:`⊕ = E(K,m)`, bytes:xored, cls:'row-x'}
+  ] : [
+    {label:`состояние (вход)`, bytes:state_before, cls:'row-m'},
+    {label:`K${i+1}`, bytes:K, cls:'row-k'},
+    {label:`⊕`, bytes:xored, cls:'row-x'},
+    {label:`S(⊕)`, bytes:s_out, cls:'row-s'},
+    {label:`P(S(⊕))`, bytes:p_out, cls:'row-p'},
+    {label:`L(P(S(⊕)))`, bytes:lpsx_out, cls:'row-l'}
+  ];
+
+  const kColor = 'orange';
+  const resColor = isLast ? 'red' : 'cyan';
+  const resLabel = isLast ? 'E(K,m) = X[K₁₃](…):' : `LPSX[K${i+1}]…LPSX[K₁](m):`;
+
+  return `
+<div class="iteration" id="iter${i+1}">
+  <div class="iteration-header" onclick="toggleIter(this)">
+    <span class="iteration-num">K${i+1<10?'':''}${i+1 <= 9 ? '₀'.replace('₀','') : ''}${['₁','₂','₃','₄','₅','₆','₇','₈','₉','₁₀','₁₁','₁₂','₁₃'][i]}</span>
+    <span class="iteration-title">${title}</span>
+    <span class="toggle-icon">▶</span>
+  </div>
+  <div class="iteration-body">
+    <div class="hex-label">K${i+1}:</div>
+    <div class="hex-block ${kColor}">${formatHex64(K)}</div>
+    <div class="card-title" style="margin-top:12px">${isLast ? 'X[K₁₃](состояние) = состояние ⊕ K₁₃' : `Шаги X[K${i+1}] → S → P → L — полная матрица 64 байта`}</div>
+    ${makeByteTable64(xorRows)}
+    <div class="hex-label">${resLabel}</div>
+    <div class="hex-block ${resColor}">${formatHex64(lpsx_out)}</div>
+  </div>
+</div>`;
+}
+
+const iterContainer = document.getElementById('iterations-container');
+let allIters = '';
+for(let i=0;i<13;i++) allIters += buildIteration(i);
+iterContainer.innerHTML = allIters;
+
+// ============================================================
+// TOGGLE
+// ============================================================
+function toggleParam(el){
+  const c=el.nextElementSibling,a=el.querySelector('span:last-child');
+  c.classList.toggle('open');a.textContent=c.classList.contains('open')?'▼':'▶';
+}
+function toggleIter(el){
+  const b=el.nextElementSibling,i=el.querySelector('.toggle-icon');
+  b.classList.toggle('open');i.classList.toggle('open');
+}
+</script>
+</body>
+</html>
