@@ -30,15 +30,8 @@
     --font-mono: 'JetBrains Mono', monospace;
   }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-ui);
-    height: 100vh;
-    overflow: hidden;
-  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-ui); height: 100vh; overflow: hidden; }
 
-  /* ── NOISE TEXTURE OVERLAY ── */
   body::before {
     content: '';
     position: fixed;
@@ -48,553 +41,199 @@
     z-index: 0;
   }
 
-  /* ════════════════════════════════
-     LOGIN SCREEN
-  ════════════════════════════════ */
+  /* LOGIN */
   #login-screen {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    background: var(--bg);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    z-index: 100; background: var(--bg); transition: opacity 0.5s ease, transform 0.5s ease;
   }
-  #login-screen.hidden {
-    opacity: 0;
-    transform: scale(0.97);
-    pointer-events: none;
-  }
-
-  /* background grid */
+  #login-screen.hidden { opacity: 0; transform: scale(0.97); pointer-events: none; }
   .login-grid-bg {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
     background-size: 48px 48px;
   }
-
-  /* radial glow */
-  .login-glow {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
+  .login-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%); pointer-events: none; }
   .login-card {
-    position: relative;
-    width: 420px;
-    background: var(--bg2);
-    border: 1px solid var(--border2);
-    border-radius: 20px;
-    padding: 44px 40px;
-    box-shadow:
-      0 0 0 1px rgba(59,130,246,0.06),
-      0 40px 80px rgba(0,0,0,0.6),
-      0 0 60px rgba(59,130,246,0.08);
+    position: relative; width: 420px; background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: 20px; padding: 44px 40px;
+    box-shadow: 0 0 0 1px rgba(59,130,246,0.06), 0 40px 80px rgba(0,0,0,0.6), 0 0 60px rgba(59,130,246,0.08);
   }
-
-  .login-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-  .login-logo-icon {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, var(--accent), var(--purple));
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .login-logo-text {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
+  .login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+  .login-logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--purple)); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .login-logo-text { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
   .login-logo-text span { color: var(--accent2); }
-
-  .login-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10px;
-    padding: 3px 8px;
-    background: rgba(52,211,153,0.08);
-    border: 1px solid rgba(52,211,153,0.2);
-    border-radius: 20px;
-    color: var(--green);
-    font-family: var(--font-mono);
-    margin-left: auto;
-  }
-  .badge-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .login-title {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-    margin-bottom: 8px;
-  }
-  .login-subtitle {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.6;
-    margin-bottom: 32px;
-  }
-
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    font-size: 11px;
-    color: var(--text3);
-    font-family: var(--font-mono);
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
+  .login-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; padding: 3px 8px; background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); border-radius: 20px; color: var(--green); font-family: var(--font-mono); margin-left: auto; }
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .login-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 8px; }
+  .login-subtitle { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 32px; }
+  .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-size: 11px; color: var(--text3); font-family: var(--font-mono); }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .wallet-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 16px;
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-bottom: 10px;
-    font-family: var(--font-ui);
-    color: var(--text);
-    font-size: 14px;
-    font-weight: 500;
-    text-align: left;
+    width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 16px;
+    background: var(--bg3); border: 1px solid var(--border2); border-radius: 12px;
+    cursor: pointer; transition: all 0.18s; margin-bottom: 10px; font-family: var(--font-ui);
+    color: var(--text); font-size: 14px; font-weight: 500; text-align: left;
   }
-  .wallet-btn:hover {
-    background: var(--bg4);
-    border-color: rgba(59,130,246,0.35);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-  }
-  .wallet-btn:active {
-    transform: translateY(0);
-  }
-  .wallet-btn.primary {
-    background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(167,139,250,0.15));
-    border-color: rgba(59,130,246,0.4);
-  }
-  .wallet-btn.primary:hover {
-    background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(167,139,250,0.22));
-    border-color: rgba(59,130,246,0.6);
-    box-shadow: 0 8px 30px rgba(59,130,246,0.2);
-  }
-  .wallet-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
+  .wallet-btn:hover { background: var(--bg4); border-color: rgba(59,130,246,0.35); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .wallet-btn.primary { background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(167,139,250,0.15)); border-color: rgba(59,130,246,0.4); }
+  .wallet-btn.primary:hover { background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(167,139,250,0.22)); border-color: rgba(59,130,246,0.6); box-shadow: 0 8px 30px rgba(59,130,246,0.2); }
+  .wallet-icon { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
   .wallet-btn-label { flex: 1; }
   .wallet-btn-sub { font-size: 11px; color: var(--text3); font-weight: 400; display: block; margin-top: 1px; }
   .wallet-btn-arrow { color: var(--text3); font-size: 16px; }
-
-  .login-footer {
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    font-size: 11px;
-    color: var(--text3);
-    text-align: center;
-    line-height: 1.7;
-  }
+  .login-footer { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text3); text-align: center; line-height: 1.7; }
   .login-footer a { color: var(--accent2); text-decoration: none; }
 
-  /* loading state */
-  .wallet-btn.loading {
-    pointer-events: none;
-    opacity: 0.7;
-  }
-  .wallet-btn.loading .wallet-btn-sub::after {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    margin-left: 4px;
-    animation: dots 1.2s infinite;
-  }
-  @keyframes dots {
-    0% { content: '.'; }
-    33% { content: '..'; }
-    66% { content: '...'; }
-  }
-
-  /* ════════════════════════════════
-     MAIN APP (hidden until login)
-  ════════════════════════════════ */
+  /* APP */
   #app-screen {
-    display: grid;
-    grid-template-rows: 48px 1fr;
-    grid-template-columns: 220px 1fr;
-    height: 100vh;
-    opacity: 0;
-    transform: scale(1.02);
-    transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s;
-    pointer-events: none;
+    display: grid; grid-template-rows: 48px 1fr; grid-template-columns: 220px 1fr;
+    height: 100vh; opacity: 0; transform: scale(1.02);
+    transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s; pointer-events: none;
   }
-  #app-screen.visible {
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: all;
-  }
+  #app-screen.visible { opacity: 1; transform: scale(1); pointer-events: all; }
 
-  /* TOP BAR */
-  .topbar {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-    z-index: 10;
-  }
+  /* TOPBAR */
+  .topbar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: var(--bg2); border-bottom: 1px solid var(--border); z-index: 10; }
   .topbar-left { display: flex; align-items: center; gap: 14px; }
   .topbar-brand { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
   .topbar-brand span { color: var(--accent2); }
-  .topbar-chain {
-    font-size: 10px;
-    color: var(--text3);
-    font-family: var(--font-mono);
-    padding: 2px 8px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background: var(--bg3);
-  }
+  .topbar-chain { font-size: 10px; color: var(--text3); font-family: var(--font-mono); padding: 2px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg3); }
   .topbar-right { display: flex; align-items: center; gap: 10px; }
-  .status-badge {
-    font-size: 10px;
-    padding: 3px 9px;
-    border-radius: 20px;
-    background: rgba(52,211,153,0.08);
-    color: var(--green);
-    border: 1px solid rgba(52,211,153,0.2);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: var(--font-mono);
-  }
-  .wallet-display {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 12px;
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
+  .status-badge { font-size: 10px; padding: 3px 9px; border-radius: 20px; background: rgba(52,211,153,0.08); color: var(--green); border: 1px solid rgba(52,211,153,0.2); display: flex; align-items: center; gap: 5px; font-family: var(--font-mono); }
+  .wallet-display { display: flex; align-items: center; gap: 8px; padding: 5px 12px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; transition: border-color 0.15s; }
   .wallet-display:hover { border-color: rgba(59,130,246,0.4); }
-  .wallet-avatar {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--purple));
-    flex-shrink: 0;
-  }
+  .wallet-avatar { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--purple)); flex-shrink: 0; }
   .wallet-addr { font-size: 12px; color: var(--text2); font-family: var(--font-mono); }
-  .disconnect-btn {
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background: transparent;
-    border: 1px solid var(--border2);
-    color: var(--text3);
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: var(--font-ui);
-  }
+  .sol-balance { font-size: 11px; color: var(--green); font-family: var(--font-mono); padding: 3px 8px; background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.15); border-radius: 6px; }
+  .disconnect-btn { font-size: 11px; padding: 4px 10px; border-radius: 6px; background: transparent; border: 1px solid var(--border2); color: var(--text3); cursor: pointer; transition: all 0.15s; font-family: var(--font-ui); }
   .disconnect-btn:hover { border-color: var(--red); color: var(--red); }
 
   /* SIDEBAR */
-  .sidebar {
-    background: var(--bg2);
-    border-right: 1px solid var(--border);
-    padding: 16px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    overflow-y: auto;
-  }
-  .sidebar-section {
-    padding: 10px 16px 6px;
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--text3);
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    font-family: var(--font-mono);
-    margin-top: 4px;
-  }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 16px;
-    font-size: 13px;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.12s;
-    border-left: 2px solid transparent;
-    user-select: none;
-  }
+  .sidebar { background: var(--bg2); border-right: 1px solid var(--border); padding: 16px 0; display: flex; flex-direction: column; gap: 1px; overflow-y: auto; }
+  .sidebar-section { padding: 10px 16px 6px; font-size: 9px; font-weight: 600; color: var(--text3); letter-spacing: .12em; text-transform: uppercase; font-family: var(--font-mono); margin-top: 4px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.12s; border-left: 2px solid transparent; user-select: none; }
   .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text); }
-  .nav-item.active {
-    background: rgba(59,130,246,0.08);
-    color: var(--accent2);
-    border-left-color: var(--accent2);
-  }
+  .nav-item.active { background: rgba(59,130,246,0.08); color: var(--accent2); border-left-color: var(--accent2); }
   .nav-icon { width: 15px; height: 15px; opacity: 0.7; flex-shrink: 0; }
   .nav-item.active .nav-icon { opacity: 1; }
-  .nav-badge {
-    margin-left: auto;
-    font-size: 10px;
-    padding: 1px 6px;
-    background: var(--yellow);
-    color: #000;
-    border-radius: 10px;
-    font-weight: 700;
-    font-family: var(--font-mono);
-  }
+  .nav-badge { margin-left: auto; font-size: 10px; padding: 1px 6px; background: var(--yellow); color: #000; border-radius: 10px; font-weight: 700; font-family: var(--font-mono); }
 
   /* MAIN */
   .main { background: var(--bg); overflow-y: auto; display: flex; flex-direction: column; }
   .page { display: none; }
-  .page.active { display: block; }
+  .page.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
 
   /* PAGE HEADER */
-  .page-header {
-    padding: 20px 24px 14px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
+  .page-header { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; flex-shrink: 0; }
   .page-title { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
   .page-sub { font-size: 12px; color: var(--text3); margin-top: 3px; font-family: var(--font-mono); }
   .page-actions { display: flex; gap: 8px; }
-  .btn-sm {
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 7px;
-    border: 1px solid var(--border2);
-    background: var(--bg3);
-    color: var(--text2);
-    cursor: pointer;
-    font-family: var(--font-ui);
-    transition: all 0.12s;
-  }
-  .btn-sm:hover { border-color: var(--border2); color: var(--text); background: var(--bg4); }
-  .btn-primary-sm {
-    font-size: 12px;
-    padding: 6px 14px;
-    border-radius: 7px;
-    border: none;
-    background: var(--accent);
-    color: #fff;
-    cursor: pointer;
-    font-weight: 600;
-    font-family: var(--font-ui);
-    transition: all 0.15s;
-  }
+  .btn-sm { font-size: 12px; padding: 6px 12px; border-radius: 7px; border: 1px solid var(--border2); background: var(--bg3); color: var(--text2); cursor: pointer; font-family: var(--font-ui); transition: all 0.12s; }
+  .btn-sm:hover { color: var(--text); background: var(--bg4); }
+  .btn-primary-sm { font-size: 12px; padding: 6px 14px; border-radius: 7px; border: none; background: var(--accent); color: #fff; cursor: pointer; font-weight: 600; font-family: var(--font-ui); transition: all 0.15s; }
   .btn-primary-sm:hover { background: var(--accent2); box-shadow: 0 4px 14px rgba(59,130,246,0.35); }
 
   /* METRICS */
-  .metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border-bottom: 1px solid var(--border);
-  }
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); flex-shrink: 0; }
   .metric { background: var(--bg); padding: 18px 20px; }
-  .metric-label {
-    font-size: 10px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    margin-bottom: 8px;
-    font-family: var(--font-mono);
-  }
-  .metric-value {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    font-variant-numeric: tabular-nums;
-  }
+  .metric-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; font-family: var(--font-mono); }
+  .metric-value { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
   .metric-delta { font-size: 11px; margin-top: 5px; font-family: var(--font-mono); }
   .delta-up { color: var(--green); }
   .delta-down { color: var(--red); }
   .delta-neutral { color: var(--text3); }
 
   /* CONTENT GRID */
-  .content-grid {
-    display: grid;
-    grid-template-columns: 1fr 310px;
-    gap: 1px;
-    background: var(--border);
-    flex: 1;
-  }
-  .panel { background: var(--bg); }
+  .content-grid { display: grid; grid-template-columns: 1fr 310px; gap: 1px; background: var(--border); flex: 1; overflow: hidden; }
+  .panel { background: var(--bg); overflow-y: auto; }
 
   /* TABLE */
-  .table-header {
-    padding: 14px 20px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-  }
+  .table-header { padding: 14px 20px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 2; }
   .table-title { font-size: 13px; font-weight: 600; }
   .table-filters { display: flex; gap: 6px; }
-  .filter-btn {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 5px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text3);
-    cursor: pointer;
-    font-family: var(--font-ui);
-    transition: all 0.12s;
-  }
-  .filter-btn.active {
-    background: var(--bg3);
-    color: var(--text);
-    border-color: var(--border2);
-  }
-
+  .filter-btn { font-size: 11px; padding: 3px 10px; border-radius: 5px; border: 1px solid var(--border); background: transparent; color: var(--text3); cursor: pointer; font-family: var(--font-ui); transition: all 0.12s; }
+  .filter-btn.active { background: var(--bg3); color: var(--text); border-color: var(--border2); }
   table { width: 100%; border-collapse: collapse; }
-  thead th {
-    font-size: 10px;
-    color: var(--text3);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    padding: 9px 20px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--font-mono);
-  }
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s;
-    cursor: pointer;
-  }
+  thead th { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; padding: 9px 20px; text-align: left; border-bottom: 1px solid var(--border); font-family: var(--font-mono); position: sticky; top: 41px; background: var(--bg); z-index: 1; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
   tbody tr:hover { background: rgba(59,130,246,0.04); }
   tbody tr:last-child { border-bottom: none; }
   td { padding: 11px 20px; font-size: 12px; color: var(--text2); vertical-align: middle; }
   td.name { color: var(--text); font-weight: 600; }
   td.mono { font-family: var(--font-mono); font-size: 11px; }
-
-  .pill {
-    display: inline-block;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-family: var(--font-mono);
-  }
-  .pill-green { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
-  .pill-yellow { background: rgba(251,191,36,0.1); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
+  .pill { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; font-family: var(--font-mono); }
+  .pill-verified, .pill-confirmed, .pill-active, .pill-online { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
+  .pill-pending, .pill-review { background: rgba(251,191,36,0.1); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
   .pill-gray { background: rgba(139,148,158,0.08); color: var(--text3); border: 1px solid var(--border); }
-
   .progress-bar { width: 72px; height: 3px; background: var(--bg4); border-radius: 2px; overflow: hidden; display: inline-block; }
   .progress-fill { height: 100%; border-radius: 2px; background: var(--accent); }
   .progress-fill.green { background: var(--green); }
 
   /* RIGHT PANEL */
-  .right-panel { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+  .right-panel { display: flex; flex-direction: column; gap: 1px; background: var(--border); overflow-y: auto; }
   .right-section { background: var(--bg); padding: 14px 16px; }
   .right-title { font-size: 12px; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.01em; }
-
-  /* Activity */
   .activity-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
   .activity-item:last-child { border-bottom: none; }
   .activity-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
   .dot-green { background: var(--green); }
   .dot-blue { background: var(--accent2); }
   .dot-yellow { background: var(--yellow); }
+  .dot-red { background: var(--red); }
   .activity-text { font-size: 11px; color: var(--text2); line-height: 1.55; }
   .activity-time { font-size: 10px; color: var(--text3); font-family: var(--font-mono); margin-top: 2px; }
-
-  /* Income */
   .income-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
   .income-row:last-child { border-bottom: none; }
   .income-label { color: var(--text2); }
   .income-val { font-family: var(--font-mono); font-weight: 600; color: var(--text); }
   .income-val.green { color: var(--green); }
   .income-val.yellow { color: var(--yellow); }
-
-  /* Chart bars */
   .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 40px; padding-bottom: 4px; }
-  .bar {
-    flex: 1;
-    border-radius: 2px 2px 0 0;
-    background: var(--accent);
-    opacity: 0.3;
-    transition: opacity 0.15s;
-    min-width: 6px;
-  }
+  .bar { flex: 1; border-radius: 2px 2px 0 0; background: var(--accent); opacity: 0.3; transition: opacity 0.15s; min-width: 6px; }
   .bar:hover { opacity: 0.8; }
   .bar.active { opacity: 0.75; background: var(--accent2); }
-
-  /* Distribute button */
-  .distribute-btn {
-    width: 100%;
-    margin-top: 12px;
-    padding: 8px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    border: none;
-    background: linear-gradient(135deg, var(--accent), #6366f1);
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: var(--font-ui);
-  }
+  .distribute-btn { width: 100%; margin-top: 12px; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; background: linear-gradient(135deg, var(--accent), #6366f1); color: #fff; cursor: pointer; transition: all 0.15s; font-family: var(--font-ui); }
   .distribute-btn:hover { box-shadow: 0 4px 16px rgba(59,130,246,0.35); transform: translateY(-1px); }
+  .distribute-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  /* Scrollbar */
+  /* FORM */
+  .form-page { padding: 22px; }
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 12px; color: var(--text3); margin-bottom: 6px; display: block; }
+  .form-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg3); color: var(--text); outline: none; font-family: var(--font-ui); font-size: 13px; transition: border-color 0.15s; }
+  .form-input:focus { border-color: rgba(59,130,246,0.5); }
+  .form-select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg3); color: var(--text); outline: none; font-family: var(--font-ui); font-size: 13px; cursor: pointer; }
+  .form-hint { font-size: 11px; color: var(--text3); margin-top: 4px; font-family: var(--font-mono); }
+
+  /* EMPTY STATE */
+  .empty-state { padding: 48px 20px; text-align: center; color: var(--text3); font-size: 13px; }
+  .empty-state-icon { font-size: 32px; margin-bottom: 12px; }
+  .empty-state-title { font-size: 14px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+
+  /* LOADING */
+  .loading-row td { color: var(--text3); font-style: italic; }
+  .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 18px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; font-size: 13px; z-index: 999; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; max-width: 320px; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { border-color: rgba(52,211,153,0.3); }
+  .toast.error { border-color: rgba(248,113,113,0.3); }
+
+  /* ORACLE card */
+  .oracle-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+  .oracle-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .oracle-name { font-size: 13px; font-weight: 600; }
+  .oracle-meta { font-size: 11px; color: var(--text3); font-family: var(--font-mono); margin-top: 4px; }
+
+  /* SETTINGS card */
+  .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-key { font-size: 13px; color: var(--text2); }
+  .settings-val { font-size: 12px; font-family: var(--font-mono); color: var(--text); }
+
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
@@ -602,14 +241,11 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     LOGIN SCREEN
-══════════════════════════════════ -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-grid-bg"></div>
   <div class="login-glow"></div>
   <div class="login-card">
-
     <div class="login-logo">
       <div class="login-logo-icon">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -618,74 +254,44 @@
         </svg>
       </div>
       <div class="login-logo-text">Proof<span>Rent</span></div>
-      <div class="login-badge">
-        <div class="badge-dot"></div>
-        Devnet
-      </div>
+      <div class="login-badge"><div class="badge-dot"></div>Devnet</div>
     </div>
-
     <div class="login-title">Connect your wallet<br>to get started</div>
-    <div class="login-subtitle">
-      ProofRent tokenizes real-world assets on Solana — from real estate to energy. Fractionalized ownership, on-chain income distribution, fully verifiable.
-    </div>
-
+    <div class="login-subtitle">ProofRent tokenizes real-world assets on Solana — real estate, energy, bonds. Fractionalized ownership, on-chain income distribution.</div>
     <div class="divider">Connect wallet</div>
-
     <button class="wallet-btn primary" onclick="connectWallet('phantom')">
       <div class="wallet-icon">👻</div>
-      <div class="wallet-btn-label">
-        Phantom
-        <span class="wallet-btn-sub" id="sub-phantom">Most popular Solana wallet</span>
-      </div>
+      <div class="wallet-btn-label">Phantom<span class="wallet-btn-sub" id="sub-phantom">Most popular Solana wallet</span></div>
       <span class="wallet-btn-arrow">→</span>
     </button>
-
     <button class="wallet-btn" onclick="connectWallet('solflare')">
-      <div class="wallet-icon" style="background:linear-gradient(135deg,#ff6a00,#ee0979);border-radius:8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="8"/></svg>
-      </div>
-      <div class="wallet-btn-label">
-        Solflare
-        <span class="wallet-btn-sub">Browser & mobile wallet</span>
-      </div>
+      <div class="wallet-icon" style="background:linear-gradient(135deg,#ff6a00,#ee0979);border-radius:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="8"/></svg></div>
+      <div class="wallet-btn-label">Solflare<span class="wallet-btn-sub">Browser & mobile wallet</span></div>
       <span class="wallet-btn-arrow">→</span>
     </button>
-
     <button class="wallet-btn" onclick="connectWallet('backpack')">
       <div class="wallet-icon" style="background:#111;border-radius:8px;font-size:16px;">🎒</div>
-      <div class="wallet-btn-label">
-        Backpack
-        <span class="wallet-btn-sub">xNFT wallet by Coral</span>
-      </div>
+      <div class="wallet-btn-label">Backpack<span class="wallet-btn-sub">xNFT wallet by Coral</span></div>
       <span class="wallet-btn-arrow">→</span>
     </button>
-
-    <div class="login-footer">
-      By connecting, you agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<br>
-      ProofRent Protocol v2.0 · Solana Devnet · <a href="#">Audit report</a>
-    </div>
+    <div class="login-footer">By connecting, you agree to the <a href="#">Terms of Service</a>.<br>ProofRent Protocol · Solana Devnet</div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     MAIN APP
-══════════════════════════════════ -->
+<!-- APP -->
 <div id="app-screen">
-
-  <!-- TOP BAR -->
+  <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
       <div class="topbar-brand">Proof<span>Rent</span></div>
       <div class="topbar-chain">Solana Devnet</div>
     </div>
     <div class="topbar-right">
-      <div class="status-badge">
-        <div class="badge-dot" style="width:5px;height:5px;"></div>
-        Devnet online
-      </div>
-      <div class="wallet-display" id="wallet-display">
+      <div class="status-badge"><div class="badge-dot" style="width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;"></div>Devnet online</div>
+      <div class="sol-balance" id="sol-balance-display">— SOL</div>
+      <div class="wallet-display">
         <div class="wallet-avatar" id="wallet-avatar"></div>
-        <span class="wallet-addr" id="wallet-addr-display">7xKp...mN4q</span>
+        <span class="wallet-addr" id="wallet-addr-display">—</span>
       </div>
       <button class="disconnect-btn" onclick="disconnect()">Disconnect</button>
     </div>
@@ -702,7 +308,6 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><path d="M2 12L8 4L11 8L13 6L14 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       Marketplace
     </div>
-
     <div class="sidebar-section">Assets</div>
     <div class="nav-item" data-page="my-assets" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.3"/></svg>
@@ -716,12 +321,11 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       Fractions
     </div>
-
     <div class="sidebar-section">Finance</div>
     <div class="nav-item" data-page="income-pool" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M5 5V4a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.3"/></svg>
       Income Pool
-      <span class="nav-badge">3</span>
+      <span class="nav-badge" id="income-badge" style="display:none">!</span>
     </div>
     <div class="nav-item" data-page="transactions" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M10 5l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -731,7 +335,6 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.3"/></svg>
       Oracles
     </div>
-
     <div class="sidebar-section">Settings</div>
     <div class="nav-item" data-page="settings" onclick="setActive(this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M8 2v1M8 13v1M2 8h1M13 8h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -739,734 +342,961 @@
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main">
 
-    <!-- DASHBOARD PAGE -->
+    <!-- DASHBOARD -->
     <div class="page active" id="dashboard">
       <div class="page-header">
         <div>
           <div class="page-title">Dashboard</div>
-          <div class="page-sub">proofrent.solana · 7 assets tracked</div>
+          <div class="page-sub" id="dash-sub">Loading...</div>
         </div>
         <div class="page-actions">
-          <button class="btn-sm">Export CSV</button>
-          <button class="btn-primary-sm">+ Tokenize Asset</button>
+          <button class="btn-sm" onclick="refreshDashboard()">↻ Refresh</button>
+          <button class="btn-primary-sm" onclick="gotoTokenize()">+ Tokenize Asset</button>
         </div>
       </div>
-
       <div class="metrics">
         <div class="metric">
-          <div class="metric-label">Portfolio Value</div>
-          <div class="metric-value">$142,800</div>
-          <div class="metric-delta delta-up">↑ +8.4% this month</div>
+          <div class="metric-label">SOL Balance</div>
+          <div class="metric-value" id="m-sol">—</div>
+          <div class="metric-delta delta-neutral" id="m-sol-sub">your wallet</div>
         </div>
         <div class="metric">
-          <div class="metric-label">Total Fractions</div>
-          <div class="metric-value">1,935</div>
-          <div class="metric-delta delta-neutral">across 5 assets</div>
+          <div class="metric-label">Total Assets</div>
+          <div class="metric-value" id="m-assets">—</div>
+          <div class="metric-delta delta-neutral" id="m-assets-sub">on-chain</div>
         </div>
         <div class="metric">
-          <div class="metric-label">Income (30d)</div>
-          <div class="metric-value">$5,340</div>
-          <div class="metric-delta delta-up">↑ +12.1% vs prev</div>
+          <div class="metric-label">Verified</div>
+          <div class="metric-value" id="m-verified">—</div>
+          <div class="metric-delta delta-up" id="m-verified-sub">assets confirmed</div>
         </div>
         <div class="metric">
-          <div class="metric-label">Pending Dist.</div>
-          <div class="metric-value" style="color:var(--yellow)">$1,200</div>
-          <div class="metric-delta delta-neutral">3 assets pending</div>
+          <div class="metric-label">Pending</div>
+          <div class="metric-value" id="m-pending" style="color:var(--yellow)">—</div>
+          <div class="metric-delta delta-neutral">awaiting verification</div>
         </div>
       </div>
-
       <div class="content-grid">
         <div class="panel">
           <div class="table-header">
             <div class="table-title">Tokenized Assets</div>
             <div class="table-filters">
-              <button class="filter-btn active">All</button>
-              <button class="filter-btn">Verified</button>
-              <button class="filter-btn">Pending</button>
+              <button class="filter-btn active" onclick="filterAssets('all',this)">All</button>
+              <button class="filter-btn" onclick="filterAssets('verified',this)">Verified</button>
+              <button class="filter-btn" onclick="filterAssets('pending',this)">Pending</button>
             </div>
           </div>
           <table>
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>Type</th>
-                <th>Fractions</th>
-                <th>Sold</th>
-                <th>Status</th>
-                <th>Income</th>
-              </tr>
-            </thead>
-            <tbody id="assets-table-body">
-              <!-- Assets will be loaded here -->
-            </tbody>
+            <thead><tr><th>Asset</th><th>Price (SOL)</th><th>Status</th><th>Rented</th><th>Action</th></tr></thead>
+            <tbody id="assets-table-body"><tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading assets...</td></tr></tbody>
           </table>
         </div>
-
         <div class="right-panel">
           <div class="right-section" style="flex:1">
             <div class="right-title">Recent Activity</div>
-            <div id="activity-list"></div>
+            <div id="activity-list"><div style="color:var(--text3);font-size:12px;">No activity yet</div></div>
           </div>
           <div class="right-section">
-            <div class="right-title">Income Pool</div>
-            <div style="margin-bottom:10px">
-              <div class="chart-bars">
-                <div class="bar" style="height:30%"></div>
-                <div class="bar" style="height:55%"></div>
-                <div class="bar" style="height:40%"></div>
-                <div class="bar" style="height:80%"></div>
-                <div class="bar active" style="height:65%"></div>
-                <div class="bar" style="height:50%"></div>
-                <div class="bar" style="height:70%"></div>
-              </div>
-              <div style="font-size:10px;color:var(--text3);text-align:right;font-family:var(--font-mono)">last 7 days</div>
-            </div>
-            <div class="income-row">
-              <span class="income-label">Total collected</span>
-              <span class="income-val green">$5,340</span>
-            </div>
-            <div class="income-row">
-              <span class="income-label">Distributed</span>
-              <span class="income-val">$4,140</span>
-            </div>
-            <div class="income-row">
-              <span class="income-label">Pending</span>
-              <span class="income-val yellow">$1,200</span>
-            </div>
-            <button class="distribute-btn" onclick="distributeIncome()">Distribute Pending</button>
+            <div class="right-title">Wallet Info</div>
+            <div class="income-row"><span class="income-label">Network</span><span class="income-val">Devnet</span></div>
+            <div class="income-row"><span class="income-label">SOL Balance</span><span class="income-val green" id="wallet-sol-info">—</span></div>
+            <div class="income-row"><span class="income-label">Address</span><span class="income-val" id="wallet-addr-info" style="font-size:10px;">—</span></div>
+            <button class="distribute-btn" onclick="openFaucet()">🚰 Get Test SOL</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="page" id="marketplace" style="display:none;">
+    <!-- MARKETPLACE -->
+    <div class="page" id="marketplace">
       <div class="page-header">
         <div>
           <div class="page-title">Marketplace</div>
-          <div class="page-sub">Discover available tokenized assets</div>
+          <div class="page-sub">All tokenized assets available for rent</div>
         </div>
         <div class="page-actions">
-          <button class="btn-sm">Refresh</button>
-          <button class="btn-primary-sm">Browse all</button>
+          <button class="btn-sm" onclick="loadMarketplace()">↻ Refresh</button>
         </div>
       </div>
-      <div class="panel">
-        <div class="table-header">
-          <div class="table-title">Marketplace Listings</div>
-        </div>
+      <div class="panel" style="flex:1;">
+        <div class="table-header"><div class="table-title">All Assets</div></div>
         <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Value</th>
-              <th>Sold</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="marketplace-table-body"></tbody>
+          <thead><tr><th>Asset</th><th>Owner</th><th>Price (SOL)</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="marketplace-table-body"><tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <div class="page" id="my-assets" style="display:none;">
+    <!-- MY ASSETS -->
+    <div class="page" id="my-assets">
       <div class="page-header">
         <div>
           <div class="page-title">My Assets</div>
-          <div class="page-sub">Your owned fractionalized assets</div>
+          <div class="page-sub">Assets created by your wallet</div>
         </div>
         <div class="page-actions">
-          <button class="btn-sm">Manage</button>
-          <button class="btn-primary-sm">Add Asset</button>
+          <button class="btn-sm" onclick="loadMyAssets()">↻ Refresh</button>
+          <button class="btn-primary-sm" onclick="gotoTokenize()">+ New Asset</button>
         </div>
       </div>
-      <div class="panel">
-        <div class="table-header">
-          <div class="table-title">Owned Assets</div>
-        </div>
+      <div class="panel" style="flex:1;">
+        <div class="table-header"><div class="table-title">Your Assets</div></div>
         <table>
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Type</th>
-              <th>Fractions</th>
-              <th>Progress</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="my-assets-table"></tbody>
+          <thead><tr><th>Asset</th><th>Price (SOL)</th><th>Status</th><th>Rented</th><th>Action</th></tr></thead>
+          <tbody id="my-assets-table"><tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <div class="page" id="tokenize-asset" style="display:none;">
+    <!-- TOKENIZE -->
+    <div class="page" id="tokenize-asset">
       <div class="page-header">
         <div>
           <div class="page-title">Tokenize Asset</div>
-          <div class="page-sub">Create an asset tokenization request</div>
+          <div class="page-sub">Create a new on-chain asset token</div>
         </div>
       </div>
-      <div class="panel" style="padding:22px;">
-        <div class="right-title" style="margin-bottom:14px">New tokenization</div>
-        <div style="display:grid;gap:14px;">
-          <label>
-            <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Asset Name</div>
-            <input id="tokenize-name" type="text" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;" placeholder="Manhattan Apartment 4B" />
-          </label>
-          <label>
-            <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Asset Type</div>
-            <input id="tokenize-type" type="text" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;" placeholder="Real Estate" />
-          </label>
-          <label>
-            <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Estimated Value</div>
-            <input id="tokenize-value" type="text" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;" placeholder="$240,000" />
-          </label>
-          <label>
-            <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Proof Document</div>
-            <input id="tokenize-doc" type="text" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text);outline:none;" placeholder="IPFS hash or URL" />
-          </label>
-          <button class="distribute-btn" onclick="submitTokenizeForm()">Submit Tokenization</button>
+      <div class="form-page" style="flex:1;overflow-y:auto;">
+        <div style="max-width:480px;">
+          <div class="form-group">
+            <label class="form-label">Asset Name *</label>
+            <input id="t-name" class="form-input" type="text" placeholder="e.g. Berlin Warehouse Unit 3" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Asset Type *</label>
+            <select id="t-type" class="form-select">
+              <option value="">Select type...</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Energy">Energy</option>
+              <option value="Bond">Bond</option>
+              <option value="Commodity">Commodity</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rent Price (SOL per period) *</label>
+            <input id="t-price" class="form-input" type="number" step="0.01" min="0" placeholder="e.g. 0.5" />
+            <div class="form-hint">Amount in SOL transferred to you each rental period</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Proof / Metadata URI *</label>
+            <input id="t-uri" class="form-input" type="text" placeholder="https://ipfs.io/ipfs/... or any URL" />
+            <div class="form-hint">Link to document proving asset ownership (IPFS, Arweave, or HTTPS)</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <input id="t-desc" class="form-input" type="text" placeholder="Brief description of the asset" />
+          </div>
+          <div id="tokenize-status" style="margin-bottom:12px;font-size:12px;color:var(--text3);"></div>
+          <button class="distribute-btn" id="tokenize-btn" onclick="submitTokenize()" style="margin-top:0;">
+            🔗 Create Asset On-Chain
+          </button>
+          <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.6;">
+            This will call <code style="color:var(--accent2)">initialize_asset</code> on the smart contract and create an SPL token for your asset. Make sure you have SOL for transaction fees.
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="page" id="fractions" style="display:none;">
+    <!-- FRACTIONS -->
+    <div class="page" id="fractions">
       <div class="page-header">
         <div>
           <div class="page-title">Fractions</div>
-          <div class="page-sub">Browse fractional ownership positions</div>
+          <div class="page-sub">SPL token holdings linked to assets</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-sm" onclick="loadFractions()">↻ Refresh</button>
         </div>
       </div>
-      <div class="panel">
-        <div class="table-header">
-          <div class="table-title">Fraction Positions</div>
-        </div>
+      <div class="panel" style="flex:1;">
+        <div class="table-header"><div class="table-title">Token Holdings</div></div>
         <table>
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Fraction</th>
-              <th>Owned</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="fractions-table"></tbody>
+          <thead><tr><th>Mint Address</th><th>Balance</th><th>Asset</th><th>Status</th></tr></thead>
+          <tbody id="fractions-table"><tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading token accounts...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <div class="page" id="income-pool" style="display:none;">
+    <!-- INCOME POOL -->
+    <div class="page" id="income-pool">
       <div class="page-header">
         <div>
           <div class="page-title">Income Pool</div>
-          <div class="page-sub">Manage distributed earnings</div>
+          <div class="page-sub">Rental income and distributions</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-sm" onclick="loadIncomePool()">↻ Refresh</button>
         </div>
       </div>
-      <div class="panel">
-        <div class="right-section">
-          <div class="right-title">Summary</div>
-          <div class="income-row"><span class="income-label">Available for distribution</span><span class="income-val green">$1,200</span></div>
-          <div class="income-row"><span class="income-label">Monthly yield</span><span class="income-val green">+4.8%</span></div>
-          <div class="income-row"><span class="income-label">Pending payments</span><span class="income-val yellow">$420</span></div>
-          <div style="margin-top:16px;"><button class="distribute-btn" onclick="distributeIncome()">Distribute Now</button></div>
+      <div style="display:grid;grid-template-columns:1fr 310px;gap:1px;background:var(--border);flex:1;overflow:hidden;">
+        <div class="panel" style="overflow-y:auto;">
+          <div class="table-header"><div class="table-title">Rented Assets (earning income)</div></div>
+          <table>
+            <thead><tr><th>Asset</th><th>Renter</th><th>Price (SOL)</th><th>Action</th></tr></thead>
+            <tbody id="income-table"><tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="right-panel" style="overflow-y:auto;">
+          <div class="right-section">
+            <div class="right-title">Summary</div>
+            <div class="income-row"><span class="income-label">Your SOL Balance</span><span class="income-val green" id="ip-balance">—</span></div>
+            <div class="income-row"><span class="income-label">Assets Rented Out</span><span class="income-val" id="ip-rented">—</span></div>
+            <div class="income-row"><span class="income-label">Total Assets</span><span class="income-val" id="ip-total">—</span></div>
+            <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.6;">
+              When your asset is rented, the renter pays SOL directly to your wallet via the smart contract's <code style="color:var(--accent2)">rent_asset</code> instruction.
+            </div>
+          </div>
+          <div class="right-section">
+            <div class="right-title">Release Rented Assets</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px;">If your asset is rented and the rental period is over, you can release it to make it available again.</div>
+            <button class="distribute-btn" onclick="loadIncomePool()">↻ Check Status</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="page" id="transactions" style="display:none;">
+    <!-- TRANSACTIONS -->
+    <div class="page" id="transactions">
       <div class="page-header">
         <div>
           <div class="page-title">Transactions</div>
-          <div class="page-sub">Recent on-chain activity</div>
+          <div class="page-sub">Recent on-chain activity for your wallet</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-sm" onclick="loadTransactions()">↻ Refresh</button>
         </div>
       </div>
-      <div class="panel">
+      <div class="panel" style="flex:1;">
         <div class="table-header"><div class="table-title">Recent Transactions</div></div>
         <table>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Asset</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="transactions-table"></tbody>
+          <thead><tr><th>Signature</th><th>Block</th><th>Status</th><th>Explorer</th></tr></thead>
+          <tbody id="transactions-table"><tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading transactions...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <div class="page" id="oracles" style="display:none;">
+    <!-- ORACLES -->
+    <div class="page" id="oracles">
       <div class="page-header">
         <div>
           <div class="page-title">Oracles</div>
-          <div class="page-sub">Check live data feeds</div>
+          <div class="page-sub">Asset verification and proof-of-ownership feeds</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-sm" onclick="loadOracles()">↻ Refresh</button>
         </div>
       </div>
-      <div class="panel">
-        <div class="right-section">
-          <div class="right-title">Oracle status</div>
-          <div class="income-row"><span class="income-label">Price feed</span><span class="income-val green">Online</span></div>
-          <div class="income-row"><span class="income-label">Verification feed</span><span class="income-val green">Online</span></div>
-          <div class="income-row"><span class="income-label">Availability</span><span class="income-val green">100%</span></div>
+      <div class="form-page" style="flex:1;overflow-y:auto;">
+        <div class="oracle-card">
+          <div class="oracle-header">
+            <div>
+              <div class="oracle-name">Verification Oracle</div>
+              <div class="oracle-meta">Calls backend /verify endpoint → on-chain verify_asset</div>
+            </div>
+            <span class="pill pill-online">Online</span>
+          </div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Verify a pending asset by its on-chain address. The oracle confirms ownership and calls the smart contract.</div>
+          <div class="form-group">
+            <label class="form-label">Asset Account Address</label>
+            <input id="oracle-addr" class="form-input" type="text" placeholder="Paste asset account pubkey..." />
+          </div>
+          <button class="distribute-btn" style="margin-top:0;" onclick="verifyViaOracle()">⚡ Verify Asset On-Chain</button>
+        </div>
+        <div class="oracle-card">
+          <div class="oracle-header">
+            <div>
+              <div class="oracle-name">Backend API Status</div>
+              <div class="oracle-meta" id="api-url-display">http://localhost:3006</div>
+            </div>
+            <span class="pill" id="api-status-pill">Checking...</span>
+          </div>
+          <div id="api-status-detail" style="font-size:12px;color:var(--text3);">Connecting to backend...</div>
+        </div>
+        <div class="oracle-card">
+          <div class="oracle-header">
+            <div>
+              <div class="oracle-name">Solana RPC</div>
+              <div class="oracle-meta">api.devnet.solana.com</div>
+            </div>
+            <span class="pill pill-online" id="rpc-status">Online</span>
+          </div>
+          <div id="rpc-slot" style="font-size:12px;color:var(--text3);">Fetching slot...</div>
         </div>
       </div>
     </div>
 
-    <div class="page" id="settings" style="display:none;">
+    <!-- SETTINGS -->
+    <div class="page" id="settings">
       <div class="page-header">
         <div>
           <div class="page-title">Settings</div>
-          <div class="page-sub">Manage your account and preferences</div>
+          <div class="page-sub">Wallet and network configuration</div>
         </div>
       </div>
-      <div class="panel" style="padding:22px;">
-        <div class="right-title" style="margin-bottom:14px">Preferences</div>
-        <div style="display:grid;gap:14px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="color:var(--text2)">Wallet status</span>
-            <span style="font-family:var(--font-mono);color:var(--green)">Connected</span>
+      <div class="form-page" style="flex:1;overflow-y:auto;">
+        <div style="max-width:480px;">
+          <div class="right-title" style="margin-bottom:16px;">Wallet</div>
+          <div class="settings-row"><span class="settings-key">Status</span><span class="settings-val" style="color:var(--green)">Connected</span></div>
+          <div class="settings-row"><span class="settings-key">Address</span><span class="settings-val" id="s-addr" style="font-size:10px;">—</span></div>
+          <div class="settings-row"><span class="settings-key">SOL Balance</span><span class="settings-val" id="s-sol">—</span></div>
+          <div class="settings-row"><span class="settings-key">Network</span><span class="settings-val">Devnet</span></div>
+          <div class="settings-row"><span class="settings-key">Wallet Type</span><span class="settings-val" id="s-type">—</span></div>
+
+          <div class="right-title" style="margin: 20px 0 16px;">Backend</div>
+          <div class="settings-row">
+            <span class="settings-key">API URL</span>
+            <span class="settings-val">
+              <input id="api-url-input" style="background:var(--bg3);border:1px solid var(--border);padding:4px 8px;border-radius:6px;color:var(--text);font-family:var(--font-mono);font-size:11px;width:200px;" value="http://localhost:3006" onchange="updateApiUrl(this.value)" />
+            </span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="color:var(--text2)">Notifications</span>
-            <span style="font-family:var(--font-mono);color:var(--text)">Enabled</span>
+          <div class="settings-row"><span class="settings-key">Status</span><span class="settings-val" id="s-api-status">—</span></div>
+          <div class="settings-row"><span class="settings-key">Program ID</span><span class="settings-val" style="font-size:10px;">CJMFFyVC...ggnf</span></div>
+
+          <div style="margin-top:24px;display:flex;gap:10px;">
+            <button class="btn-primary-sm" onclick="checkApiStatus()">Test Connection</button>
+            <button class="btn-sm" onclick="openExplorer()">Open Explorer</button>
+            <button class="btn-sm" style="border-color:rgba(248,113,113,0.3);color:var(--red);" onclick="disconnect()">Disconnect</button>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="color:var(--text2)">Theme</span>
-            <span style="font-family:var(--font-mono);color:var(--text)">Dark</span>
-          </div>
-          <button class="btn-primary-sm" onclick="disconnect()">Disconnect Wallet</button>
         </div>
       </div>
     </div>
 
-  </div>
-</div>
+  </div><!-- /main -->
+</div><!-- /app-screen -->
+
+<div class="toast" id="toast"></div>
 
 <script>
-  // Global variables
-  let currentWallet = null;
-  let walletConnection = null;
-  let publicKey = null;
-  const API_BASE = 'http://localhost:3006'; // Backend API
+const API_BASE_DEFAULT = 'http://localhost:3006';
+let API_BASE = API_BASE_DEFAULT;
+let currentWallet = null;
+let publicKey = null;
+let solConnection = null;
+let allAssets = [];
+let myActivity = [];
 
-  // Mock data for demo - will be replaced with real API calls
-  let MOCK_ASSETS = [];
-  let MOCK_ACTIVITY = [];
+// ─── UTILS ───────────────────────────────
+function showToast(msg, type = 'info', duration = 3500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), duration);
+}
 
-  // Wallet connection functions
-  async function connectWallet(type) {
-    if (currentWallet) return;
+function shortAddr(addr) {
+  if (!addr) return '—';
+  const s = addr.toString();
+  return s.slice(0, 6) + '...' + s.slice(-4);
+}
 
-    const btn = document.querySelector(`.wallet-btn[onclick="connectWallet('${type}')"]`);
-    const sub = btn.querySelector('.wallet-btn-sub');
-    btn.classList.add('loading');
-    sub.textContent = 'Connecting...';
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return Math.floor(diff/1000) + 's ago';
+  if (diff < 3600000) return Math.floor(diff/60000) + 'm ago';
+  return Math.floor(diff/3600000) + 'h ago';
+}
 
-    try {
-      if (type === 'phantom') {
-        if (!window.solana || !window.solana.isPhantom) {
-          window.location.href = 'https://chrome.google.com/webstore/detail/phantom/bfnaelmomeimhlpmgjnjophhpkkoljpa';
-          return;
-        }
+function updateApiUrl(val) {
+  API_BASE = val.replace(/\/$/, '');
+  checkApiStatus();
+}
 
-        // Connect to Phantom
-        const response = await window.solana.connect();
-        publicKey = response.publicKey;
-        walletConnection = window.solana;
+// ─── WALLET ──────────────────────────────
+async function connectWallet(type) {
+  const btn = document.querySelector(`.wallet-btn[onclick="connectWallet('${type}')"]`);
+  const sub = btn.querySelector('.wallet-btn-sub');
+  btn.style.opacity = '0.7';
+  sub.textContent = 'Connecting...';
 
-        // Check if user has SOL for transactions
-        const balance = await checkSolBalance();
-        if (balance < 0.1) {
-          alert(`Warning: You need at least 0.1 SOL for transactions. Current balance: ${balance} SOL. Get test SOL from https://faucet.solana.com`);
-        }
-      } else {
-        throw new Error(`${type} wallet integration not implemented. Please use Phantom.`);
-      }
-
-      currentWallet = type;
-      document.getElementById('wallet-addr-display').textContent = publicKey.toString().slice(0, 8) + '...' + publicKey.toString().slice(-4);
-      document.getElementById('wallet-avatar').style.background = getWalletGradient(type);
-
-      // Animate out login screen
-      document.getElementById('login-screen').classList.add('hidden');
-
-      // Animate in app
-      setTimeout(() => {
-        document.getElementById('app-screen').classList.add('visible');
-        loadDashboardData();
-      }, 100);
-
-    } catch (error) {
-      console.error('Wallet connection failed:', error);
-      sub.textContent = error.message || 'Connection failed';
-      btn.classList.remove('loading');
-    }
-  }
-
-  async function checkSolBalance() {
-    try {
-      if (typeof solanaWeb3 === 'undefined') {
-        await window.solanaWeb3Ready;
-      }
-      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'));
-      const balance = await connection.getBalance(publicKey);
-      return balance / solanaWeb3.LAMPORTS_PER_SOL;
-    } catch (error) {
-      console.error('Failed to check balance:', error);
-      return 0;
-    }
-  }
-
-  function getWalletGradient(type) {
-    const gradients = {
-      phantom: 'linear-gradient(135deg, #ab5ef5, #5e5ef5)',
-      solflare: 'linear-gradient(135deg, #ff6a00, #ee0979)',
-      backpack: 'linear-gradient(135deg, #0ea5e9, #6366f1)'
-    };
-    return gradients[type] || gradients.phantom;
-  }
-
-  function disconnect() {
-    currentWallet = null;
-    walletConnection = null;
-    publicKey = null;
-    document.getElementById('app-screen').classList.remove('visible');
-    setTimeout(() => {
-      document.getElementById('login-screen').classList.remove('hidden');
-      // Reset buttons
-      document.querySelectorAll('.wallet-btn').forEach(b => {
-        b.classList.remove('loading');
-        const sub = b.querySelector('.wallet-btn-sub');
-        if (sub && sub.dataset.orig) sub.textContent = sub.dataset.orig;
-      });
-    }, 500);
-  }
-
-  function setActive(el) {
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    el.classList.add('active');
-
-    const pageId = el.getAttribute('data-page');
-    document.querySelectorAll('.page').forEach(page => {
-      page.classList.remove('active');
-      page.style.display = 'none';
-    });
-
-    const page = document.getElementById(pageId);
-    if (page) {
-      page.classList.add('active');
-      page.style.display = 'block';
-    }
-
-    switch (pageId) {
-      case 'dashboard':
-        loadDashboardData();
-        break;
-      case 'marketplace':
-        renderMarketplace();
-        break;
-      case 'my-assets':
-        renderMyAssets();
-        break;
-      case 'tokenize-asset':
-        renderTokenizeAsset();
-        break;
-      case 'fractions':
-        renderFractions();
-        break;
-      case 'income-pool':
-        renderIncomePool();
-        break;
-      case 'transactions':
-        renderTransactions();
-        break;
-      case 'oracles':
-        renderOracles();
-        break;
-      case 'settings':
-        renderSettings();
-        break;
-      default:
-        break;
-    }
-  }
-
-  // Load dashboard data from backend
-  async function loadDashboardData() {
-    try {
-      // Load assets from backend
-      const assetsResponse = await fetch(`${API_BASE}/api/assets`);
-      if (assetsResponse.ok) {
-        MOCK_ASSETS = await assetsResponse.json();
-      } else {
-        // Fallback to mock data
-        MOCK_ASSETS = [
-          {
-            address: '7xKp3mRj...mN4q',
-            name: 'Manhattan Apt 4B',
-            type: 'Real Estate',
-            fractions: 1000,
-            sold: 680,
-            status: 'Verified',
-            income: '$3,200'
-          },
-          {
-            address: '3aYr...pQ8z',
-            name: 'Solar Farm Block 7',
-            type: 'Energy',
-            fractions: 1000,
-            sold: 450,
-            status: 'Verified',
-            income: '$1,140'
-          }
-        ];
-      }
-
-      // Load assets table
-      const tbody = document.getElementById('assets-table-body');
-      tbody.innerHTML = '';
-
-      MOCK_ASSETS.forEach(asset => {
-        const fractions = asset.totalFractions || asset.fractions || 0;
-        const sold = asset.soldFractions || asset.sold || 0;
-        const status = asset.isVerified !== undefined ? (asset.isVerified ? 'Verified' : 'Pending') : (asset.status || 'Pending');
-        const income = asset.collectedIncome !== undefined ? `$${asset.collectedIncome}` : (asset.income || '—');
-        const progressPercent = fractions > 0 ? Math.round((sold / fractions) * 100) : 0;
-        const statusClass = status.toLowerCase();
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="name">${asset.name}<div class="mono" style="margin-top:2px;color:var(--text3)">${asset.address}</div></td>
-          <td>${asset.type}</td>
-          <td>${fractions}</td>
-          <td>
-            <div style="display:flex;align-items:center;gap:6px">
-              <div class="progress-bar"><div class="progress-fill${status === 'Verified' ? ' green' : ''}" style="width:${progressPercent}%"></div></div>
-              <span style="font-size:11px;font-family:var(--font-mono)">${sold}/${fractions}</span>
-            </div>
-          </td>
-          <td><span class="pill pill-${statusClass}">${status}</span></td>
-          <td class="${income !== '—' ? 'delta-up' : ''}" style="font-family:var(--font-mono);font-size:12px;">${income}</td>
-        `;
-        tbody.appendChild(row);
-      });
-
-      // Load activity
-      const activityList = document.getElementById('activity-list');
-      activityList.innerHTML = '';
-
-      MOCK_ACTIVITY = [
-        {
-          type: 'green',
-          text: 'Fraction purchase — Manhattan Apt 4B<br><span style="color:var(--text3)">50 fractions × 0.82 SOL</span>',
-          time: '2 min ago'
-        },
-        {
-          type: 'blue',
-          text: 'Asset verified on-chain<br><span style="color:var(--text3)">Solar Farm Block 7</span>',
-          time: '18 min ago'
-        }
-      ];
-
-      MOCK_ACTIVITY.forEach(activity => {
-        const item = document.createElement('div');
-        item.className = 'activity-item';
-        item.innerHTML = `
-          <div class="activity-dot dot-${activity.type}"></div>
-          <div>
-            <div class="activity-text">${activity.text}</div>
-            <div class="activity-time">${activity.time}</div>
-          </div>
-        `;
-        activityList.appendChild(item);
-      });
-
-    } catch (error) {
-      console.error('Failed to load dashboard data:', error);
-      // Show error in UI
-      document.getElementById('assets-table-body').innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--red)">Failed to load assets. Make sure backend is running.</td></tr>';
-    }
-  }
-
-  // Distribute income function
-  async function distributeIncome() {
-    if (!publicKey) {
-      alert('Please connect your wallet first');
-      return;
-    }
-
-    try {
-      const balance = await checkSolBalance();
-      if (balance < 0.05) {
-        alert(`Insufficient SOL balance. You need at least 0.05 SOL for transaction fees. Current balance: ${balance} SOL`);
+  try {
+    let provider = null;
+    if (type === 'phantom') {
+      if (!window.solana?.isPhantom) {
+        window.open('https://phantom.app/', '_blank');
+        sub.textContent = 'Install Phantom first';
+        btn.style.opacity = '1';
         return;
       }
-
-      // Call backend API to distribute income
-      const response = await fetch(`${API_BASE}/api/distribute-income`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          walletAddress: publicKey.toString()
-        })
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        alert(`Income distribution successful! Transaction: ${result.txId}`);
-        loadDashboardData(); // Refresh data
-      } else {
-        const error = await response.json();
-        throw new Error(error.message || 'Distribution failed');
+      provider = window.solana;
+    } else if (type === 'solflare') {
+      if (!window.solflare) {
+        window.open('https://solflare.com/', '_blank');
+        sub.textContent = 'Install Solflare first';
+        btn.style.opacity = '1';
+        return;
       }
-
-    } catch (error) {
-      console.error('Distribution failed:', error);
-      alert('Distribution failed: ' + error.message);
+      provider = window.solflare;
+    } else if (type === 'backpack') {
+      if (!window.backpack) {
+        window.open('https://backpack.app/', '_blank');
+        sub.textContent = 'Install Backpack first';
+        btn.style.opacity = '1';
+        return;
+      }
+      provider = window.backpack;
     }
+
+    const resp = await provider.connect();
+    publicKey = resp.publicKey;
+    currentWallet = type;
+
+    // Setup Solana connection
+    await loadSolanaWeb3();
+    solConnection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'), 'confirmed');
+
+    // Update UI
+    const addrStr = publicKey.toString();
+    document.getElementById('wallet-addr-display').textContent = shortAddr(addrStr);
+    document.getElementById('wallet-avatar').style.background = getGradient(type);
+    document.getElementById('s-type').textContent = type;
+    document.getElementById('s-addr').textContent = addrStr;
+    document.getElementById('wallet-addr-info').textContent = shortAddr(addrStr);
+
+    // Hide login, show app
+    document.getElementById('login-screen').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('app-screen').classList.add('visible');
+      refreshAll();
+    }, 150);
+
+  } catch (err) {
+    console.error(err);
+    sub.textContent = err.message || 'Failed';
+    btn.style.opacity = '1';
+    showToast('Connection failed: ' + (err.message || 'Unknown error'), 'error');
   }
+}
 
-  // Store original sub labels on load
-  document.querySelectorAll('.wallet-btn-sub').forEach(s => {
-    s.dataset.orig = s.textContent;
-  });
-
-  // Filter buttons
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+function disconnect() {
+  try { window.solana?.disconnect(); } catch(e){}
+  currentWallet = null; publicKey = null; solConnection = null;
+  document.getElementById('app-screen').classList.remove('visible');
+  setTimeout(() => {
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.querySelectorAll('.wallet-btn').forEach(b => {
+      b.style.opacity = '1';
+      const sub = b.querySelector('.wallet-btn-sub');
+      if (sub) sub.textContent = sub.dataset.orig || sub.textContent;
     });
+  }, 500);
+}
+
+function getGradient(type) {
+  return { phantom: 'linear-gradient(135deg,#ab5ef5,#5e5ef5)', solflare: 'linear-gradient(135deg,#ff6a00,#ee0979)', backpack: 'linear-gradient(135deg,#0ea5e9,#6366f1)' }[type] || 'linear-gradient(135deg,#3b82f6,#a78bfa)';
+}
+
+async function loadSolanaWeb3() {
+  if (window.solanaWeb3) return;
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js';
+    s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
   });
+}
 
-  document.querySelector('.btn-primary-sm').addEventListener('click', () => {
-    setActive(document.querySelector('.nav-item[data-page="tokenize-asset"]'));
-  });
+async function getBalance() {
+  if (!solConnection || !publicKey) return null;
+  try {
+    const bal = await solConnection.getBalance(publicKey);
+    return (bal / 1e9).toFixed(4);
+  } catch(e) { return null; }
+}
 
-  function renderMarketplace() {
-    const tbody = document.getElementById('marketplace-table-body');
-    tbody.innerHTML = '';
-    MOCK_ASSETS.forEach(asset => {
-      const sold = asset.soldFractions || asset.sold || 0;
-      const total = asset.totalFractions || asset.fractions || 0;
-      const status = asset.isVerified !== undefined ? (asset.isVerified ? 'Verified' : 'Pending') : (asset.status || 'Pending');
-      tbody.innerHTML += `
-        <tr>
-          <td class="name">${asset.name}</td>
-          <td>${asset.type}</td>
-          <td>${asset.price ? '$' + asset.price.toLocaleString() : '$' + (asset.value || '—')}</td>
-          <td>${sold}/${total}</td>
-          <td><span class="pill pill-${status.toLowerCase()}">${status}</span></td>
-        </tr>
-      `;
+// ─── DATA LOADING ─────────────────────────
+async function refreshAll() {
+  updateBalance();
+  loadDashboard();
+  checkApiStatus();
+}
+
+async function updateBalance() {
+  const bal = await getBalance();
+  if (bal !== null) {
+    document.getElementById('sol-balance-display').textContent = bal + ' SOL';
+    document.getElementById('m-sol').textContent = bal;
+    document.getElementById('wallet-sol-info').textContent = bal + ' SOL';
+    document.getElementById('ip-balance').textContent = bal + ' SOL';
+    document.getElementById('s-sol').textContent = bal + ' SOL';
+  }
+}
+
+async function fetchAssets() {
+  try {
+    const r = await fetch(API_BASE + '/api/assets');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } catch(e) {
+    console.warn('fetchAssets failed:', e.message);
+    return null;
+  }
+}
+
+async function loadDashboard() {
+  const data = await fetchAssets();
+  allAssets = data || [];
+
+  const total = allAssets.length;
+  const verified = allAssets.filter(a => a.isVerified).length;
+  const pending = allAssets.filter(a => !a.isVerified).length;
+
+  document.getElementById('m-assets').textContent = total;
+  document.getElementById('m-verified').textContent = verified;
+  document.getElementById('m-pending').textContent = pending;
+  document.getElementById('dash-sub').textContent = publicKey ? shortAddr(publicKey.toString()) + ' · ' + total + ' assets' : '';
+
+  renderAssetsTable('assets-table-body', allAssets, true);
+  renderActivitySidebar();
+}
+
+function renderAssetsTable(tbodyId, assets, withAction) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+
+  if (!assets || assets.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-title">No assets found</div><div>Create your first asset using "Tokenize Asset"</div></div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = assets.map(a => {
+    const isVerified = a.isVerified;
+    const isRented = a.isRented;
+    const statusClass = isVerified ? 'verified' : 'pending';
+    const statusLabel = isVerified ? 'Verified' : 'Pending';
+    const rentedLabel = isRented ? '<span class="pill pill-yellow">Rented</span>' : '<span class="pill pill-gray">Available</span>';
+    const price = a.price !== undefined ? (a.price / 1e9).toFixed(3) + ' SOL' : '—';
+    const addr = a.publicKey || a.address || '';
+    const isOwner = publicKey && a.owner === publicKey.toString();
+
+    let actions = '';
+    if (withAction) {
+      if (!isRented && isVerified && !isOwner) {
+        actions = `<button class="btn-sm" onclick="rentAsset('${addr}','${a.owner}')">Rent</button>`;
+      } else if (isRented && isOwner) {
+        actions = `<button class="btn-sm" onclick="releaseAsset('${addr}')">Release</button>`;
+      } else if (!isVerified && isOwner) {
+        actions = `<button class="btn-sm" onclick="verifyAssetCall('${addr}')">Request Verify</button>`;
+      } else {
+        actions = '<span style="color:var(--text3);font-size:11px;">—</span>';
+      }
+    }
+
+    return `<tr>
+      <td class="name">${escHtml(a.name || 'Unnamed')}<div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);margin-top:2px;">${shortAddr(addr)}</div></td>
+      <td style="font-family:var(--font-mono);">${price}</td>
+      <td><span class="pill pill-${statusClass}">${statusLabel}</span></td>
+      <td>${rentedLabel}</td>
+      <td>${actions}</td>
+    </tr>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderActivitySidebar() {
+  const el = document.getElementById('activity-list');
+  if (myActivity.length === 0) {
+    el.innerHTML = '<div style="color:var(--text3);font-size:12px;">No activity yet. Create or rent an asset.</div>';
+    return;
+  }
+  el.innerHTML = myActivity.slice(0, 8).map(a => `
+    <div class="activity-item">
+      <div class="activity-dot dot-${a.color}"></div>
+      <div>
+        <div class="activity-text">${escHtml(a.text)}</div>
+        <div class="activity-time">${timeAgo(a.ts)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function addActivity(text, color = 'blue') {
+  myActivity.unshift({ text, color, ts: Date.now() });
+  if (myActivity.length > 20) myActivity.pop();
+  renderActivitySidebar();
+}
+
+// ─── FILTER ──────────────────────────────
+function filterAssets(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  let filtered = allAssets;
+  if (filter === 'verified') filtered = allAssets.filter(a => a.isVerified);
+  if (filter === 'pending') filtered = allAssets.filter(a => !a.isVerified);
+  renderAssetsTable('assets-table-body', filtered, true);
+}
+
+function refreshDashboard() { loadDashboard(); updateBalance(); showToast('Refreshing data...'); }
+
+// ─── MARKETPLACE ─────────────────────────
+async function loadMarketplace() {
+  document.getElementById('marketplace-table-body').innerHTML = '<tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr>';
+  const data = await fetchAssets();
+  const assets = data || [];
+  const tbody = document.getElementById('marketplace-table-body');
+
+  if (!assets.length) {
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">🏪</div><div class="empty-state-title">No assets listed</div><div>Be the first to tokenize an asset!</div></div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = assets.map(a => {
+    const isOwner = publicKey && a.owner === publicKey.toString();
+    const isVerified = a.isVerified;
+    const isRented = a.isRented;
+    const price = a.price !== undefined ? (a.price / 1e9).toFixed(3) + ' SOL' : '—';
+    const addr = a.publicKey || a.address || '';
+    let action = '';
+    if (!isRented && isVerified && !isOwner) {
+      action = `<button class="btn-primary-sm" onclick="rentAsset('${addr}','${a.owner}')">Rent Now</button>`;
+    } else if (isRented && isOwner) {
+      action = `<button class="btn-sm" onclick="releaseAsset('${addr}')">Release</button>`;
+    } else if (isRented) {
+      action = '<span class="pill pill-yellow">Rented</span>';
+    } else if (!isVerified) {
+      action = '<span class="pill pill-pending">Pending verify</span>';
+    } else {
+      action = '<span style="color:var(--text3);font-size:11px;">Yours</span>';
+    }
+    return `<tr>
+      <td class="name">${escHtml(a.name || 'Unnamed')}<div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);">${shortAddr(addr)}</div></td>
+      <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(a.owner)}</td>
+      <td style="font-family:var(--font-mono);">${price}</td>
+      <td><span class="pill pill-${isVerified?'verified':'pending'}">${isVerified?'Verified':'Pending'}</span></td>
+      <td>${action}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── MY ASSETS ───────────────────────────
+async function loadMyAssets() {
+  document.getElementById('my-assets-table').innerHTML = '<tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr>';
+  const data = await fetchAssets();
+  const mine = (data || []).filter(a => publicKey && a.owner === publicKey.toString());
+  renderAssetsTable('my-assets-table', mine, true);
+}
+
+// ─── TOKENIZE ────────────────────────────
+function gotoTokenize() {
+  const el = document.querySelector('.nav-item[data-page="tokenize-asset"]');
+  setActive(el);
+}
+
+async function submitTokenize() {
+  const name = document.getElementById('t-name').value.trim();
+  const type = document.getElementById('t-type').value;
+  const price = parseFloat(document.getElementById('t-price').value);
+  const uri = document.getElementById('t-uri').value.trim();
+
+  if (!name || !type || isNaN(price) || price <= 0 || !uri) {
+    showToast('Please fill all required fields', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('tokenize-btn');
+  const status = document.getElementById('tokenize-status');
+  btn.disabled = true;
+  btn.textContent = '⏳ Creating...';
+  status.textContent = 'Calling backend to initialize asset...';
+  status.style.color = 'var(--accent2)';
+
+  try {
+    const r = await fetch(API_BASE + '/api/create-asset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, type, price: Math.round(price * 1e9), metadataUri: uri })
     });
+
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.error || err.message || 'HTTP ' + r.status);
+    }
+
+    const result = await r.json();
+    status.textContent = '✅ Asset created! Tx: ' + shortAddr(result.txId || result.signature || 'done');
+    status.style.color = 'var(--green)';
+    addActivity('Asset created: ' + name, 'green');
+    showToast('Asset "' + name + '" created on-chain!', 'success');
+
+    // Clear form
+    document.getElementById('t-name').value = '';
+    document.getElementById('t-type').value = '';
+    document.getElementById('t-price').value = '';
+    document.getElementById('t-uri').value = '';
+    document.getElementById('t-desc').value = '';
+
+    setTimeout(() => {
+      setActive(document.querySelector('.nav-item[data-page="my-assets"]'));
+    }, 2000);
+
+  } catch(e) {
+    status.textContent = '❌ Error: ' + e.message;
+    status.style.color = 'var(--red)';
+    showToast('Failed: ' + e.message, 'error', 5000);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔗 Create Asset On-Chain';
+  }
+}
+
+// ─── FRACTIONS ───────────────────────────
+async function loadFractions() {
+  const tbody = document.getElementById('fractions-table');
+  tbody.innerHTML = '<tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading token accounts...</td></tr>';
+
+  if (!solConnection || !publicKey) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-title">No wallet connected</div></div></td></tr>';
+    return;
   }
 
-  function renderMyAssets() {
-    const tbody = document.getElementById('my-assets-table');
-    tbody.innerHTML = '';
-    MOCK_ASSETS.slice(0, 3).forEach(asset => {
-      const sold = asset.soldFractions || asset.sold || 0;
-      const total = asset.totalFractions || asset.fractions || 0;
-      const status = asset.isVerified !== undefined ? (asset.isVerified ? 'Verified' : 'Pending') : (asset.status || 'Pending');
-      tbody.innerHTML += `
-        <tr>
-          <td class="name">${asset.name}</td>
-          <td>${asset.type}</td>
-          <td>${total}</td>
-          <td>${sold}/${total}</td>
-          <td><span class="pill pill-${status.toLowerCase()}">${status}</span></td>
-        </tr>
-      `;
-    });
-  }
+  try {
+    const tokenAccounts = await solConnection.getParsedTokenAccountsByOwner(publicKey, { programId: new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA') });
 
-  function renderTokenizeAsset() {
-    // no extra rendering needed for this static form page
-  }
-
-  function submitTokenizeForm() {
-    const name = document.getElementById('tokenize-name').value;
-    const type = document.getElementById('tokenize-type').value;
-    const value = document.getElementById('tokenize-value').value;
-    const doc = document.getElementById('tokenize-doc').value;
-    if (!name || !type || !value || !doc) {
-      alert('Please fill all tokenization fields before submitting.');
+    if (!tokenAccounts.value.length) {
+      tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-icon">🪙</div><div class="empty-state-title">No token accounts found</div><div>Create an asset to get SPL tokens</div></div></td></tr>';
       return;
     }
-    alert(`Tokenization request submitted for ${name}. This is a demo flow.`);
+
+    tbody.innerHTML = tokenAccounts.value.map(acc => {
+      const info = acc.account.data.parsed.info;
+      const mint = info.mint;
+      const balance = info.tokenAmount.uiAmount || 0;
+      // try to match to an asset
+      const matchedAsset = allAssets.find(a => a.mint === mint);
+      const assetName = matchedAsset ? escHtml(matchedAsset.name) : '<span style="color:var(--text3)">Unknown</span>';
+      const statusLabel = matchedAsset ? (matchedAsset.isVerified ? '<span class="pill pill-verified">Verified</span>' : '<span class="pill pill-pending">Pending</span>') : '<span class="pill pill-gray">—</span>';
+      return `<tr>
+        <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(mint)}</td>
+        <td style="font-family:var(--font-mono);">${balance}</td>
+        <td>${assetName}</td>
+        <td>${statusLabel}</td>
+      </tr>`;
+    }).join('');
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--red);padding:16px;">Error: ' + escHtml(e.message) + '</td></tr>';
+  }
+}
+
+// ─── INCOME POOL ─────────────────────────
+async function loadIncomePool() {
+  updateBalance();
+  const data = await fetchAssets();
+  const assets = data || [];
+  allAssets = assets;
+
+  const myRented = assets.filter(a => publicKey && a.owner === publicKey.toString() && a.isRented);
+  const myTotal = assets.filter(a => publicKey && a.owner === publicKey.toString());
+
+  document.getElementById('ip-rented').textContent = myRented.length;
+  document.getElementById('ip-total').textContent = myTotal.length;
+
+  const incBadge = document.getElementById('income-badge');
+  if (myRented.length > 0) { incBadge.style.display = ''; incBadge.textContent = myRented.length; }
+  else incBadge.style.display = 'none';
+
+  const tbody = document.getElementById('income-table');
+  if (!myRented.length) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-icon">💰</div><div class="empty-state-title">No active rentals</div><div>When someone rents your asset, it appears here</div></div></td></tr>';
+    return;
   }
 
-  function renderFractions() {
-    const tbody = document.getElementById('fractions-table');
-    tbody.innerHTML = '';
-    MOCK_ASSETS.forEach(asset => {
-      const own = Math.round((asset.soldFractions || asset.sold || 0) * 0.25);
-      const status = asset.isVerified ? 'Active' : 'Review';
-      tbody.innerHTML += `
-        <tr>
-          <td class="name">${asset.name}</td>
-          <td>${Math.round((asset.totalFractions || 1000) / 10)}%</td>
-          <td>${own} shares</td>
-          <td><span class="pill pill-${status === 'Active' ? 'green' : 'yellow'}">${status}</span></td>
-        </tr>
-      `;
+  tbody.innerHTML = myRented.map(a => {
+    const addr = a.publicKey || a.address || '';
+    const price = a.price !== undefined ? (a.price / 1e9).toFixed(3) + ' SOL' : '—';
+    return `<tr>
+      <td class="name">${escHtml(a.name || 'Unnamed')}<div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);">${shortAddr(addr)}</div></td>
+      <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(a.renter || '')}</td>
+      <td style="font-family:var(--font-mono);">${price}</td>
+      <td><button class="btn-sm" onclick="releaseAsset('${addr}')">Release</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── TRANSACTIONS ────────────────────────
+async function loadTransactions() {
+  const tbody = document.getElementById('transactions-table');
+  tbody.innerHTML = '<tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading...</td></tr>';
+
+  if (!solConnection || !publicKey) return;
+
+  try {
+    const sigs = await solConnection.getSignaturesForAddress(publicKey, { limit: 15 });
+    if (!sigs.length) {
+      tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-title">No transactions yet</div></div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = sigs.map(s => {
+      const status = s.err ? '<span class="pill pill-red">Failed</span>' : '<span class="pill pill-verified">Confirmed</span>';
+      const slot = s.slot || '—';
+      const sig = s.signature;
+      return `<tr>
+        <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(sig)}</td>
+        <td style="font-family:var(--font-mono);">${slot}</td>
+        <td>${status}</td>
+        <td><a href="https://explorer.solana.com/tx/${sig}?cluster=devnet" target="_blank" style="color:var(--accent2);font-size:11px;">↗ View</a></td>
+      </tr>`;
+    }).join('');
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--red);padding:16px;">Error: ' + escHtml(e.message) + '</td></tr>';
+  }
+}
+
+// ─── ORACLES ─────────────────────────────
+async function loadOracles() {
+  checkApiStatus();
+  if (solConnection) {
+    try {
+      const slot = await solConnection.getSlot();
+      document.getElementById('rpc-slot').textContent = 'Current slot: ' + slot.toLocaleString();
+      document.getElementById('rpc-status').className = 'pill pill-online';
+      document.getElementById('rpc-status').textContent = 'Online';
+    } catch(e) {
+      document.getElementById('rpc-slot').textContent = 'RPC error: ' + e.message;
+      document.getElementById('rpc-status').className = 'pill pill-pending';
+      document.getElementById('rpc-status').textContent = 'Error';
+    }
+  }
+}
+
+async function checkApiStatus() {
+  const pill = document.getElementById('api-status-pill');
+  const detail = document.getElementById('api-status-detail');
+  const sStat = document.getElementById('s-api-status');
+  if (pill) { pill.className = 'pill pill-gray'; pill.textContent = 'Checking...'; }
+
+  try {
+    const r = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(3000) });
+    if (r.ok) {
+      if (pill) { pill.className = 'pill pill-online'; pill.textContent = 'Online'; }
+      if (detail) detail.textContent = 'Backend is running at ' + API_BASE;
+      if (sStat) sStat.textContent = 'Connected';
+      if (sStat) sStat.style.color = 'var(--green)';
+    } else {
+      throw new Error('HTTP ' + r.status);
+    }
+  } catch(e) {
+    if (pill) { pill.className = 'pill pill-pending'; pill.textContent = 'Offline'; }
+    if (detail) detail.textContent = 'Cannot reach ' + API_BASE + ' — make sure backend is running (npm run dev in /backend)';
+    if (sStat) sStat.textContent = 'Offline';
+    if (sStat) sStat.style.color = 'var(--red)';
+  }
+}
+
+async function verifyViaOracle() {
+  const addr = document.getElementById('oracle-addr').value.trim();
+  if (!addr) { showToast('Enter asset address', 'error'); return; }
+  try {
+    showToast('Calling verification oracle...', 'info');
+    const r = await fetch(API_BASE + '/verify?asset=' + addr);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    showToast('Asset verified! Tx: ' + shortAddr(data.txId || 'done'), 'success', 5000);
+    addActivity('Asset verified via oracle: ' + shortAddr(addr), 'green');
+  } catch(e) {
+    showToast('Verification failed: ' + e.message, 'error', 5000);
+  }
+}
+
+async function verifyAssetCall(addr) {
+  showToast('Requesting verification...', 'info');
+  try {
+    const r = await fetch(API_BASE + '/verify?asset=' + addr);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    showToast('Verified successfully!', 'success');
+    addActivity('Asset verified: ' + shortAddr(addr), 'green');
+    loadDashboard();
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ─── RENT / RELEASE ──────────────────────
+async function rentAsset(assetAddr, ownerAddr) {
+  if (!publicKey) { showToast('Connect wallet first', 'error'); return; }
+  showToast('Sending rent transaction...', 'info');
+  try {
+    const r = await fetch(API_BASE + '/api/rent-asset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ assetAddress: assetAddr, renterAddress: publicKey.toString() })
     });
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.error || err.message || 'HTTP ' + r.status);
+    }
+    const data = await r.json();
+    showToast('Rented! Tx: ' + shortAddr(data.txId || 'done'), 'success', 5000);
+    addActivity('Rented asset: ' + shortAddr(assetAddr), 'blue');
+    loadDashboard();
+    loadMarketplace();
+  } catch(e) {
+    showToast('Rent failed: ' + e.message, 'error', 5000);
   }
+}
 
-  function renderIncomePool() {
-    // Income pool page uses static summary content already present
-  }
-
-  function renderTransactions() {
-    const tbody = document.getElementById('transactions-table');
-    tbody.innerHTML = '';
-    const items = [
-      { type: 'Purchase', asset: 'Manhattan Apt 4B', amount: '0.82 SOL', status: 'Confirmed' },
-      { type: 'Verify', asset: 'Solar Farm Block 7', amount: '—', status: 'Confirmed' },
-      { type: 'Distribution', asset: 'Income Pool', amount: '0.12 SOL', status: 'Pending' }
-    ];
-    items.forEach(item => {
-      tbody.innerHTML += `
-        <tr>
-          <td class="name">${item.type}</td>
-          <td>${item.asset}</td>
-          <td>${item.amount}</td>
-          <td><span class="pill pill-${item.status === 'Confirmed' ? 'green' : 'yellow'}">${item.status}</span></td>
-        </tr>
-      `;
+async function releaseAsset(assetAddr) {
+  if (!publicKey) { showToast('Connect wallet first', 'error'); return; }
+  showToast('Releasing asset...', 'info');
+  try {
+    const r = await fetch(API_BASE + '/api/release-asset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ assetAddress: assetAddr, ownerAddress: publicKey.toString() })
     });
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.error || err.message || 'HTTP ' + r.status);
+    }
+    showToast('Asset released!', 'success');
+    addActivity('Released asset: ' + shortAddr(assetAddr), 'yellow');
+    loadDashboard();
+    loadIncomePool();
+  } catch(e) {
+    showToast('Release failed: ' + e.message, 'error', 5000);
   }
+}
 
-  function renderOracles() {
-    // Oracles page uses static content already present
+// ─── NAVIGATION ──────────────────────────
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  const pageId = el.getAttribute('data-page');
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  const page = document.getElementById(pageId);
+  if (page) { page.classList.add('active'); page.style.display = ''; }
+
+  switch(pageId) {
+    case 'dashboard': loadDashboard(); break;
+    case 'marketplace': loadMarketplace(); break;
+    case 'my-assets': loadMyAssets(); break;
+    case 'fractions': loadFractions(); break;
+    case 'income-pool': loadIncomePool(); break;
+    case 'transactions': loadTransactions(); break;
+    case 'oracles': loadOracles(); break;
+    case 'settings': updateBalance(); checkApiStatus(); break;
   }
+}
 
-  function renderSettings() {
-    // Settings page uses static content already present
-  }
+// ─── MISC ────────────────────────────────
+function openFaucet() {
+  window.open('https://faucet.solana.com/', '_blank');
+}
 
-  // Add tokenize asset button handler
-  document.querySelector('.btn-primary-sm').addEventListener('click', () => {
-    setActive(document.querySelector('.nav-item[data-page="tokenize-asset"]'));
-  });
+function openExplorer() {
+  if (publicKey) window.open('https://explorer.solana.com/address/' + publicKey.toString() + '?cluster=devnet', '_blank');
+}
 
-  // Load Solana Web3.js
-  const script = document.createElement('script');
-  script.src = 'https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js';
-  window.solanaWeb3Ready = new Promise((resolve) => {
-    script.onload = resolve;
-    script.onerror = () => {
-      console.error('Failed to load Solana web3 script');
-    };
-  });
-  document.head.appendChild(script);
+// Store original sub labels
+document.querySelectorAll('.wallet-btn-sub').forEach(s => { s.dataset.orig = s.textContent; });
+
+// Auto-refresh balance every 30s
+setInterval(() => { if (publicKey) updateBalance(); }, 30000);
 </script>
 </body>
 </html>
