@@ -22,8 +22,6 @@ jobs:
       - name: Install and Build
         run: |
           cd frontend-react
-          npm install
-          npm run build
         env:
           VITE_PROGRAM_ID: CJMFFyVCeEUqfouQnaVKpXRwBWFD5rUZH8q8VAuggynf
 
