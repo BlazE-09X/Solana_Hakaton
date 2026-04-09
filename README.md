@@ -1,6 +1,6 @@
 # ProofRent — RWA Rental Protocol on Solana
 
-[![CI](https://github.com/Blaze-09X/proofrent-mvp/actions/workflows/ci.yml)](https://github.com/Blaze-09X/proofrent-mvp/actions/workflows/ci.yml)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-14F195.svg)](LICENSE)
 [![Solana](https://img.shields.io/badge/Solana-devnet-9945FF)](https://solana.com)
 [![Framework: Anchor](https://img.shields.io/badge/Framework-Anchor-blue)](https://www.anchor-lang.com/)
