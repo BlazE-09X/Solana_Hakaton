@@ -59,28 +59,29 @@ graph TD
 
 1. **Клонирование и установка:**
    ```bash
-   git clone [https://github.com/Blaze-09X/proofrent-mvp](https://github.com/Blaze-09X/proofrent-mvp)
+   git clone [https://blaze-09x.github.io/Solana_Hakaton/](https://blaze-09x.github.io/Solana_Hakaton/)
    cd proofrent-mvp
    npm install
-2. **Сборка смарт-контрактыЖ**
+2. **Сборка смарт-контракта**
     ```bash
     anchor build
-3. **Запуск фронтенда**
+    anchor test
+3. **Запуск backend и frontend (локально)**
+   Запускаем в первом терминале backend, после во втором терминале запускаем frontend:
    ```bash
-    cd frontend-react
-    npm run dev
+    npx http-server . -p 3001 -c-1 --cors -P http://localhost:3001
+    starting up http-server, serving
 ## 🗺 Дорожная карта (Roadmap)
 
 - [x] **v1.0 — MVP (Current)**
   - [x] Разработка смарт-контракта на Rust (Anchor).
   - [x] Логика создания (Mint) и аренды (Rent) активов.
-  - [x] Реализация функции освобождения актива (Release Asset).
   - [x] Базовая интеграция с Phantom Wallet.
 
 
   ---
 [🚀 Live Demo](https://blaze-09x.github.io/Solana_Hakaton/)
-(*обязательно нужно открыть с помощью google chrome, предварительно скачав расширение phantom wallet, выбрав сеть devnet!)
+(*обязательно нужно открыть с помощью браузера в котором есть расширение кошелька Phantom Wallet(например, Google Chrome. Microsoft Edge). Предварительно выбрав сеть devnet!)
   ---
 
 
@@ -88,7 +89,7 @@ graph TD
 
 Разработчики: 
 - **Специализация:** Computer Engineering and Software
-- **GitHub:** [@Blaze-09X](https://github.com/Blaze-09X), ___
+- **GitHub:** [@Blaze-09X](https://github.com/Blaze-09X),
 - **Проекты:** Blockchain (Solana/Anchor)
 
 ---
