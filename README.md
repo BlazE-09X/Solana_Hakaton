@@ -6,7 +6,7 @@
 
 > Децентрализованный протокол для токенизации и фракционирования реальных активов (Real World Assets). Позволяет владельцам токенизировать имущество, создавать фракции собственности и распределять доход от аренды через прозрачные смарт-контракты на базе Solana.
 
-[Live Demo](#) · [Video Walkthrough](#) · [Docs](docs/)
+[Live Demo](#)  · [Docs](docs/)
 
 ---
 
@@ -180,7 +180,6 @@ Solana_Hakaton-main/
 ## 📈 Roadmap
 
 - [ ] Mainnet deployment
-- [ ] Mobile app (React Native)
 - [ ] Advanced oracle integrations
 - [ ] AMM для фракций
 - [ ] DAO governance
@@ -188,25 +187,7 @@ Solana_Hakaton-main/
 
 ---
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-_Built with ❤️ for Solana Hackathon 2024_
-
-**Предварительные требования:** Node.js 18+, Rust, Anchor CLI, Solana CLI.
+**Предварительные требования:** Node.js 18+, Rust, Anchor CLI 1.0.0, Solana CLI 3.1.12, Cargo 1.94.1.
 
 1. **Клонирование и установка:**
    ```bash
@@ -255,3 +236,7 @@ _Built with ❤️ for Solana Hackathon 2024_
 Данный проект распространяется под лицензией **MIT**.
 
 Полный текст лицензии доступен в файле [LICENSE](./LICENSE).
+
+---
+
+_Built with ❤️ for Solana Hackathon 2024_
