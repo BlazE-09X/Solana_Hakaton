@@ -21,7 +21,7 @@ jobs:
 
       - name: Install and Build
         run: |
-          cd frontend-react
+          cd frontend-react/frontend-react
           npm install
           npm run build
         env:
