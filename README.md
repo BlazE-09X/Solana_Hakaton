@@ -1,6 +1,6 @@
 # ProofRent — RWA Rental Protocol on Solana
 
-[![CI](https://github.com/Blaze-09X/proofrent-mvp/actions/workflows/ci.yml/badge.svg)](https://github.com/Blaze-09X/proofrent-mvp/actions/workflows/ci.yml)
+[![CI](https://github.com/Blaze-09X/proofrent-mvp/actions/workflows/ci.yml)](https://github.com/Blaze-09X/proofrent-mvp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-14F195.svg)](LICENSE)
 [![Solana](https://img.shields.io/badge/Solana-devnet-9945FF)](https://solana.com)
 [![Framework: Anchor](https://img.shields.io/badge/Framework-Anchor-blue)](https://www.anchor-lang.com/)
@@ -89,7 +89,7 @@ graph TD
 
 Разработчики: 
 - **Специализация:** Computer Engineering and Software
-- **GitHub:** [@Blaze-09X](https://github.com/Blaze-09X),
+- **GitHub:** [@Blaze-09X](https://github.com/Blaze-09X), [@Aidana91](https://github.com/Aidana91), [@Aruzhan-kenshbaeva](https://github.com/Aruzhan-kenshbaeva), [tipiitop44-hub](https://github.com/tipiitop44-hub).
 - **Проекты:** Blockchain (Solana/Anchor)
 
 ---
