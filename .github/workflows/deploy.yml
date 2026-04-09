@@ -22,13 +22,11 @@ jobs:
       - name: Install and Build
         run: |
           cd frontend-react
-          npm install
-          npm run build
         env:
           VITE_PROGRAM_ID: CJMFFyVCeEUqfouQnaVKpXRwBWFD5rUZH8q8VAuggynf
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: frontend-react/dist
+          folder: public
           branch: gh-pages

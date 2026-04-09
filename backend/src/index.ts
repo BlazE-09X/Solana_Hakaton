@@ -13,6 +13,23 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+interface AssetRecord {
+  address: string;
+  name: string;
+  type: string;
+  price: number;
+  metadataUri: string;
+  owner: string;
+  txSignature: string;
+  ipfsProofHash?: string;
+  totalFractions?: number;
+  isVerified: boolean;
+  isRented: boolean;
+  renter?: string;
+}
+
+const assets: AssetRecord[] = [];
+
 // 🔗 Anchor provider
 const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
@@ -106,4 +123,75 @@ app.get("/buy/:mint", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Backend running on http://localhost:3000"));
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+app.get('/api/assets', (req, res) => {
+  res.json(assets);
+});
+
+app.post('/api/create-asset', (req, res) => {
+  const {
+    name,
+    type,
+    price,
+    metadataUri,
+    ownerAddress,
+    txSignature,
+    ipfsProofHash,
+    totalFractions,
+  } = req.body;
+
+  if (!name || !type || !price || !metadataUri || !ownerAddress || !txSignature) {
+    return res.status(400).json({ error: 'Missing required asset fields' });
+  }
+
+  const newAsset: AssetRecord = {
+    address: txSignature,
+    name,
+    type,
+    price,
+    metadataUri,
+    owner: ownerAddress,
+    txSignature,
+    ipfsProofHash,
+    totalFractions,
+    isVerified: false,
+    isRented: false,
+  };
+
+  assets.push(newAsset);
+  res.json({ success: true, asset: newAsset });
+});
+
+app.post('/api/verify', (req, res) => {
+  const { assetAddress } = req.body;
+  const asset = assets.find((a) => a.address === assetAddress || a.txSignature === assetAddress);
+  if (!asset) return res.status(404).json({ error: 'Asset not found' });
+  asset.isVerified = true;
+  res.json({ success: true, asset });
+});
+
+app.post('/api/rent', (req, res) => {
+  const { assetAddress, renterAddress } = req.body;
+  const asset = assets.find((a) => a.address === assetAddress || a.txSignature === assetAddress);
+  if (!asset) return res.status(404).json({ error: 'Asset not found' });
+  if (asset.isRented) return res.status(400).json({ error: 'Asset is already rented' });
+  asset.isRented = true;
+  asset.renter = renterAddress;
+  res.json({ success: true, asset });
+});
+
+app.post('/api/release', (req, res) => {
+  const { assetAddress, ownerAddress } = req.body;
+  const asset = assets.find((a) => a.address === assetAddress || a.txSignature === assetAddress);
+  if (!asset) return res.status(404).json({ error: 'Asset not found' });
+  if (asset.owner !== ownerAddress) return res.status(403).json({ error: 'Only owner can release asset' });
+  asset.isRented = false;
+  asset.renter = undefined;
+  res.json({ success: true, asset });
+});
+
+const PORT = Number(process.env.PORT) || 3000;
+app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));
