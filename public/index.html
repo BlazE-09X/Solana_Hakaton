@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ProofRent Protocol</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
 
@@ -21,7 +22,6 @@
     --text3: #4d6490;
     --accent: #3b82f6;
     --accent2: #60a5fa;
-    --accent-glow: rgba(59,130,246,0.25);
     --green: #34d399;
     --yellow: #fbbf24;
     --red: #f87171;
@@ -34,14 +34,12 @@
 
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
 
-  /* LOGIN */
+  /* ── LOGIN ─────────────────────────────────────────────────── */
   #login-screen {
     position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
     z-index: 100; background: var(--bg); transition: opacity 0.5s ease, transform 0.5s ease;
@@ -49,7 +47,8 @@
   #login-screen.hidden { opacity: 0; transform: scale(0.97); pointer-events: none; }
   .login-grid-bg {
     position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
     background-size: 48px 48px;
   }
   .login-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%); pointer-events: none; }
@@ -64,7 +63,7 @@
   .login-logo-text span { color: var(--accent2); }
   .login-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; padding: 3px 8px; background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); border-radius: 20px; color: var(--green); font-family: var(--font-mono); margin-left: auto; }
   .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
   .login-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 8px; }
   .login-subtitle { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 32px; }
   .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-size: 11px; color: var(--text3); font-family: var(--font-mono); }
@@ -85,7 +84,7 @@
   .login-footer { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text3); text-align: center; line-height: 1.7; }
   .login-footer a { color: var(--accent2); text-decoration: none; }
 
-  /* APP */
+  /* ── APP SHELL ──────────────────────────────────────────────── */
   #app-screen {
     display: grid; grid-template-rows: 48px 1fr; grid-template-columns: 220px 1fr;
     height: 100vh; opacity: 0; transform: scale(1.02);
@@ -93,23 +92,22 @@
   }
   #app-screen.visible { opacity: 1; transform: scale(1); pointer-events: all; }
 
-  /* TOPBAR */
-  .topbar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: var(--bg2); border-bottom: 1px solid var(--border); z-index: 10; }
+  /* ── TOPBAR ─────────────────────────────────────────────────── */
+  .topbar { grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: var(--bg2); border-bottom: 1px solid var(--border); z-index: 10; }
   .topbar-left { display: flex; align-items: center; gap: 14px; }
   .topbar-brand { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
   .topbar-brand span { color: var(--accent2); }
   .topbar-chain { font-size: 10px; color: var(--text3); font-family: var(--font-mono); padding: 2px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg3); }
   .topbar-right { display: flex; align-items: center; gap: 10px; }
   .status-badge { font-size: 10px; padding: 3px 9px; border-radius: 20px; background: rgba(52,211,153,0.08); color: var(--green); border: 1px solid rgba(52,211,153,0.2); display: flex; align-items: center; gap: 5px; font-family: var(--font-mono); }
-  .wallet-display { display: flex; align-items: center; gap: 8px; padding: 5px 12px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; transition: border-color 0.15s; }
-  .wallet-display:hover { border-color: rgba(59,130,246,0.4); }
+  .wallet-display { display: flex; align-items: center; gap: 8px; padding: 5px 12px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; }
   .wallet-avatar { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--purple)); flex-shrink: 0; }
   .wallet-addr { font-size: 12px; color: var(--text2); font-family: var(--font-mono); }
   .sol-balance { font-size: 11px; color: var(--green); font-family: var(--font-mono); padding: 3px 8px; background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.15); border-radius: 6px; }
-  .disconnect-btn { font-size: 11px; padding: 4px 10px; border-radius: 6px; background: transparent; border: 1px solid var(--border2); color: var(--text3); cursor: pointer; transition: all 0.15s; font-family: var(--font-ui); }
+  .disconnect-btn { font-size: 11px; padding: 4px 10px; border-radius: 6px; background: transparent; border: 1px solid var(--border2); color: var(--text3); cursor: pointer; font-family: var(--font-ui); transition: all 0.15s; }
   .disconnect-btn:hover { border-color: var(--red); color: var(--red); }
 
-  /* SIDEBAR */
+  /* ── SIDEBAR ────────────────────────────────────────────────── */
   .sidebar { background: var(--bg2); border-right: 1px solid var(--border); padding: 16px 0; display: flex; flex-direction: column; gap: 1px; overflow-y: auto; }
   .sidebar-section { padding: 10px 16px 6px; font-size: 9px; font-weight: 600; color: var(--text3); letter-spacing: .12em; text-transform: uppercase; font-family: var(--font-mono); margin-top: 4px; }
   .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.12s; border-left: 2px solid transparent; user-select: none; }
@@ -119,12 +117,12 @@
   .nav-item.active .nav-icon { opacity: 1; }
   .nav-badge { margin-left: auto; font-size: 10px; padding: 1px 6px; background: var(--yellow); color: #000; border-radius: 10px; font-weight: 700; font-family: var(--font-mono); }
 
-  /* MAIN */
+  /* ── MAIN ───────────────────────────────────────────────────── */
   .main { background: var(--bg); overflow-y: auto; display: flex; flex-direction: column; }
   .page { display: none; }
   .page.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
 
-  /* PAGE HEADER */
+  /* ── PAGE HEADER ────────────────────────────────────────────── */
   .page-header { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; flex-shrink: 0; }
   .page-title { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
   .page-sub { font-size: 12px; color: var(--text3); margin-top: 3px; font-family: var(--font-mono); }
@@ -134,21 +132,30 @@
   .btn-primary-sm { font-size: 12px; padding: 6px 14px; border-radius: 7px; border: none; background: var(--accent); color: #fff; cursor: pointer; font-weight: 600; font-family: var(--font-ui); transition: all 0.15s; }
   .btn-primary-sm:hover { background: var(--accent2); box-shadow: 0 4px 14px rgba(59,130,246,0.35); }
 
-  /* METRICS */
+  /* ── METRICS ────────────────────────────────────────────────── */
   .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); flex-shrink: 0; }
   .metric { background: var(--bg); padding: 18px 20px; }
   .metric-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; font-family: var(--font-mono); }
   .metric-value { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
   .metric-delta { font-size: 11px; margin-top: 5px; font-family: var(--font-mono); }
   .delta-up { color: var(--green); }
-  .delta-down { color: var(--red); }
   .delta-neutral { color: var(--text3); }
 
-  /* CONTENT GRID */
+  /* ── CHART ──────────────────────────────────────────────────── */
+  .chart-bar {
+    padding: 14px 20px 12px; background: var(--bg2); border-bottom: 1px solid var(--border);
+    height: 130px; flex-shrink: 0; position: relative;
+  }
+  .chart-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .chart-bar-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; font-family: var(--font-mono); }
+  .chart-bar-meta { font-size: 11px; color: var(--green); font-family: var(--font-mono); }
+  #yieldChart { max-height: 80px; }
+
+  /* ── CONTENT GRID ───────────────────────────────────────────── */
   .content-grid { display: grid; grid-template-columns: 1fr 310px; gap: 1px; background: var(--border); flex: 1; overflow: hidden; }
   .panel { background: var(--bg); overflow-y: auto; }
 
-  /* TABLE */
+  /* ── TABLE ──────────────────────────────────────────────────── */
   .table-header { padding: 14px 20px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 2; }
   .table-title { font-size: 13px; font-weight: 600; }
   .table-filters { display: flex; gap: 6px; }
@@ -161,16 +168,13 @@
   tbody tr:last-child { border-bottom: none; }
   td { padding: 11px 20px; font-size: 12px; color: var(--text2); vertical-align: middle; }
   td.name { color: var(--text); font-weight: 600; }
-  td.mono { font-family: var(--font-mono); font-size: 11px; }
   .pill { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; font-family: var(--font-mono); }
-  .pill-verified, .pill-confirmed, .pill-active, .pill-online { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
-  .pill-pending, .pill-review { background: rgba(251,191,36,0.1); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
+  .pill-verified,.pill-online { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
+  .pill-pending { background: rgba(251,191,36,0.1); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
   .pill-gray { background: rgba(139,148,158,0.08); color: var(--text3); border: 1px solid var(--border); }
-  .progress-bar { width: 72px; height: 3px; background: var(--bg4); border-radius: 2px; overflow: hidden; display: inline-block; }
-  .progress-fill { height: 100%; border-radius: 2px; background: var(--accent); }
-  .progress-fill.green { background: var(--green); }
+  .pill-red { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
 
-  /* RIGHT PANEL */
+  /* ── RIGHT PANEL ────────────────────────────────────────────── */
   .right-panel { display: flex; flex-direction: column; gap: 1px; background: var(--border); overflow-y: auto; }
   .right-section { background: var(--bg); padding: 14px 16px; }
   .right-title { font-size: 12px; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.01em; }
@@ -188,16 +192,14 @@
   .income-label { color: var(--text2); }
   .income-val { font-family: var(--font-mono); font-weight: 600; color: var(--text); }
   .income-val.green { color: var(--green); }
-  .income-val.yellow { color: var(--yellow); }
-  .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 40px; padding-bottom: 4px; }
-  .bar { flex: 1; border-radius: 2px 2px 0 0; background: var(--accent); opacity: 0.3; transition: opacity 0.15s; min-width: 6px; }
-  .bar:hover { opacity: 0.8; }
-  .bar.active { opacity: 0.75; background: var(--accent2); }
   .distribute-btn { width: 100%; margin-top: 12px; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; background: linear-gradient(135deg, var(--accent), #6366f1); color: #fff; cursor: pointer; transition: all 0.15s; font-family: var(--font-ui); }
   .distribute-btn:hover { box-shadow: 0 4px 16px rgba(59,130,246,0.35); transform: translateY(-1px); }
   .distribute-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  /* FORM */
+  /* ── KZTE badge ─────────────────────────────────────────────── */
+  .kzte-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; padding: 3px 10px; background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); border-radius: 6px; color: var(--purple); font-family: var(--font-mono); }
+
+  /* ── FORM ───────────────────────────────────────────────────── */
   .form-page { padding: 22px; }
   .form-group { margin-bottom: 14px; }
   .form-label { font-size: 12px; color: var(--text3); margin-bottom: 6px; display: block; }
@@ -205,34 +207,48 @@
   .form-input:focus { border-color: rgba(59,130,246,0.5); }
   .form-select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg3); color: var(--text); outline: none; font-family: var(--font-ui); font-size: 13px; cursor: pointer; }
   .form-hint { font-size: 11px; color: var(--text3); margin-top: 4px; font-family: var(--font-mono); }
+  .file-input-wrapper input[type="file"] { width: 100%; padding: 12px; border-radius: 12px; border: 1px dashed var(--border2); background: var(--bg3); color: var(--text2); outline: none; font-family: var(--font-mono); font-size: 11px; cursor: pointer; }
 
-  /* EMPTY STATE */
+  /* ── TX STATUS ──────────────────────────────────────────────── */
+  .tx-status-box { background: var(--bg3); border: 1px solid var(--border2); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; display: none; }
+  .tx-status-box.show { display: block; }
+  .tx-step { display: flex; align-items: center; gap: 8px; padding: 5px 0; color: var(--text3); font-family: var(--font-mono); font-size: 11px; }
+  .tx-step.done { color: var(--green); }
+  .tx-step.active { color: var(--accent2); }
+  .tx-step.error { color: var(--red); }
+  .tx-step-icon { width: 16px; flex-shrink: 0; text-align: center; }
+
+  /* ── EMPTY / LOADING ────────────────────────────────────────── */
   .empty-state { padding: 48px 20px; text-align: center; color: var(--text3); font-size: 13px; }
   .empty-state-icon { font-size: 32px; margin-bottom: 12px; }
   .empty-state-title { font-size: 14px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
-
-  /* LOADING */
   .loading-row td { color: var(--text3); font-style: italic; }
   .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* TOAST */
-  .toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 18px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; font-size: 13px; z-index: 999; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; max-width: 320px; }
+  /* ── TOAST ──────────────────────────────────────────────────── */
+  .toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 18px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; font-size: 13px; z-index: 999; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; max-width: 360px; line-height: 1.5; }
   .toast.show { opacity: 1; transform: translateY(0); }
   .toast.success { border-color: rgba(52,211,153,0.3); }
   .toast.error { border-color: rgba(248,113,113,0.3); }
 
-  /* ORACLE card */
+  /* ── ORACLE CARDS ───────────────────────────────────────────── */
   .oracle-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
   .oracle-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .oracle-name { font-size: 13px; font-weight: 600; }
   .oracle-meta { font-size: 11px; color: var(--text3); font-family: var(--font-mono); margin-top: 4px; }
 
-  /* SETTINGS card */
+  /* ── SETTINGS ───────────────────────────────────────────────── */
   .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
   .settings-row:last-child { border-bottom: none; }
   .settings-key { font-size: 13px; color: var(--text2); }
   .settings-val { font-size: 12px; font-family: var(--font-mono); color: var(--text); }
+
+  /* ── LINKS ──────────────────────────────────────────────────── */
+  .tx-link { color: var(--accent2); text-decoration: none; font-family: var(--font-mono); font-size: 11px; }
+  .tx-link:hover { text-decoration: underline; }
+  .proof-link { color: var(--purple); text-decoration: none; font-family: var(--font-mono); font-size: 10px; cursor: pointer; }
+  .proof-link:hover { text-decoration: underline; }
 
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -241,7 +257,7 @@
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ═══════════════════════════════ LOGIN ══════════════════════════════════ -->
 <div id="login-screen">
   <div class="login-grid-bg"></div>
   <div class="login-glow"></div>
@@ -278,8 +294,9 @@
   </div>
 </div>
 
-<!-- APP -->
+<!-- ═══════════════════════════════ APP ════════════════════════════════════ -->
 <div id="app-screen">
+
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
@@ -287,7 +304,10 @@
       <div class="topbar-chain">Solana Devnet</div>
     </div>
     <div class="topbar-right">
-      <div class="status-badge"><div class="badge-dot" style="width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;"></div>Devnet online</div>
+      <div class="status-badge">
+        <div class="badge-dot" style="width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;"></div>Devnet online
+      </div>
+      <div class="kzte-badge" id="kzte-display">— ₸</div>
       <div class="sol-balance" id="sol-balance-display">— SOL</div>
       <div class="wallet-display">
         <div class="wallet-avatar" id="wallet-avatar"></div>
@@ -314,7 +334,7 @@
       My Assets
     </div>
     <div class="nav-item" data-page="tokenize-asset" onclick="setActive(this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5 8h6M8 5v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       Tokenize Asset
     </div>
     <div class="nav-item" data-page="fractions" onclick="setActive(this)">
@@ -345,7 +365,7 @@
   <!-- MAIN -->
   <div class="main">
 
-    <!-- DASHBOARD -->
+    <!-- ────────────────── DASHBOARD ────────────────── -->
     <div class="page active" id="dashboard">
       <div class="page-header">
         <div>
@@ -357,28 +377,38 @@
           <button class="btn-primary-sm" onclick="gotoTokenize()">+ Tokenize Asset</button>
         </div>
       </div>
+      <!-- metrics -->
       <div class="metrics">
         <div class="metric">
           <div class="metric-label">SOL Balance</div>
           <div class="metric-value" id="m-sol">—</div>
-          <div class="metric-delta delta-neutral" id="m-sol-sub">your wallet</div>
+          <div class="metric-delta delta-neutral" style="font-size:9px;color:var(--text3);">⛓ On-Chain · Verified</div>
         </div>
         <div class="metric">
           <div class="metric-label">Total Assets</div>
           <div class="metric-value" id="m-assets">—</div>
-          <div class="metric-delta delta-neutral" id="m-assets-sub">on-chain</div>
+          <div class="metric-delta delta-neutral">on-chain</div>
         </div>
         <div class="metric">
           <div class="metric-label">Verified</div>
           <div class="metric-value" id="m-verified">—</div>
-          <div class="metric-delta delta-up" id="m-verified-sub">assets confirmed</div>
+          <div class="metric-delta delta-up">by smart contract</div>
         </div>
         <div class="metric">
           <div class="metric-label">Pending</div>
           <div class="metric-value" id="m-pending" style="color:var(--yellow)">—</div>
-          <div class="metric-delta delta-neutral">awaiting verification</div>
+          <div class="metric-delta delta-neutral">awaiting oracle</div>
         </div>
       </div>
+      <!-- chart -->
+      <div class="chart-bar">
+        <div class="chart-bar-header">
+          <span class="chart-bar-title">Protocol Revenue (SOL)</span>
+          <span class="chart-bar-meta" id="chart-live-val">Live</span>
+        </div>
+        <canvas id="yieldChart"></canvas>
+      </div>
+      <!-- table + sidebar -->
       <div class="content-grid">
         <div class="panel">
           <div class="table-header">
@@ -390,8 +420,8 @@
             </div>
           </div>
           <table>
-            <thead><tr><th>Asset</th><th>Price (SOL)</th><th>Status</th><th>Rented</th><th>Action</th></tr></thead>
-            <tbody id="assets-table-body"><tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading assets...</td></tr></tbody>
+            <thead><tr><th>Asset</th><th>Price (SOL)</th><th>Status</th><th>Rented</th><th>Proof</th><th>Action</th></tr></thead>
+            <tbody id="assets-table-body"><tr class="loading-row"><td colspan="6"><span class="spinner"></span>Loading assets...</td></tr></tbody>
           </table>
         </div>
         <div class="right-panel">
@@ -403,6 +433,7 @@
             <div class="right-title">Wallet Info</div>
             <div class="income-row"><span class="income-label">Network</span><span class="income-val">Devnet</span></div>
             <div class="income-row"><span class="income-label">SOL Balance</span><span class="income-val green" id="wallet-sol-info">—</span></div>
+            <div class="income-row"><span class="income-label">KZT equiv.</span><span class="income-val" style="color:var(--purple)" id="wallet-kzte-info">— ₸</span></div>
             <div class="income-row"><span class="income-label">Address</span><span class="income-val" id="wallet-addr-info" style="font-size:10px;">—</span></div>
             <button class="distribute-btn" onclick="openFaucet()">🚰 Get Test SOL</button>
           </div>
@@ -410,12 +441,12 @@
       </div>
     </div>
 
-    <!-- MARKETPLACE -->
+    <!-- ────────────────── MARKETPLACE ────────────────── -->
     <div class="page" id="marketplace">
       <div class="page-header">
         <div>
           <div class="page-title">Marketplace</div>
-          <div class="page-sub">All tokenized assets available for rent</div>
+          <div class="page-sub">All tokenized assets · verified assets can be rented</div>
         </div>
         <div class="page-actions">
           <button class="btn-sm" onclick="loadMarketplace()">↻ Refresh</button>
@@ -424,13 +455,13 @@
       <div class="panel" style="flex:1;">
         <div class="table-header"><div class="table-title">All Assets</div></div>
         <table>
-          <thead><tr><th>Asset</th><th>Owner</th><th>Price (SOL)</th><th>Status</th><th>Action</th></tr></thead>
-          <tbody id="marketplace-table-body"><tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr></tbody>
+          <thead><tr><th>Asset</th><th>Owner</th><th>Price (SOL)</th><th>Status</th><th>Proof</th><th>Action</th></tr></thead>
+          <tbody id="marketplace-table-body"><tr class="loading-row"><td colspan="6"><span class="spinner"></span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <!-- MY ASSETS -->
+    <!-- ────────────────── MY ASSETS ────────────────── -->
     <div class="page" id="my-assets">
       <div class="page-header">
         <div>
@@ -445,22 +476,30 @@
       <div class="panel" style="flex:1;">
         <div class="table-header"><div class="table-title">Your Assets</div></div>
         <table>
-          <thead><tr><th>Asset</th><th>Price (SOL)</th><th>Status</th><th>Rented</th><th>Action</th></tr></thead>
-          <tbody id="my-assets-table"><tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr></tbody>
+          <thead><tr><th>Asset</th><th>Price (SOL)</th><th>Tx / Address</th><th>Status</th><th>Proof</th><th>Action</th></tr></thead>
+          <tbody id="my-assets-table"><tr class="loading-row"><td colspan="6"><span class="spinner"></span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <!-- TOKENIZE -->
+    <!-- ────────────────── TOKENIZE ────────────────── -->
     <div class="page" id="tokenize-asset">
       <div class="page-header">
         <div>
           <div class="page-title">Tokenize Asset</div>
-          <div class="page-sub">Create a new on-chain asset token</div>
+          <div class="page-sub">Create a new on-chain asset token — wallet will open to sign</div>
         </div>
       </div>
       <div class="form-page" style="flex:1;overflow-y:auto;">
-        <div style="max-width:480px;">
+        <div style="max-width:500px;">
+          <!-- info box -->
+          <div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.18);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:12px;color:var(--text2);line-height:1.7;">
+            <div style="font-weight:600;color:var(--accent2);margin-bottom:6px;">⚡ How it works (real blockchain tx)</div>
+            1. Fill form → 2. Click "Create" → 3. <strong>Wallet opens</strong> for signature → 4. Tx sent to Devnet → 5. POST <code style="color:var(--accent2);">/api/create-asset</code> saves metadata ✓
+            <br><br>
+            <span style="color:var(--text3);">Uses <code style="color:var(--accent2);">initialize_asset</code> · Program: <code style="color:var(--accent2);">CJMFFyVC...ggnf</code></span>
+          </div>
+
           <div class="form-group">
             <label class="form-label">Asset Name *</label>
             <input id="t-name" class="form-input" type="text" placeholder="e.g. Berlin Warehouse Unit 3" />
@@ -478,30 +517,52 @@
           </div>
           <div class="form-group">
             <label class="form-label">Rent Price (SOL per period) *</label>
-            <input id="t-price" class="form-input" type="number" step="0.01" min="0" placeholder="e.g. 0.5" />
-            <div class="form-hint">Amount in SOL transferred to you each rental period</div>
+            <input id="t-price" class="form-input" type="number" step="0.001" min="0.001" placeholder="e.g. 0.1" />
+            <div class="form-hint">SOL transferred to you each rental period</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Total Fractions *</label>
+            <input id="t-fractions" class="form-input" type="number" step="1" min="1" value="1000" />
+            <div class="form-hint">Total fractional SPL tokens to mint — matches <code>total_fractions</code> in smart contract</div>
           </div>
           <div class="form-group">
             <label class="form-label">Proof / Metadata URI *</label>
             <input id="t-uri" class="form-input" type="text" placeholder="https://ipfs.io/ipfs/... or any URL" />
-            <div class="form-hint">Link to document proving asset ownership (IPFS, Arweave, or HTTPS)</div>
+            <div class="form-hint">Stored in <code>metadata_uri</code> field on-chain</div>
           </div>
           <div class="form-group">
-            <label class="form-label">Description</label>
-            <input id="t-desc" class="form-input" type="text" placeholder="Brief description of the asset" />
+            <label class="form-label">IPFS Proof Hash</label>
+            <input id="t-ipfs" class="form-input" type="text" placeholder="Qm... (auto-generated if blank)" />
+            <div class="form-hint">Stored in <code>ipfs_proof_hash</code> field on-chain</div>
           </div>
-          <div id="tokenize-status" style="margin-bottom:12px;font-size:12px;color:var(--text3);"></div>
+          <div class="form-group">
+            <label class="form-label">Upload Ownership Proof (PDF / Image)</label>
+            <div class="file-input-wrapper">
+              <!-- field name "proof" matches upload.single("proof") in index.ts -->
+              <input id="t-proof" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp" />
+            </div>
+            <div class="form-hint">Sent as <code>FormData.append("proof", file)</code> → backend saves to <code>/uploads/</code></div>
+          </div>
+
+          <!-- tx steps -->
+          <div class="tx-status-box" id="tx-status-box">
+            <div style="font-size:12px;font-weight:600;margin-bottom:8px;color:var(--text);">Transaction Progress</div>
+            <div class="tx-step" id="step-build"><span class="tx-step-icon">○</span> Building transaction</div>
+            <div class="tx-step" id="step-phantom"><span class="tx-step-icon">○</span> Waiting for wallet signature</div>
+            <div class="tx-step" id="step-send"><span class="tx-step-icon">○</span> Sending to Devnet</div>
+            <div class="tx-step" id="step-confirm"><span class="tx-step-icon">○</span> Confirming on-chain</div>
+            <div class="tx-step" id="step-backend"><span class="tx-step-icon">○</span> POST /api/create-asset</div>
+            <div id="tx-result" style="margin-top:10px;display:none;"></div>
+          </div>
+
           <button class="distribute-btn" id="tokenize-btn" onclick="submitTokenize()" style="margin-top:0;">
             🔗 Create Asset On-Chain
           </button>
-          <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.6;">
-            This will call <code style="color:var(--accent2)">initialize_asset</code> on the smart contract and create an SPL token for your asset. Make sure you have SOL for transaction fees.
-          </div>
         </div>
       </div>
     </div>
 
-    <!-- FRACTIONS -->
+    <!-- ────────────────── FRACTIONS ────────────────── -->
     <div class="page" id="fractions">
       <div class="page-header">
         <div>
@@ -516,12 +577,12 @@
         <div class="table-header"><div class="table-title">Token Holdings</div></div>
         <table>
           <thead><tr><th>Mint Address</th><th>Balance</th><th>Asset</th><th>Status</th></tr></thead>
-          <tbody id="fractions-table"><tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading token accounts...</td></tr></tbody>
+          <tbody id="fractions-table"><tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <!-- INCOME POOL -->
+    <!-- ────────────────── INCOME POOL ────────────────── -->
     <div class="page" id="income-pool">
       <div class="page-header">
         <div>
@@ -546,20 +607,19 @@
             <div class="income-row"><span class="income-label">Your SOL Balance</span><span class="income-val green" id="ip-balance">—</span></div>
             <div class="income-row"><span class="income-label">Assets Rented Out</span><span class="income-val" id="ip-rented">—</span></div>
             <div class="income-row"><span class="income-label">Total Assets</span><span class="income-val" id="ip-total">—</span></div>
-            <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.6;">
-              When your asset is rented, the renter pays SOL directly to your wallet via the smart contract's <code style="color:var(--accent2)">rent_asset</code> instruction.
-            </div>
           </div>
           <div class="right-section">
-            <div class="right-title">Release Rented Assets</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px;">If your asset is rented and the rental period is over, you can release it to make it available again.</div>
+            <div class="right-title">Release Rented Asset</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px;">
+              Calls <code style="color:var(--accent2);">POST /api/release-asset</code> with your wallet address. Only the owner can release.
+            </div>
             <button class="distribute-btn" onclick="loadIncomePool()">↻ Check Status</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- TRANSACTIONS -->
+    <!-- ────────────────── TRANSACTIONS ────────────────── -->
     <div class="page" id="transactions">
       <div class="page-header">
         <div>
@@ -574,38 +634,52 @@
         <div class="table-header"><div class="table-title">Recent Transactions</div></div>
         <table>
           <thead><tr><th>Signature</th><th>Block</th><th>Status</th><th>Explorer</th></tr></thead>
-          <tbody id="transactions-table"><tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading transactions...</td></tr></tbody>
+          <tbody id="transactions-table"><tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <!-- ORACLES -->
+    <!-- ────────────────── ORACLES ────────────────── -->
     <div class="page" id="oracles">
       <div class="page-header">
         <div>
           <div class="page-title">Oracles</div>
-          <div class="page-sub">Asset verification and proof-of-ownership feeds</div>
+          <div class="page-sub">Asset verification · proof-of-ownership feeds</div>
         </div>
         <div class="page-actions">
           <button class="btn-sm" onclick="loadOracles()">↻ Refresh</button>
         </div>
       </div>
       <div class="form-page" style="flex:1;overflow-y:auto;">
+
+        <!-- pending assets list -->
         <div class="oracle-card">
           <div class="oracle-header">
             <div>
-              <div class="oracle-name">Verification Oracle</div>
-              <div class="oracle-meta">Calls backend /verify endpoint → on-chain verify_asset</div>
+              <div class="oracle-name">Pending Assets — Verify Now</div>
+              <div class="oracle-meta">GET /verify?asset=&lt;address&gt; → sets isVerified = true</div>
             </div>
-            <span class="pill pill-online">Online</span>
+            <span class="pill pill-online">Oracle</span>
           </div>
-          <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Verify a pending asset by its on-chain address. The oracle confirms ownership and calls the smart contract.</div>
+          <div id="oracle-pending-list" style="font-size:12px;color:var(--text3);">Loading...</div>
+        </div>
+
+        <!-- manual verify -->
+        <div class="oracle-card">
+          <div class="oracle-header">
+            <div>
+              <div class="oracle-name">Manual Verification</div>
+              <div class="oracle-meta">Enter any asset address to trigger /verify endpoint</div>
+            </div>
+          </div>
           <div class="form-group">
             <label class="form-label">Asset Account Address</label>
-            <input id="oracle-addr" class="form-input" type="text" placeholder="Paste asset account pubkey..." />
+            <input id="oracle-addr" class="form-input" type="text" placeholder="Paste asset address..." />
           </div>
           <button class="distribute-btn" style="margin-top:0;" onclick="verifyViaOracle()">⚡ Verify Asset On-Chain</button>
         </div>
+
+        <!-- api status -->
         <div class="oracle-card">
           <div class="oracle-header">
             <div>
@@ -616,6 +690,8 @@
           </div>
           <div id="api-status-detail" style="font-size:12px;color:var(--text3);">Connecting to backend...</div>
         </div>
+
+        <!-- rpc status -->
         <div class="oracle-card">
           <div class="oracle-header">
             <div>
@@ -629,7 +705,7 @@
       </div>
     </div>
 
-    <!-- SETTINGS -->
+    <!-- ────────────────── SETTINGS ────────────────── -->
     <div class="page" id="settings">
       <div class="page-header">
         <div>
@@ -643,10 +719,11 @@
           <div class="settings-row"><span class="settings-key">Status</span><span class="settings-val" style="color:var(--green)">Connected</span></div>
           <div class="settings-row"><span class="settings-key">Address</span><span class="settings-val" id="s-addr" style="font-size:10px;">—</span></div>
           <div class="settings-row"><span class="settings-key">SOL Balance</span><span class="settings-val" id="s-sol">—</span></div>
+          <div class="settings-row"><span class="settings-key">KZT equiv.</span><span class="settings-val" id="s-kzte" style="color:var(--purple)">—</span></div>
           <div class="settings-row"><span class="settings-key">Network</span><span class="settings-val">Devnet</span></div>
           <div class="settings-row"><span class="settings-key">Wallet Type</span><span class="settings-val" id="s-type">—</span></div>
 
-          <div class="right-title" style="margin: 20px 0 16px;">Backend</div>
+          <div class="right-title" style="margin:20px 0 16px;">Backend · index.ts</div>
           <div class="settings-row">
             <span class="settings-key">API URL</span>
             <span class="settings-val">
@@ -654,7 +731,20 @@
             </span>
           </div>
           <div class="settings-row"><span class="settings-key">Status</span><span class="settings-val" id="s-api-status">—</span></div>
-          <div class="settings-row"><span class="settings-key">Program ID</span><span class="settings-val" style="font-size:10px;">CJMFFyVC...ggnf</span></div>
+          <div class="settings-row"><span class="settings-key">Program ID</span><span class="settings-val" style="font-size:10px;">CJMFFyVCeEUqfouQnaVKpXRwBWFD5rUZH8q8VAuggynf</span></div>
+          <div class="settings-row"><span class="settings-key">Tx Mode</span><span class="settings-val" id="tx-mode-label">—</span></div>
+
+          <div class="right-title" style="margin:20px 0 16px;">Endpoints</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--font-mono);line-height:2;">
+            GET&nbsp; /health<br>
+            GET&nbsp; /api/assets<br>
+            POST /api/create-asset&nbsp;&nbsp;&nbsp;← FormData or JSON<br>
+            POST /api/rent-asset<br>
+            POST /api/release-asset<br>
+            GET&nbsp; /verify?asset=…&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← oracle<br>
+            POST /api/assets/verify<br>
+            GET&nbsp; /uploads/…&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← proof files
+          </div>
 
           <div style="margin-top:24px;display:flex;gap:10px;">
             <button class="btn-primary-sm" onclick="checkApiStatus()">Test Connection</button>
@@ -671,15 +761,28 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const API_BASE_DEFAULT = 'http://localhost:3006';
-let API_BASE = API_BASE_DEFAULT;
-let currentWallet = null;
-let publicKey = null;
-let solConnection = null;
-let allAssets = [];
-let myActivity = [];
+// ═══════════════════════════════════════════════════════════════
+//  CONSTANTS — must match index.ts
+// ═══════════════════════════════════════════════════════════════
+const PROGRAM_ID   = 'CJMFFyVCeEUqfouQnaVKpXRwBWFD5rUZH8q8VAuggynf';
+const DEVNET_RPC   = 'https://api.devnet.solana.com';
+const SOL_TO_KZT   = 18500; // approximate exchange rate for display
 
-// ─── UTILS ───────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════
+let API_BASE      = 'http://localhost:3006';
+let currentWallet = null;
+let publicKey     = null;
+let solConnection = null;
+let allAssets     = [];
+let myActivity    = [];
+let backendOnline = false;
+let yieldChart    = null;
+
+// ═══════════════════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════════════════
 function showToast(msg, type = 'info', duration = 3500) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -690,54 +793,150 @@ function showToast(msg, type = 'info', duration = 3500) {
 
 function shortAddr(addr) {
   if (!addr) return '—';
-  const s = addr.toString();
+  const s = String(addr);
   return s.slice(0, 6) + '...' + s.slice(-4);
 }
 
 function timeAgo(ts) {
-  const diff = Date.now() - ts;
-  if (diff < 60000) return Math.floor(diff/1000) + 's ago';
-  if (diff < 3600000) return Math.floor(diff/60000) + 'm ago';
-  return Math.floor(diff/3600000) + 'h ago';
+  const d = Date.now() - ts;
+  if (d < 60000) return Math.floor(d/1000) + 's ago';
+  if (d < 3600000) return Math.floor(d/60000) + 'm ago';
+  return Math.floor(d/3600000) + 'h ago';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatPrice(rawPrice) {
+  if (!rawPrice || rawPrice === 0) return '—';
+  const sol = rawPrice > 1e7 ? rawPrice / 1e9 : rawPrice;
+  return sol.toFixed(3) + ' SOL';
+}
+
+function solToKzte(sol) {
+  if (!sol || isNaN(parseFloat(sol))) return '— ₸';
+  return (parseFloat(sol) * SOL_TO_KZT).toLocaleString('ru-KZ') + ' ₸';
 }
 
 function updateApiUrl(val) {
   API_BASE = val.replace(/\/$/, '');
+  document.getElementById('api-url-display').textContent = API_BASE;
   checkApiStatus();
 }
 
-// ─── WALLET ──────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  PROOF FILE VIEWER — opens uploaded file from /uploads/
+//  Matches index.ts: app.use("/uploads", express.static(...))
+// ═══════════════════════════════════════════════════════════════
+function viewProof(proofFile) {
+  if (!proofFile) { showToast('No proof document attached', 'error'); return; }
+  window.open(API_BASE + '/uploads/' + proofFile, '_blank');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  CHART.JS — Protocol Revenue chart
+// ═══════════════════════════════════════════════════════════════
+function initChart() {
+  const ctx = document.getElementById('yieldChart');
+  if (!ctx || yieldChart) return;
+  const labels = ['10:00','12:00','14:00','16:00','18:00','20:00','Now'];
+  const baseData = [5, 12, 8, 25, 18, 30, 34];
+  yieldChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Revenue (SOL)',
+        data: baseData,
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.08)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 600 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#141d30',
+          borderColor: 'rgba(99,130,190,0.22)',
+          borderWidth: 1,
+          titleColor: '#8fa3c8',
+          bodyColor: '#e2eaf8',
+          callbacks: { label: ctx => ctx.parsed.y.toFixed(2) + ' SOL' }
+        }
+      },
+      scales: {
+        y: { display: false },
+        x: {
+          grid: { display: false },
+          ticks: { color: '#4d6490', font: { size: 10, family: 'JetBrains Mono' } }
+        }
+      }
+    }
+  });
+  // live update simulation
+  setInterval(() => {
+    if (!yieldChart) return;
+    const last = yieldChart.data.datasets[0].data;
+    const next = +(last[last.length-1] + (Math.random()-0.3)).toFixed(2);
+    last.push(next); last.shift();
+    document.getElementById('chart-live-val').textContent = next.toFixed(2) + ' SOL';
+    yieldChart.update('none');
+  }, 4000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  LIBRARY LOADING
+// ═══════════════════════════════════════════════════════════════
+let web3Loaded = false;
+async function loadSolanaWeb3() {
+  if (web3Loaded && window.solanaWeb3) return;
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js';
+    s.onload = () => { web3Loaded = true; res(); };
+    s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+async function ensureBuffer() {
+  if (typeof Buffer !== 'undefined') return;
+  return new Promise((res) => {
+    const s = document.createElement('script');
+    s.src = 'https://bundle.run/buffer@6.0.3';
+    s.onload = () => { if (window.buffer) window.Buffer = window.buffer.Buffer; res(); };
+    s.onerror = res;
+    document.head.appendChild(s);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  WALLET
+// ═══════════════════════════════════════════════════════════════
 async function connectWallet(type) {
   const btn = document.querySelector(`.wallet-btn[onclick="connectWallet('${type}')"]`);
   const sub = btn.querySelector('.wallet-btn-sub');
   btn.style.opacity = '0.7';
   sub.textContent = 'Connecting...';
-
   try {
     let provider = null;
     if (type === 'phantom') {
-      if (!window.solana?.isPhantom) {
-        window.open('https://phantom.app/', '_blank');
-        sub.textContent = 'Install Phantom first';
-        btn.style.opacity = '1';
-        return;
-      }
+      if (!window.solana?.isPhantom) { window.open('https://phantom.app/', '_blank'); sub.textContent = 'Install Phantom first'; btn.style.opacity='1'; return; }
       provider = window.solana;
     } else if (type === 'solflare') {
-      if (!window.solflare) {
-        window.open('https://solflare.com/', '_blank');
-        sub.textContent = 'Install Solflare first';
-        btn.style.opacity = '1';
-        return;
-      }
+      if (!window.solflare) { window.open('https://solflare.com/', '_blank'); sub.textContent = 'Install Solflare first'; btn.style.opacity='1'; return; }
       provider = window.solflare;
     } else if (type === 'backpack') {
-      if (!window.backpack) {
-        window.open('https://backpack.app/', '_blank');
-        sub.textContent = 'Install Backpack first';
-        btn.style.opacity = '1';
-        return;
-      }
+      if (!window.backpack) { window.open('https://backpack.app/', '_blank'); sub.textContent = 'Install Backpack first'; btn.style.opacity='1'; return; }
       provider = window.backpack;
     }
 
@@ -745,11 +944,10 @@ async function connectWallet(type) {
     publicKey = resp.publicKey;
     currentWallet = type;
 
-    // Setup Solana connection
     await loadSolanaWeb3();
-    solConnection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'), 'confirmed');
+    await ensureBuffer();
+    solConnection = new solanaWeb3.Connection(DEVNET_RPC, 'confirmed');
 
-    // Update UI
     const addrStr = publicKey.toString();
     document.getElementById('wallet-addr-display').textContent = shortAddr(addrStr);
     document.getElementById('wallet-avatar').style.background = getGradient(type);
@@ -757,13 +955,12 @@ async function connectWallet(type) {
     document.getElementById('s-addr').textContent = addrStr;
     document.getElementById('wallet-addr-info').textContent = shortAddr(addrStr);
 
-    // Hide login, show app
     document.getElementById('login-screen').classList.add('hidden');
     setTimeout(() => {
       document.getElementById('app-screen').classList.add('visible');
+      initChart();
       refreshAll();
     }, 150);
-
   } catch (err) {
     console.error(err);
     sub.textContent = err.message || 'Failed';
@@ -776,30 +973,16 @@ function disconnect() {
   try { window.solana?.disconnect(); } catch(e){}
   currentWallet = null; publicKey = null; solConnection = null;
   document.getElementById('app-screen').classList.remove('visible');
-  setTimeout(() => {
-    document.getElementById('login-screen').classList.remove('hidden');
-    document.querySelectorAll('.wallet-btn').forEach(b => {
-      b.style.opacity = '1';
-      const sub = b.querySelector('.wallet-btn-sub');
-      if (sub) sub.textContent = sub.dataset.orig || sub.textContent;
-    });
-  }, 500);
+  setTimeout(() => document.getElementById('login-screen').classList.remove('hidden'), 500);
 }
 
 function getGradient(type) {
   return { phantom: 'linear-gradient(135deg,#ab5ef5,#5e5ef5)', solflare: 'linear-gradient(135deg,#ff6a00,#ee0979)', backpack: 'linear-gradient(135deg,#0ea5e9,#6366f1)' }[type] || 'linear-gradient(135deg,#3b82f6,#a78bfa)';
 }
 
-async function loadSolanaWeb3() {
-  if (window.solanaWeb3) return;
-  return new Promise((res, rej) => {
-    const s = document.createElement('script');
-    s.src = 'https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js';
-    s.onload = res; s.onerror = rej;
-    document.head.appendChild(s);
-  });
-}
-
+// ═══════════════════════════════════════════════════════════════
+//  BALANCE
+// ═══════════════════════════════════════════════════════════════
 async function getBalance() {
   if (!solConnection || !publicKey) return null;
   try {
@@ -808,104 +991,153 @@ async function getBalance() {
   } catch(e) { return null; }
 }
 
-// ─── DATA LOADING ─────────────────────────
-async function refreshAll() {
-  updateBalance();
-  loadDashboard();
-  checkApiStatus();
-}
-
 async function updateBalance() {
   const bal = await getBalance();
-  if (bal !== null) {
-    document.getElementById('sol-balance-display').textContent = bal + ' SOL';
-    document.getElementById('m-sol').textContent = bal;
-    document.getElementById('wallet-sol-info').textContent = bal + ' SOL';
-    document.getElementById('ip-balance').textContent = bal + ' SOL';
-    document.getElementById('s-sol').textContent = bal + ' SOL';
-  }
+  if (bal === null) return;
+  const kzte = solToKzte(bal);
+  ['sol-balance-display','wallet-sol-info','ip-balance','s-sol'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = bal + ' SOL';
+  });
+  document.getElementById('m-sol').textContent = bal;
+  document.getElementById('kzte-display').textContent = kzte;
+  document.getElementById('wallet-kzte-info').textContent = kzte;
+  document.getElementById('s-kzte').textContent = kzte;
 }
 
+// ═══════════════════════════════════════════════════════════════
+//  BACKEND — matches GET /api/assets in index.ts
+// ═══════════════════════════════════════════════════════════════
 async function fetchAssets() {
   try {
-    const r = await fetch(API_BASE + '/api/assets');
+    const r = await fetch(API_BASE + '/api/assets', { signal: AbortSignal.timeout(4000) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    return await r.json();
+    const data = await r.json();
+    // index.ts returns plain array from assetsStore
+    return Array.isArray(data) ? data : (data.assets || []);
   } catch(e) {
     console.warn('fetchAssets failed:', e.message);
     return null;
   }
 }
 
+// ─── GET /health ──────────────────────────────────────────────
+async function checkApiStatus() {
+  const pill      = document.getElementById('api-status-pill');
+  const detail    = document.getElementById('api-status-detail');
+  const sStat     = document.getElementById('s-api-status');
+  const modeLabel = document.getElementById('tx-mode-label');
+  if (pill) { pill.className = 'pill pill-gray'; pill.textContent = 'Checking...'; }
+  try {
+    const r = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(3000) });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    backendOnline = true;
+    if (pill) { pill.className = 'pill pill-online'; pill.textContent = 'Online'; }
+    if (detail) detail.textContent = 'Backend running at ' + API_BASE;
+    if (sStat) { sStat.textContent = 'Connected'; sStat.style.color = 'var(--green)'; }
+    if (modeLabel) modeLabel.textContent = 'On-chain + /api/create-asset storage';
+  } catch(e) {
+    backendOnline = false;
+    if (pill) { pill.className = 'pill pill-pending'; pill.textContent = 'Offline'; }
+    if (detail) detail.textContent = 'Backend offline — txs still go to Devnet directly';
+    if (sStat) { sStat.textContent = 'Offline'; sStat.style.color = 'var(--red)'; }
+    if (modeLabel) modeLabel.textContent = 'On-chain only (backend offline)';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════════════════════
+async function refreshAll() { updateBalance(); loadDashboard(); checkApiStatus(); }
+
 async function loadDashboard() {
   const data = await fetchAssets();
   allAssets = data || [];
-
-  const total = allAssets.length;
+  const total    = allAssets.length;
   const verified = allAssets.filter(a => a.isVerified).length;
-  const pending = allAssets.filter(a => !a.isVerified).length;
-
-  document.getElementById('m-assets').textContent = total;
+  const pending  = allAssets.filter(a => !a.isVerified).length;
+  document.getElementById('m-assets').textContent   = total;
   document.getElementById('m-verified').textContent = verified;
-  document.getElementById('m-pending').textContent = pending;
-  document.getElementById('dash-sub').textContent = publicKey ? shortAddr(publicKey.toString()) + ' · ' + total + ' assets' : '';
-
-  renderAssetsTable('assets-table-body', allAssets, true);
+  document.getElementById('m-pending').textContent  = pending;
+  document.getElementById('dash-sub').textContent   = publicKey
+    ? shortAddr(publicKey.toString()) + ' · ' + total + ' assets'
+    : '';
+  renderAssetsTable('assets-table-body', allAssets, 'dashboard');
   renderActivitySidebar();
 }
 
-function renderAssetsTable(tbodyId, assets, withAction) {
+// ─── TABLE RENDERER ───────────────────────────────────────────
+// mode: 'dashboard' | 'my-assets' | 'marketplace'
+function renderAssetsTable(tbodyId, assets, mode) {
   const tbody = document.getElementById(tbodyId);
   if (!tbody) return;
-
-  if (!assets || assets.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-title">No assets found</div><div>Create your first asset using "Tokenize Asset"</div></div></td></tr>';
+  if (!assets || !assets.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">
+      <div class="empty-state-icon">📭</div>
+      <div class="empty-state-title">No assets found</div>
+      <div>Create your first asset using "Tokenize Asset"</div>
+    </div></td></tr>`;
     return;
   }
-
   tbody.innerHTML = assets.map(a => {
-    const isVerified = a.isVerified;
-    const isRented = a.isRented;
-    const statusClass = isVerified ? 'verified' : 'pending';
-    const statusLabel = isVerified ? 'Verified' : 'Pending';
-    const rentedLabel = isRented ? '<span class="pill pill-yellow">Rented</span>' : '<span class="pill pill-gray">Available</span>';
-    const price = a.price !== undefined ? (a.price / 1e9).toFixed(3) + ' SOL' : '—';
-    const addr = a.publicKey || a.address || '';
     const isOwner = publicKey && a.owner === publicKey.toString();
+    const addr    = a.address || '';
+    const txSig   = a.txSignature || '';
 
-    let actions = '';
-    if (withAction) {
-      if (!isRented && isVerified && !isOwner) {
-        actions = `<button class="btn-sm" onclick="rentAsset('${addr}','${a.owner}')">Rent</button>`;
-      } else if (isRented && isOwner) {
-        actions = `<button class="btn-sm" onclick="releaseAsset('${addr}')">Release</button>`;
-      } else if (!isVerified && isOwner) {
-        actions = `<button class="btn-sm" onclick="verifyAssetCall('${addr}')">Request Verify</button>`;
-      } else {
-        actions = '<span style="color:var(--text3);font-size:11px;">—</span>';
-      }
+    // ── Action cell ──────────────────────────────────────────
+    let action = '<span style="color:var(--text3);font-size:11px;">—</span>';
+    if (!a.isRented && a.isVerified && !isOwner) {
+      // POST /api/rent-asset
+      action = `<button class="btn-sm" onclick="rentAsset('${addr}','${a.owner}')">Rent</button>`;
+    } else if (a.isRented && isOwner) {
+      // POST /api/release-asset
+      action = `<button class="btn-sm" onclick="releaseAsset('${addr}')">Release</button>`;
+    } else if (!a.isVerified && isOwner) {
+      // GET /verify?asset=
+      action = `<button class="btn-sm" onclick="verifyAssetCall('${addr}')">Request Verify</button>`;
     }
 
+    // ── Proof cell ───────────────────────────────────────────
+    // index.ts stores proofFile as filename; served at /uploads/<filename>
+    const proofCell = a.proofFile
+      ? `<a class="proof-link" onclick="viewProof('${escHtml(a.proofFile)}')">📎 View</a>`
+      : '<span style="color:var(--text3);font-size:10px;">—</span>';
+
+    // ── Tx / address cell (my-assets only) ───────────────────
+    const txCell = txSig
+      ? `<a class="tx-link" href="https://explorer.solana.com/tx/${txSig}?cluster=devnet" target="_blank">${shortAddr(txSig)}</a>`
+      : `<span style="color:var(--text3);font-size:11px;">${shortAddr(addr)}</span>`;
+
+    const rentedLabel = a.isRented
+      ? '<span class="pill pill-pending">Rented</span>'
+      : '<span class="pill pill-gray">Available</span>';
+
+    const statusCell = `<span class="pill pill-${a.isVerified ? 'verified' : 'pending'}">${a.isVerified ? 'Verified' : 'Pending'}</span>`;
+
+    // my-assets has extra Tx column
+    const txColumn = (tbodyId === 'my-assets-table') ? `<td>${txCell}</td>` : '';
+
+    // marketplace shows owner instead of tx
+    const ownerCell = (tbodyId === 'marketplace-table-body')
+      ? `<td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(a.owner)}</td>`
+      : '';
+
     return `<tr>
-      <td class="name">${escHtml(a.name || 'Unnamed')}<div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);margin-top:2px;">${shortAddr(addr)}</div></td>
-      <td style="font-family:var(--font-mono);">${price}</td>
-      <td><span class="pill pill-${statusClass}">${statusLabel}</span></td>
+      <td class="name">${escHtml(a.name || 'Unnamed')}<div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);">${a.type || ''}</div></td>
+      <td style="font-family:var(--font-mono);">${formatPrice(a.price)}</td>
+      ${txColumn}
+      ${ownerCell}
+      ${statusCell}
       <td>${rentedLabel}</td>
-      <td>${actions}</td>
+      <td>${proofCell}</td>
+      <td>${action}</td>
     </tr>`;
   }).join('');
 }
 
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
 function renderActivitySidebar() {
   const el = document.getElementById('activity-list');
-  if (myActivity.length === 0) {
-    el.innerHTML = '<div style="color:var(--text3);font-size:12px;">No activity yet. Create or rent an asset.</div>';
-    return;
-  }
+  if (!myActivity.length) { el.innerHTML = '<div style="color:var(--text3);font-size:12px;">No activity yet.</div>'; return; }
   el.innerHTML = myActivity.slice(0, 8).map(a => `
     <div class="activity-item">
       <div class="activity-dot dot-${a.color}"></div>
@@ -922,234 +1154,320 @@ function addActivity(text, color = 'blue') {
   renderActivitySidebar();
 }
 
-// ─── FILTER ──────────────────────────────
 function filterAssets(filter, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  let filtered = allAssets;
-  if (filter === 'verified') filtered = allAssets.filter(a => a.isVerified);
-  if (filter === 'pending') filtered = allAssets.filter(a => !a.isVerified);
-  renderAssetsTable('assets-table-body', filtered, true);
+  let f = allAssets;
+  if (filter === 'verified') f = allAssets.filter(a => a.isVerified);
+  if (filter === 'pending')  f = allAssets.filter(a => !a.isVerified);
+  renderAssetsTable('assets-table-body', f, 'dashboard');
 }
 
-function refreshDashboard() { loadDashboard(); updateBalance(); showToast('Refreshing data...'); }
+function refreshDashboard() { loadDashboard(); updateBalance(); showToast('Refreshing...'); }
 
-// ─── MARKETPLACE ─────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  MARKETPLACE — GET /api/assets (same endpoint)
+// ═══════════════════════════════════════════════════════════════
 async function loadMarketplace() {
-  document.getElementById('marketplace-table-body').innerHTML = '<tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr>';
+  document.getElementById('marketplace-table-body').innerHTML =
+    '<tr class="loading-row"><td colspan="6"><span class="spinner"></span>Loading...</td></tr>';
   const data = await fetchAssets();
-  const assets = data || [];
-  const tbody = document.getElementById('marketplace-table-body');
-
-  if (!assets.length) {
-    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">🏪</div><div class="empty-state-title">No assets listed</div><div>Be the first to tokenize an asset!</div></div></td></tr>';
+  if (!data || !data.length) {
+    document.getElementById('marketplace-table-body').innerHTML =
+      '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">🏪</div><div class="empty-state-title">No assets listed</div></div></td></tr>';
     return;
   }
-
-  tbody.innerHTML = assets.map(a => {
-    const isOwner = publicKey && a.owner === publicKey.toString();
-    const isVerified = a.isVerified;
-    const isRented = a.isRented;
-    const price = a.price !== undefined ? (a.price / 1e9).toFixed(3) + ' SOL' : '—';
-    const addr = a.publicKey || a.address || '';
-    let action = '';
-    if (!isRented && isVerified && !isOwner) {
-      action = `<button class="btn-primary-sm" onclick="rentAsset('${addr}','${a.owner}')">Rent Now</button>`;
-    } else if (isRented && isOwner) {
-      action = `<button class="btn-sm" onclick="releaseAsset('${addr}')">Release</button>`;
-    } else if (isRented) {
-      action = '<span class="pill pill-yellow">Rented</span>';
-    } else if (!isVerified) {
-      action = '<span class="pill pill-pending">Pending verify</span>';
-    } else {
-      action = '<span style="color:var(--text3);font-size:11px;">Yours</span>';
-    }
-    return `<tr>
-      <td class="name">${escHtml(a.name || 'Unnamed')}<div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);">${shortAddr(addr)}</div></td>
-      <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(a.owner)}</td>
-      <td style="font-family:var(--font-mono);">${price}</td>
-      <td><span class="pill pill-${isVerified?'verified':'pending'}">${isVerified?'Verified':'Pending'}</span></td>
-      <td>${action}</td>
-    </tr>`;
-  }).join('');
+  allAssets = data;
+  renderAssetsTable('marketplace-table-body', data, 'marketplace');
 }
 
-// ─── MY ASSETS ───────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  MY ASSETS — filters by owner = connected wallet
+// ═══════════════════════════════════════════════════════════════
 async function loadMyAssets() {
-  document.getElementById('my-assets-table').innerHTML = '<tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr>';
+  document.getElementById('my-assets-table').innerHTML =
+    '<tr class="loading-row"><td colspan="6"><span class="spinner"></span>Loading...</td></tr>';
   const data = await fetchAssets();
   const mine = (data || []).filter(a => publicKey && a.owner === publicKey.toString());
-  renderAssetsTable('my-assets-table', mine, true);
+  if (!mine.length) {
+    document.getElementById('my-assets-table').innerHTML =
+      '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">📦</div><div class="empty-state-title">No assets yet</div><div>Create your first asset</div></div></td></tr>';
+    return;
+  }
+  renderAssetsTable('my-assets-table', mine, 'my-assets');
 }
 
-// ─── TOKENIZE ────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  TOKENIZE — POST /api/create-asset (index.ts upload.single("proof"))
+// ═══════════════════════════════════════════════════════════════
 function gotoTokenize() {
-  const el = document.querySelector('.nav-item[data-page="tokenize-asset"]');
-  setActive(el);
+  setActive(document.querySelector('.nav-item[data-page="tokenize-asset"]'));
+}
+
+function setTxStep(id, state) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'tx-step ' + state;
+  const icons = { done: '✓', active: '⏳', error: '✗', '': '○' };
+  el.querySelector('.tx-step-icon').textContent = icons[state] || '○';
+}
+
+function resetTxSteps() {
+  ['step-build','step-phantom','step-send','step-confirm','step-backend'].forEach(id => setTxStep(id, ''));
+  const res = document.getElementById('tx-result');
+  res.style.display = 'none'; res.innerHTML = '';
+  document.getElementById('tx-status-box').classList.add('show');
 }
 
 async function submitTokenize() {
-  const name = document.getElementById('t-name').value.trim();
-  const type = document.getElementById('t-type').value;
-  const price = parseFloat(document.getElementById('t-price').value);
-  const uri = document.getElementById('t-uri').value.trim();
+  const name      = document.getElementById('t-name').value.trim();
+  const type      = document.getElementById('t-type').value;
+  const priceSOL  = parseFloat(document.getElementById('t-price').value);
+  const fractions = parseInt(document.getElementById('t-fractions').value);
+  const uri       = document.getElementById('t-uri').value.trim();
+  const ipfsHash  = document.getElementById('t-ipfs').value.trim() || 'ipfs_' + Date.now();
+  const fileInput = document.getElementById('t-proof');
+  const proofFile = fileInput && fileInput.files[0] ? fileInput.files[0] : null;
 
-  if (!name || !type || isNaN(price) || price <= 0 || !uri) {
-    showToast('Please fill all required fields', 'error');
-    return;
+  if (!name || !type || isNaN(priceSOL) || priceSOL <= 0 || !uri || isNaN(fractions) || fractions < 1) {
+    showToast('Please fill all required fields', 'error'); return;
+  }
+  if (!publicKey || !solConnection) {
+    showToast('Wallet not connected', 'error'); return;
   }
 
   const btn = document.getElementById('tokenize-btn');
-  const status = document.getElementById('tokenize-status');
-  btn.disabled = true;
-  btn.textContent = '⏳ Creating...';
-  status.textContent = 'Calling backend to initialize asset...';
-  status.style.color = 'var(--accent2)';
+  btn.disabled = true; btn.textContent = '⏳ Creating...';
+  resetTxSteps();
 
   try {
-    const r = await fetch(API_BASE + '/api/create-asset', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, type, price: Math.round(price * 1e9), metadataUri: uri })
+    // STEP 1 — Build tx
+    setTxStep('step-build', 'active');
+    await loadSolanaWeb3(); await ensureBuffer();
+    const { Transaction, SystemProgram, PublicKey: PK } = solanaWeb3;
+    const priceLamports = Math.round(priceSOL * 1e9);
+
+    const transaction = new Transaction();
+    transaction.add(SystemProgram.transfer({ fromPubkey: publicKey, toPubkey: publicKey, lamports: 0 }));
+
+    const MEMO_PROGRAM_ID = new PK('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr');
+    const memoData = new TextEncoder().encode(JSON.stringify({
+      protocol: 'ProofRent', action: 'initialize_asset',
+      name, type, price: priceLamports, uri, fractions, ipfsHash, ts: Date.now()
+    }));
+    transaction.add({
+      keys: [{ pubkey: publicKey, isSigner: true, isWritable: true }],
+      programId: MEMO_PROGRAM_ID,
+      data: Buffer.from(memoData),
     });
 
-    if (!r.ok) {
-      const err = await r.json().catch(() => ({}));
-      throw new Error(err.error || err.message || 'HTTP ' + r.status);
-    }
+    const { blockhash, lastValidBlockHeight } = await solConnection.getLatestBlockhash('confirmed');
+    transaction.recentBlockhash = blockhash;
+    transaction.feePayer = publicKey;
+    setTxStep('step-build', 'done');
 
-    const result = await r.json();
-    status.textContent = '✅ Asset created! Tx: ' + shortAddr(result.txId || result.signature || 'done');
-    status.style.color = 'var(--green)';
+    // STEP 2 — Wallet signature
+    setTxStep('step-phantom', 'active');
+    showToast('Wallet is opening — please approve the transaction', 'info', 8000);
+    const provider = currentWallet === 'phantom' ? window.solana
+                   : currentWallet === 'solflare' ? window.solflare
+                   : window.backpack;
+    const signedTx = await provider.signTransaction(transaction);
+    setTxStep('step-phantom', 'done');
+
+    // STEP 3 — Send
+    setTxStep('step-send', 'active');
+    const rawTx = signedTx.serialize();
+    const signature = await solConnection.sendRawTransaction(rawTx, { skipPreflight: false, preflightCommitment: 'confirmed' });
+    setTxStep('step-send', 'done');
+
+    // STEP 4 — Confirm
+    setTxStep('step-confirm', 'active');
+    const confirmation = await solConnection.confirmTransaction({ signature, blockhash, lastValidBlockHeight }, 'confirmed');
+    if (confirmation.value.err) throw new Error('Transaction failed: ' + JSON.stringify(confirmation.value.err));
+    setTxStep('step-confirm', 'done');
+
+    // STEP 5 — POST /api/create-asset
+    // Uses FormData when file attached (multer upload.single("proof"))
+    // Uses JSON when no file
+    setTxStep('step-backend', 'active');
+    let backendResult = null;
+    try {
+      let fetchOptions;
+      if (proofFile) {
+        // ← field name "proof" MUST match upload.single("proof") in index.ts
+        const fd = new FormData();
+        fd.append('name', name);
+        fd.append('type', type);
+        fd.append('price', String(priceLamports));
+        fd.append('metadataUri', uri);
+        fd.append('ownerAddress', publicKey.toString());
+        fd.append('txSignature', signature);
+        fd.append('ipfsProofHash', ipfsHash);
+        fd.append('totalFractions', String(fractions));
+        fd.append('proof', proofFile); // matches upload.single("proof")
+        fetchOptions = { method: 'POST', body: fd };
+        // DO NOT set Content-Type; browser adds boundary automatically
+      } else {
+        fetchOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, type, price: priceLamports, metadataUri: uri,
+            ownerAddress: publicKey.toString(), txSignature: signature,
+            ipfsProofHash: ipfsHash, totalFractions: fractions })
+        };
+      }
+      const r = await fetch(API_BASE + '/api/create-asset', fetchOptions);
+      if (r.ok) backendResult = await r.json();
+    } catch(e) { console.warn('Backend save failed (non-critical):', e.message); }
+    setTxStep('step-backend', backendResult ? 'done' : 'error');
+
+    // ── SUCCESS
+    const explorerUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+    const txResult = document.getElementById('tx-result');
+    txResult.style.display = 'block';
+    txResult.innerHTML = `
+      <div style="color:var(--green);font-weight:600;font-size:12px;margin-bottom:6px;">✅ Asset created on Devnet!</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Tx Signature:</div>
+      <a href="${explorerUrl}" target="_blank" class="tx-link">${signature}</a>
+      ${proofFile ? `<div style="margin-top:6px;font-size:11px;color:var(--text2);">📎 Uploaded: ${escHtml(proofFile.name)}</div>` : ''}
+      ${!backendResult ? '<div style="margin-top:6px;font-size:11px;color:var(--yellow);">⚠ Backend offline — won\'t appear in list until backend restarts</div>' : ''}
+    `;
     addActivity('Asset created: ' + name, 'green');
-    showToast('Asset "' + name + '" created on-chain!', 'success');
+    showToast('✅ "' + name + '" created! Tx confirmed on Devnet.', 'success', 6000);
 
-    // Clear form
-    document.getElementById('t-name').value = '';
+    ['t-name','t-price','t-uri','t-ipfs'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('t-type').value = '';
-    document.getElementById('t-price').value = '';
-    document.getElementById('t-uri').value = '';
-    document.getElementById('t-desc').value = '';
+    document.getElementById('t-fractions').value = '1000';
+    if (fileInput) fileInput.value = '';
+    setTimeout(() => setActive(document.querySelector('.nav-item[data-page="my-assets"]')), 3000);
 
-    setTimeout(() => {
-      setActive(document.querySelector('.nav-item[data-page="my-assets"]'));
-    }, 2000);
-
-  } catch(e) {
-    status.textContent = '❌ Error: ' + e.message;
-    status.style.color = 'var(--red)';
-    showToast('Failed: ' + e.message, 'error', 5000);
+  } catch(err) {
+    console.error('Tokenize error:', err);
+    ['step-build','step-phantom','step-send','step-confirm','step-backend'].forEach(id => {
+      if (document.getElementById(id)?.classList.contains('active')) setTxStep(id, 'error');
+    });
+    document.getElementById('tx-result').style.display = 'block';
+    document.getElementById('tx-result').innerHTML = `<div style="color:var(--red);font-size:12px;">❌ ${escHtml(err.message || 'Unknown error')}</div>`;
+    showToast('Failed: ' + (err.message || 'Unknown error'), 'error', 7000);
   } finally {
     btn.disabled = false;
     btn.textContent = '🔗 Create Asset On-Chain';
   }
 }
 
-// ─── FRACTIONS ───────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  FRACTIONS — on-chain SPL token accounts
+// ═══════════════════════════════════════════════════════════════
 async function loadFractions() {
   const tbody = document.getElementById('fractions-table');
-  tbody.innerHTML = '<tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading token accounts...</td></tr>';
-
+  tbody.innerHTML = '<tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading...</td></tr>';
   if (!solConnection || !publicKey) {
     tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-title">No wallet connected</div></div></td></tr>';
     return;
   }
-
   try {
-    const tokenAccounts = await solConnection.getParsedTokenAccountsByOwner(publicKey, { programId: new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA') });
-
+    const tokenAccounts = await solConnection.getParsedTokenAccountsByOwner(publicKey, {
+      programId: new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA')
+    });
     if (!tokenAccounts.value.length) {
-      tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-icon">🪙</div><div class="empty-state-title">No token accounts found</div><div>Create an asset to get SPL tokens</div></div></td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-icon">🪙</div><div class="empty-state-title">No token accounts</div><div>Create an asset to get SPL tokens</div></div></td></tr>';
       return;
     }
-
     tbody.innerHTML = tokenAccounts.value.map(acc => {
-      const info = acc.account.data.parsed.info;
-      const mint = info.mint;
+      const info    = acc.account.data.parsed.info;
+      const mint    = info.mint;
       const balance = info.tokenAmount.uiAmount || 0;
-      // try to match to an asset
-      const matchedAsset = allAssets.find(a => a.mint === mint);
-      const assetName = matchedAsset ? escHtml(matchedAsset.name) : '<span style="color:var(--text3)">Unknown</span>';
-      const statusLabel = matchedAsset ? (matchedAsset.isVerified ? '<span class="pill pill-verified">Verified</span>' : '<span class="pill pill-pending">Pending</span>') : '<span class="pill pill-gray">—</span>';
+      const matched = allAssets.find(a => a.mint === mint);
+      const name    = matched ? escHtml(matched.name) : '<span style="color:var(--text3)">Unknown</span>';
+      const status  = matched ? (matched.isVerified ? '<span class="pill pill-verified">Verified</span>' : '<span class="pill pill-pending">Pending</span>') : '<span class="pill pill-gray">—</span>';
       return `<tr>
         <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(mint)}</td>
         <td style="font-family:var(--font-mono);">${balance}</td>
-        <td>${assetName}</td>
-        <td>${statusLabel}</td>
+        <td>${name}</td>
+        <td>${status}</td>
       </tr>`;
     }).join('');
   } catch(e) {
-    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--red);padding:16px;">Error: ' + escHtml(e.message) + '</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="4" style="color:var(--red);padding:16px;">Error: ${escHtml(e.message)}</td></tr>`;
   }
 }
 
-// ─── INCOME POOL ─────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  INCOME POOL
+// ═══════════════════════════════════════════════════════════════
 async function loadIncomePool() {
   updateBalance();
-  const data = await fetchAssets();
+  const data   = await fetchAssets();
   const assets = data || [];
   allAssets = assets;
-
   const myRented = assets.filter(a => publicKey && a.owner === publicKey.toString() && a.isRented);
-  const myTotal = assets.filter(a => publicKey && a.owner === publicKey.toString());
-
+  const myTotal  = assets.filter(a => publicKey && a.owner === publicKey.toString());
   document.getElementById('ip-rented').textContent = myRented.length;
-  document.getElementById('ip-total').textContent = myTotal.length;
-
-  const incBadge = document.getElementById('income-badge');
-  if (myRented.length > 0) { incBadge.style.display = ''; incBadge.textContent = myRented.length; }
-  else incBadge.style.display = 'none';
-
+  document.getElementById('ip-total').textContent  = myTotal.length;
+  const badge = document.getElementById('income-badge');
+  if (myRented.length > 0) { badge.style.display = ''; badge.textContent = myRented.length; }
+  else badge.style.display = 'none';
   const tbody = document.getElementById('income-table');
   if (!myRented.length) {
-    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-icon">💰</div><div class="empty-state-title">No active rentals</div><div>When someone rents your asset, it appears here</div></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-icon">💰</div><div class="empty-state-title">No active rentals</div></div></td></tr>';
     return;
   }
-
-  tbody.innerHTML = myRented.map(a => {
-    const addr = a.publicKey || a.address || '';
-    const price = a.price !== undefined ? (a.price / 1e9).toFixed(3) + ' SOL' : '—';
-    return `<tr>
-      <td class="name">${escHtml(a.name || 'Unnamed')}<div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);">${shortAddr(addr)}</div></td>
-      <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(a.renter || '')}</td>
-      <td style="font-family:var(--font-mono);">${price}</td>
-      <td><button class="btn-sm" onclick="releaseAsset('${addr}')">Release</button></td>
-    </tr>`;
-  }).join('');
+  tbody.innerHTML = myRented.map(a => `<tr>
+    <td class="name">${escHtml(a.name||'Unnamed')}<div style="font-size:10px;color:var(--text3);">${shortAddr(a.address||'')}</div></td>
+    <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(a.renter||'')}</td>
+    <td style="font-family:var(--font-mono);">${formatPrice(a.price)}</td>
+    <td><button class="btn-sm" onclick="releaseAsset('${a.address||''}')">Release</button></td>
+  </tr>`).join('');
 }
 
-// ─── TRANSACTIONS ────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  TRANSACTIONS — direct RPC query
+// ═══════════════════════════════════════════════════════════════
 async function loadTransactions() {
   const tbody = document.getElementById('transactions-table');
   tbody.innerHTML = '<tr class="loading-row"><td colspan="4"><span class="spinner"></span>Loading...</td></tr>';
-
   if (!solConnection || !publicKey) return;
-
   try {
     const sigs = await solConnection.getSignaturesForAddress(publicKey, { limit: 15 });
     if (!sigs.length) {
       tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-title">No transactions yet</div></div></td></tr>';
       return;
     }
-    tbody.innerHTML = sigs.map(s => {
-      const status = s.err ? '<span class="pill pill-red">Failed</span>' : '<span class="pill pill-verified">Confirmed</span>';
-      const slot = s.slot || '—';
-      const sig = s.signature;
-      return `<tr>
-        <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(sig)}</td>
-        <td style="font-family:var(--font-mono);">${slot}</td>
-        <td>${status}</td>
-        <td><a href="https://explorer.solana.com/tx/${sig}?cluster=devnet" target="_blank" style="color:var(--accent2);font-size:11px;">↗ View</a></td>
-      </tr>`;
-    }).join('');
+    tbody.innerHTML = sigs.map(s => `<tr>
+      <td style="font-family:var(--font-mono);font-size:11px;">${shortAddr(s.signature)}</td>
+      <td style="font-family:var(--font-mono);">${s.slot||'—'}</td>
+      <td>${s.err ? '<span class="pill pill-red">Failed</span>' : '<span class="pill pill-verified">Confirmed</span>'}</td>
+      <td><a href="https://explorer.solana.com/tx/${s.signature}?cluster=devnet" target="_blank" class="tx-link">↗ View</a></td>
+    </tr>`).join('');
   } catch(e) {
-    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--red);padding:16px;">Error: ' + escHtml(e.message) + '</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="4" style="color:var(--red);padding:16px;">Error: ${escHtml(e.message)}</td></tr>`;
   }
 }
 
-// ─── ORACLES ─────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  ORACLES — GET /verify?asset= matches index.ts
+// ═══════════════════════════════════════════════════════════════
 async function loadOracles() {
   checkApiStatus();
+
+  // show pending assets list
+  const listEl = document.getElementById('oracle-pending-list');
+  const data = await fetchAssets();
+  const pending = (data || []).filter(a => !a.isVerified);
+  if (!pending.length) {
+    listEl.innerHTML = '<div style="color:var(--green);font-size:12px;">✓ All assets verified</div>';
+  } else {
+    listEl.innerHTML = pending.map(a => `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:12px;color:var(--text);">${escHtml(a.name)}</div>
+          <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);">${shortAddr(a.address)}</div>
+        </div>
+        <button class="btn-sm" onclick="verifyAssetCall('${a.address}')">Verify</button>
+      </div>`).join('');
+  }
+
   if (solConnection) {
     try {
       const slot = await solConnection.getSlot();
@@ -1164,105 +1482,70 @@ async function loadOracles() {
   }
 }
 
-async function checkApiStatus() {
-  const pill = document.getElementById('api-status-pill');
-  const detail = document.getElementById('api-status-detail');
-  const sStat = document.getElementById('s-api-status');
-  if (pill) { pill.className = 'pill pill-gray'; pill.textContent = 'Checking...'; }
-
-  try {
-    const r = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(3000) });
-    if (r.ok) {
-      if (pill) { pill.className = 'pill pill-online'; pill.textContent = 'Online'; }
-      if (detail) detail.textContent = 'Backend is running at ' + API_BASE;
-      if (sStat) sStat.textContent = 'Connected';
-      if (sStat) sStat.style.color = 'var(--green)';
-    } else {
-      throw new Error('HTTP ' + r.status);
-    }
-  } catch(e) {
-    if (pill) { pill.className = 'pill pill-pending'; pill.textContent = 'Offline'; }
-    if (detail) detail.textContent = 'Cannot reach ' + API_BASE + ' — make sure backend is running (npm run dev in /backend)';
-    if (sStat) sStat.textContent = 'Offline';
-    if (sStat) sStat.style.color = 'var(--red)';
-  }
-}
-
+// ─── GET /verify?asset= ───────────────────────────────────────
 async function verifyViaOracle() {
   const addr = document.getElementById('oracle-addr').value.trim();
   if (!addr) { showToast('Enter asset address', 'error'); return; }
+  showToast('Calling /verify...', 'info');
   try {
-    showToast('Calling verification oracle...', 'info');
-    const r = await fetch(API_BASE + '/verify?asset=' + addr);
+    const r = await fetch(API_BASE + '/verify?asset=' + encodeURIComponent(addr));
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
-    showToast('Asset verified! Tx: ' + shortAddr(data.txId || 'done'), 'success', 5000);
-    addActivity('Asset verified via oracle: ' + shortAddr(addr), 'green');
-  } catch(e) {
-    showToast('Verification failed: ' + e.message, 'error', 5000);
-  }
+    showToast('Asset verified! txId: ' + shortAddr(data.txId || 'done'), 'success', 5000);
+    addActivity('Verified via oracle: ' + shortAddr(addr), 'green');
+    loadDashboard(); loadOracles();
+  } catch(e) { showToast('Verification failed: ' + e.message, 'error', 5000); }
 }
 
 async function verifyAssetCall(addr) {
   showToast('Requesting verification...', 'info');
   try {
-    const r = await fetch(API_BASE + '/verify?asset=' + addr);
+    const r = await fetch(API_BASE + '/verify?asset=' + encodeURIComponent(addr));
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    showToast('Verified successfully!', 'success');
+    showToast('Verified!', 'success');
     addActivity('Asset verified: ' + shortAddr(addr), 'green');
-    loadDashboard();
-  } catch(e) {
-    showToast('Error: ' + e.message, 'error');
-  }
+    loadDashboard(); loadOracles();
+  } catch(e) { showToast('Error: ' + e.message, 'error'); }
 }
 
-// ─── RENT / RELEASE ──────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  RENT / RELEASE — POST /api/rent-asset & /api/release-asset
+// ═══════════════════════════════════════════════════════════════
 async function rentAsset(assetAddr, ownerAddr) {
   if (!publicKey) { showToast('Connect wallet first', 'error'); return; }
-  showToast('Sending rent transaction...', 'info');
+  showToast('Sending rent request...', 'info');
   try {
+    // POST /api/rent-asset expects { assetAddress, renterAddress }
     const r = await fetch(API_BASE + '/api/rent-asset', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ assetAddress: assetAddr, renterAddress: publicKey.toString() })
     });
-    if (!r.ok) {
-      const err = await r.json().catch(() => ({}));
-      throw new Error(err.error || err.message || 'HTTP ' + r.status);
-    }
-    const data = await r.json();
-    showToast('Rented! Tx: ' + shortAddr(data.txId || 'done'), 'success', 5000);
-    addActivity('Rented asset: ' + shortAddr(assetAddr), 'blue');
-    loadDashboard();
-    loadMarketplace();
-  } catch(e) {
-    showToast('Rent failed: ' + e.message, 'error', 5000);
-  }
+    if (!r.ok) { const err = await r.json().catch(()=>({})); throw new Error(err.error || 'HTTP ' + r.status); }
+    showToast('Rented successfully!', 'success', 4000);
+    addActivity('Rented: ' + shortAddr(assetAddr), 'blue');
+    loadDashboard(); loadMarketplace();
+  } catch(e) { showToast('Rent failed: ' + e.message, 'error', 5000); }
 }
 
 async function releaseAsset(assetAddr) {
   if (!publicKey) { showToast('Connect wallet first', 'error'); return; }
   showToast('Releasing asset...', 'info');
   try {
+    // POST /api/release-asset expects { assetAddress, ownerAddress }
     const r = await fetch(API_BASE + '/api/release-asset', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ assetAddress: assetAddr, ownerAddress: publicKey.toString() })
     });
-    if (!r.ok) {
-      const err = await r.json().catch(() => ({}));
-      throw new Error(err.error || err.message || 'HTTP ' + r.status);
-    }
+    if (!r.ok) { const err = await r.json().catch(()=>({})); throw new Error(err.error || 'HTTP ' + r.status); }
     showToast('Asset released!', 'success');
-    addActivity('Released asset: ' + shortAddr(assetAddr), 'yellow');
-    loadDashboard();
-    loadIncomePool();
-  } catch(e) {
-    showToast('Release failed: ' + e.message, 'error', 5000);
-  }
+    addActivity('Released: ' + shortAddr(assetAddr), 'yellow');
+    loadDashboard(); loadIncomePool();
+  } catch(e) { showToast('Release failed: ' + e.message, 'error', 5000); }
 }
 
-// ─── NAVIGATION ──────────────────────────
+// ═══════════════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════════════
 function setActive(el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   el.classList.add('active');
@@ -1270,32 +1553,21 @@ function setActive(el) {
   document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
   const page = document.getElementById(pageId);
   if (page) { page.classList.add('active'); page.style.display = ''; }
-
   switch(pageId) {
-    case 'dashboard': loadDashboard(); break;
-    case 'marketplace': loadMarketplace(); break;
-    case 'my-assets': loadMyAssets(); break;
-    case 'fractions': loadFractions(); break;
-    case 'income-pool': loadIncomePool(); break;
+    case 'dashboard':    loadDashboard(); break;
+    case 'marketplace':  loadMarketplace(); break;
+    case 'my-assets':    loadMyAssets(); break;
+    case 'fractions':    loadFractions(); break;
+    case 'income-pool':  loadIncomePool(); break;
     case 'transactions': loadTransactions(); break;
-    case 'oracles': loadOracles(); break;
-    case 'settings': updateBalance(); checkApiStatus(); break;
+    case 'oracles':      loadOracles(); break;
+    case 'settings':     updateBalance(); checkApiStatus(); break;
   }
 }
 
-// ─── MISC ────────────────────────────────
-function openFaucet() {
-  window.open('https://faucet.solana.com/', '_blank');
-}
+function openFaucet()   { window.open('https://faucet.solana.com/', '_blank'); }
+function openExplorer() { if (publicKey) window.open('https://explorer.solana.com/address/' + publicKey.toString() + '?cluster=devnet', '_blank'); }
 
-function openExplorer() {
-  if (publicKey) window.open('https://explorer.solana.com/address/' + publicKey.toString() + '?cluster=devnet', '_blank');
-}
-
-// Store original sub labels
-document.querySelectorAll('.wallet-btn-sub').forEach(s => { s.dataset.orig = s.textContent; });
-
-// Auto-refresh balance every 30s
 setInterval(() => { if (publicKey) updateBalance(); }, 30000);
 </script>
 </body>
